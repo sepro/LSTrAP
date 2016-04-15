@@ -34,8 +34,9 @@ class TranscriptomePipeline:
 
         # Filename should include a unique timestamp !
         filename = "bowtie_build_%d.sh" % int(time.time())
+        jobname = "bowtie_build_%d"% int(time.time())
 
-        template = build_template("bowtie_build", email, bowtie_module, bowtie_build_cmd)
+        template = build_template(jobname, email, bowtie_module, bowtie_build_cmd)
 
         with open(filename, "w") as f:
             print(template, file=f)
@@ -50,7 +51,7 @@ class TranscriptomePipeline:
 
         print("Preparing the genomic fasta file...")
 
-        wait_for_job(filename)
+        wait_for_job(jobname)
 
         print("Done\n\n")
 
