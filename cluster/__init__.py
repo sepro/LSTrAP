@@ -15,6 +15,8 @@ def job_running(job_name):
 
     pattern = "Full jobname:\s*" + job_name
 
+    print(str(qstat))
+
     return bool(re.match(pattern, str(qstat)))
 
 
