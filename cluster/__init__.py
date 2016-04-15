@@ -11,13 +11,13 @@ def job_running(job_name):
     :param job_name: name of the submitted script/jobname
     :return: boolean true if the job is still running or in the queue
     """
-    qstat = check_output(["qstat", "-r"])
+    qstat = check_output(["qstat", "-r"]).decode("utf-8")
 
     pattern = "Full jobname:\s*" + job_name
 
-    print(job_name, pattern, str(qstat), sep='\n\n')
+    print(job_name, pattern, qstat, sep='\n\n')
 
-    return bool(re.match(pattern, str(qstat)))
+    return bool(re.match(pattern, qstat))
 
 
 def wait_for_job(job_name, sleep_time=5):
