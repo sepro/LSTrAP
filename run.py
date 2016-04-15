@@ -1,8 +1,13 @@
 import argparse
 
+from pipeline.transcriptome import TranscriptomePipeline
+
 
 def run_pipeline(config, data):
-    pass
+    tp = TranscriptomePipeline(config, data)
+
+    tp.run()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="./run.py")
