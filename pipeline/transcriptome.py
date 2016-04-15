@@ -1,6 +1,7 @@
 import configparser
 import time
 import subprocess
+import os
 
 from cluster import wait_for_job
 from cluster.templates import build_template
@@ -34,7 +35,7 @@ class TranscriptomePipeline:
 
         # Filename should include a unique timestamp !
         filename = "bowtie_build_%d.sh" % int(time.time())
-        jobname = "bowtie_build_%d"% int(time.time())
+        jobname = "bowtie_build_%d" % int(time.time())
 
         template = build_template(jobname, email, bowtie_module, bowtie_build_cmd)
 
@@ -51,7 +52,11 @@ class TranscriptomePipeline:
 
         print("Preparing the genomic fasta file...")
 
+        # wait for all jobs to complete
         wait_for_job(jobname)
+
+        # remove the submission script
+        os.remove(filename)
 
         print("Done\n\n")
 
