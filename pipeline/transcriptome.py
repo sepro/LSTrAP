@@ -35,7 +35,7 @@ class TranscriptomePipeline:
         # Filename should include a unique timestamp !
         filename = "bowtie_build_%d.sh" % int(time.time())
 
-        template = build_template("bowtie build", email, bowtie_module, bowtie_build_cmd)
+        template = build_template("bowtie_build", email, bowtie_module, bowtie_build_cmd)
 
         with open(filename, "w") as f:
             print(template, file=f)
@@ -43,6 +43,8 @@ class TranscriptomePipeline:
         for g in genomes:
             con_file = self.dp[g]['genome_fasta']
             output = self.dp[g]['bowtie_output']
+
+            print("in=" + con_file + ",out=" + output)
 
             subprocess.call(["qsub", "-v", "in=" + con_file + ",out=" + output, filename])
 
