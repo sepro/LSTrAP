@@ -13,9 +13,9 @@ def job_running(job_name):
     """
     qstat = check_output(["qstat", "-r"]).decode("utf-8")
 
-    pattern = ".*Full jobname:\s*" + job_name + '.*'
+    pattern = "Full jobname:\s*" + job_name
 
-    return bool(re.match(pattern, qstat))
+    return bool(re.findall(pattern, qstat))
 
 
 def wait_for_job(job_name, sleep_time=5):
