@@ -1,6 +1,6 @@
 
 
-__bowtie_build = """#!/bin/bash
+__template = """#!/bin/bash
 #
 
 #$ -N %s
@@ -17,13 +17,13 @@ __bowtie_build = """#!/bin/bash
 %s
 date
 hostname
-%s ${in} ${out}
+%s
 date
 """
 
 
-def bowtie_build_template(name, email, module, bowtie_build_cmd):
+def build_template(name, email, module, cmd):
     include_email = "" if email is None else "#$ -m bea\n#$ -M " + email
     load_module = "" if module is None else "module load " + module
 
-    return __bowtie_build % (name, include_email, load_module, bowtie_build_cmd)
+    return __template % (name, include_email, load_module, cmd)
