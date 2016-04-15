@@ -15,4 +15,6 @@ if __name__ == "__main__":
     parser.add_argument('config', help='path to config.ini')
     parser.add_argument('data', help='path to data.ini')
 
-    run_pipeline(parser.config, parser.data)
+    args = parser.parse_args()
+
+    run_pipeline(args.config, args.data)
