@@ -13,9 +13,7 @@ def job_running(job_name):
     """
     qstat = check_output(["qstat", "-r"]).decode("utf-8")
 
-    pattern = "Full jobname:\s*" + job_name
-
-    print(job_name, pattern, qstat, sep='\n\n')
+    pattern = ".*Full jobname:\s*" + job_name + '.*'
 
     return bool(re.match(pattern, qstat))
 
