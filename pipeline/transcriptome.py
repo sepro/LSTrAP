@@ -44,7 +44,7 @@ class TranscriptomePipeline:
             con_file = self.dp[g]['genome_fasta']
             output = self.dp[g]['bowtie_output']
 
-            subprocess.run(["qsub", "-v", "in=" + con_file + ",out=" + output, filename])
+            subprocess.call(["qsub", "-v", "in=" + con_file + ",out=" + output, filename])
 
         print("Preparing the genomic fasta file...")
 
