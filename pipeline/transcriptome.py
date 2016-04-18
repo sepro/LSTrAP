@@ -92,6 +92,9 @@ class TranscriptomePipeline:
                     if file.endswith('.fq.gz') or file.endswith('.fastq.gz'):
                         fastq_files.append(file)
 
+                # sort required to make sure _1 files are before _2
+                fastq_files.sort()
+
                 while len(fastq_files) > 0:
                     file = fastq_files.pop()
 
