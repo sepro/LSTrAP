@@ -147,8 +147,8 @@ class TranscriptomePipeline:
         print("Done\n\n")
 
     def run_tophat(self):
-        tophat_se_cmd = self.cp['TOOLS']['tophat_se_command']
-        tophat_pe_cmd = self.cp['TOOLS']['tophat_pe_command']
+        tophat_se_cmd = self.cp['TOOLS']['tophat_se_cmd']
+        tophat_pe_cmd = self.cp['TOOLS']['tophat_pe_cmd']
 
         genomes = self.dp['GLOBAL']['genomes'].split(';')
         email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
