@@ -96,7 +96,7 @@ class TranscriptomePipeline:
                 fastq_files.sort()
 
                 while len(fastq_files) > 0:
-                    file = fastq_files.pop()
+                    file = fastq_files.pop(0)
 
                     if '_1.' in file:
                         pair_file = file
