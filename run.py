@@ -3,6 +3,7 @@ import argparse
 import sys
 
 from pipeline.transcriptome import TranscriptomePipeline
+from pipeline.sanity import check_sanity_config, check_sanity_data
 
 
 def run_pipeline(args):
@@ -11,17 +12,20 @@ def run_pipeline(args):
 
     :param args: Parsed arguments from argparse
     """
-    tp = TranscriptomePipeline(args.config, args.data)
+    if check_sanity_config(args.config) and check_sanity_data(args.data):
+        tp = TranscriptomePipeline(args.config, args.data)
 
-    if args.bowtie_build:
-        tp.prepare_genome()
-    else:
-        print("Skipping Bowtie-build", file=sys.stderr)
+        if args.bowtie_build:
+            tp.prepare_genome()
+        else:
+            print("Skipping Bowtie-build", file=sys.stderr)
 
-    if args.trim_fastq:
-        tp.trim_fastq()
+        if args.trim_fastq:
+            tp.trim_fastq()
+        else:
+            print("Skipping Trimmomatic", file=sys.stderr)
     else:
-        print("Skipping Trimmomatic", file=sys.stderr)
+        print("Sanity check failed, cannot start pipeline", file=sys.stderr)
 
 
 if __name__ == "__main__":
