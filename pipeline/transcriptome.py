@@ -109,11 +109,11 @@ class TranscriptomePipeline:
                         else:
                             print('Submitting single %s' % file)
                             outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
-                            subprocess.call(["qsub", "-v", "in=" + os.join(fastq_input_dir, file) + ",out=" + outfile, filename_se])
+                            subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile), filename_se])
                     else:
                         print('Submitting single %s' % file)
                         outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
-                        subprocess.call(["qsub", "-v", "in=" + os.join(fastq_input_dir, file) + ",out=" + outfile, filename_se])
+                        subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile), filename_se])
 
         print('Trimming fastq files...')
 
