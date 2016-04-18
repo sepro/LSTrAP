@@ -205,7 +205,7 @@ class TranscriptomePipeline:
                 print('Submitting single %s' % se_file)
                 output_dir = se_file.replace('.trimmed.fq.gz', '').replace('.trimmed.fastq.gz', '')
                 output_dir = os.path.join(tophat_output, output_dir)
-                subprocess.call(["qsub", "-v", "out=%s,genome=%s,fq=%s" % (output_dir, bowtie_output, se_file), filename_se])
+                subprocess.call(["qsub", "-v", "out=%s,genome=%s,fq=%s" % (output_dir, bowtie_output, os.path.join(trimmed_fastq_dir, se_file)), filename_se])
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
@@ -238,10 +238,10 @@ class TranscriptomePipeline:
             samtools_output = self.dp[g]['samtools_output']
             os.makedirs(samtools_output, exist_ok=True)
 
-            dirs = [os.path.join(tophat_output, o) for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
+            dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
             print(dirs)
             for d in dirs:
-                bam_file = os.path.join(d, 'accepted_hits.bam')
+                bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
                 if os.path.exists(bam_file):
                     sam_file = os.path.join(samtools_output, d + '.sam')
                     print(sam_file, bam_file)
