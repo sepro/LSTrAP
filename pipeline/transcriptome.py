@@ -238,10 +238,10 @@ class TranscriptomePipeline:
             samtools_output = self.dp[g]['samtools_output']
             os.makedirs(samtools_output, exist_ok=True)
 
-            dirs = [os.path.join(tophat_output, o) for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
+            dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
             print(dirs)
             for d in dirs:
-                bam_file = os.path.join(d, 'accepted_hits.bam')
+                bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
                 if os.path.exists(bam_file):
                     sam_file = os.path.join(samtools_output, d + '.sam')
                     print(sam_file, bam_file)
