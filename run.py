@@ -24,6 +24,11 @@ def run_pipeline(args):
             tp.trim_fastq()
         else:
             print("Skipping Trimmomatic", file=sys.stderr)
+
+        if args.trim_fastq:
+            tp.run_tophat()
+        else:
+            print("Skipping Tophat", file=sys.stderr)
     else:
         print("Sanity check failed, cannot start pipeline", file=sys.stderr)
 
@@ -37,9 +42,11 @@ if __name__ == "__main__":
     # Optional arguments
     parser.add_argument('--skip-bowtie-build', dest='bowtie_build', action='store_false', help='add --skip-bowtie-build to skip the step that indexes the genomes using bowtie-build')
     parser.add_argument('--skip-trim-fastq', dest='trim_fastq', action='store_false', help='add --skip-trim-fastq to skip trimming fastq files using trimmomatic')
+    parser.add_argument('--skip-tophat', dest='tophat', action='store_false', help='add --skip-tophat to skip read mapping with tophat')
 
     parser.set_defaults(bowtie_build=True)
     parser.set_defaults(trim_fastq=True)
+    parser.set_defaults(tophat=True)
 
     # Parse arguments and start pipeline
     args = parser.parse_args()

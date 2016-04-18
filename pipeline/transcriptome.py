@@ -147,6 +147,7 @@ class TranscriptomePipeline:
         print("Done\n\n")
 
 
-
+    def run_tophat(self):
+        pass
 
 
