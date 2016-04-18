@@ -239,6 +239,7 @@ class TranscriptomePipeline:
             os.makedirs(samtools_output, exist_ok=True)
 
             dirs = [os.path.join(tophat_output, o) for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
+            print(dirs)
             for d in dirs:
                 bam_file = os.path.join(d, 'accepted_hits.bam')
                 if os.path.exists(bam_file):
@@ -247,7 +248,7 @@ class TranscriptomePipeline:
                     subprocess.call(["qsub", "-v", "out=%s,bam=%s" % (sam_file, bam_file), filename])
 
         # wait for all jobs to complete
-        wait_for_job(jobname, sleep_time=1)
+        # wait_for_job(jobname, sleep_time=1)
 
         # remove the submission script
         os.remove(filename)
