@@ -86,6 +86,9 @@ class TranscriptomePipeline:
         for g in genomes:
             if 'fastq_dir' in self.dp[g]:
                 fastq_input_dir = self.dp[g]['fastq_dir']
+                trimmed_output = self.dp[g]['trimmomatic_output']
+                os.makedirs(trimmed_output, exist_ok=True)
+
                 fastq_files = []
 
                 for file in os.listdir(fastq_input_dir):
@@ -105,8 +108,12 @@ class TranscriptomePipeline:
                             print('Submitting pair %s, %s' % (file, pair_file))
                         else:
                             print('Submitting single %s' % file)
+                            outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
+                            subprocess.call(["qsub", "-v", "in=" + os.join(fastq_input_dir, file) + ",out=" + outfile, filename_se])
                     else:
                         print('Submitting single %s' % file)
+                        outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
+                        subprocess.call(["qsub", "-v", "in=" + os.join(fastq_input_dir, file) + ",out=" + outfile, filename_se])
 
         print('Trimming fastq files...')
 
