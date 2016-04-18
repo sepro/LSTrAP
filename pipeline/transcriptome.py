@@ -196,7 +196,7 @@ class TranscriptomePipeline:
                     if '_1.trimmed.paired.' in pe_file:
                         pair_file = pe_file.replace('_1.trimmed.paired.', '_2.trimmed.paired.')
 
-                        output_dir = pe_file.replace('_1.trimmed.paired.fq.gz').replace('_1.trimmed.paired.fastq.gz')
+                        output_dir = pe_file.replace('_1.trimmed.paired.fq.gz', '').replace('_1.trimmed.paired.fastq.gz', '')
                         output_dir = os.path.join(tophat_output, output_dir)
                         forward = os.path.join(trimmed_fastq_dir, pe_file)
                         reverse = os.path.join(trimmed_fastq_dir, pair_file)
@@ -205,7 +205,7 @@ class TranscriptomePipeline:
 
                 for se_file in se_files:
                     print('Submitting single %s' % se_file)
-                    output_dir = se_file.replace('.trimmed.fq.gz').replace('.trimmed.fastq.gz')
+                    output_dir = se_file.replace('.trimmed.fq.gz', '').replace('.trimmed.fastq.gz', '')
                     output_dir = os.path.join(tophat_output, output_dir)
                     subprocess.call(["qsub", "-v", "out=%s,genome=%s,fq=%s" % (output_dir, bowtie_output, se_file), filename_se])
 
