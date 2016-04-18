@@ -14,7 +14,7 @@ def check_sanity_data(filename):
 
     if 'GLOBAL' in cp:
         if 'genomes' in cp['GLOBAL']:
-            genomes = cp['GLOBAL']['genomes'].slit(';')
+            genomes = cp['GLOBAL']['genomes'].split(';')
             # For each genome test that section
             for g in genomes:
                 pass
