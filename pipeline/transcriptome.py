@@ -102,9 +102,9 @@ class TranscriptomePipeline:
                             fastq_files.remove(pair_file)
                             print('Submitting pair %s, %s' % (file, pair_file))
                         else:
-                            print('Submitting single %s' & file)
+                            print('Submitting single %s' % file)
                     else:
-                        print('Submitting single %s' & file)
+                        print('Submitting single %s' % file)
 
         print('Trimming fastq files...')
 
