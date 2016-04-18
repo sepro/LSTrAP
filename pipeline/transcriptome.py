@@ -62,6 +62,9 @@ class TranscriptomePipeline:
         print("Done\n\n")
 
     def trim_fastq(self):
+        """
+        Runs Trimmomatic on all fastq files
+        """
         trimmomatic_se_cmd = self.cp['TOOLS']['trimmomatic_se_command']
         trimmomatic_pe_cmd = self.cp['TOOLS']['trimmomatic_pe_command']
 
