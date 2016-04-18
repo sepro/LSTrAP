@@ -34,8 +34,9 @@ class TranscriptomePipeline:
         email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
 
         # Filename should include a unique timestamp !
-        filename = "bowtie_build_%d.sh" % int(time.time())
-        jobname = "bowtie_build_%d" % int(time.time())
+        timestamp = int(time.time())
+        filename = "bowtie_build_%d.sh" % timestamp
+        jobname = "bowtie_build_%d" % timestamp
 
         template = build_template(jobname, email, bowtie_module, bowtie_build_cmd)
 
@@ -60,19 +61,42 @@ class TranscriptomePipeline:
 
         print("Done\n\n")
 
-    def process_fastq(self):
-        print("Processing fastq files")
+    def trim_fastq(self):
+        trimmomatic_se_cmd = self.cp['TOOLS']['trimmomatic_se_command']
+        trimmomatic_pe_cmd = self.cp['TOOLS']['trimmomatic_pe_command']
 
-        filename = ""
+        genomes = self.dp['GLOBAL']['genomes'].split(';')
+        email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
 
-        wait_for_job(filename)
+        # Filename should include a unique timestamp !
+        timestamp = int(time.time())
+        filename_se = "trimmomatic_se_%d.sh" % timestamp
+        filename_pe = "trimmomatic_pe_%d.sh" % timestamp
+        jobname = "trimmomatic_%d" % timestamp
+
+        template_se = build_template(jobname, email, None, trimmomatic_se_cmd)
+        template_pe = build_template(jobname, email, None, trimmomatic_pe_cmd)
+
+        with open(filename_se, "w") as f:
+            print(template_se, file=f)
+
+        with open(filename_pe, "w") as f:
+            print(template_pe, file=f)
+
+        for g in genomes:
+            fastq_input_dir = self.dp[g]['fastq_dir']
+
+        print("Trimming fastq files...")
+
+        # wait for all jobs to complete
+        wait_for_job(jobname)
+
+        # remove the submission script
+        os.remove(filename_se)
+        os.remove(filename_pe)
 
         print("Done\n\n")
 
-    def run(self):
-        self.prepare_genome()
-
-        # self.process_fastq()
 
 
 
