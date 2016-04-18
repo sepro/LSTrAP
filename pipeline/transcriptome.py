@@ -161,7 +161,7 @@ class TranscriptomePipeline:
         jobname = "tophat_%d" % timestamp
 
         template_se = build_template(jobname, email, tophat_module, tophat_se_cmd)
-        template_pe = build_template(jobname, email, tophat, tophat_pe_cmd)
+        template_pe = build_template(jobname, email, tophat_module, tophat_pe_cmd)
 
         with open(filename_se, "w") as f:
             print(template_se, file=f)
