@@ -125,8 +125,7 @@ class TranscriptomePipeline:
                             outbu = os.path.join(trimmed_output, outbu)
 
                             print('Submitting pair %s, %s' % (file, pair_file))
-                            print(ina, inb, outap, outau, outbp, outbu)
-                            subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s" % (ina, inb, outap, outau, outbp, outbu), filename_se])
+                            subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s" % (ina, inb, outap, outau, outbp, outbu), filename_pe])
                         else:
                             print('Submitting single %s' % file)
                             outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
