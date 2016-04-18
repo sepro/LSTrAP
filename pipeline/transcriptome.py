@@ -86,6 +86,10 @@ class TranscriptomePipeline:
         for g in genomes:
             fastq_input_dir = self.dp[g]['fastq_dir']
 
+            for file in os.listdir(fastq_input_dir):
+                if file.endswith(".fq.gz") or file.endswith(".fastq.gz"):
+                    print(file)
+
         print("Trimming fastq files...")
 
         # wait for all jobs to complete
