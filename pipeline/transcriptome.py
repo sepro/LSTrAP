@@ -27,7 +27,7 @@ class TranscriptomePipeline:
         """
         Runs bowtie-build for each genome on the cluster. All settings are obtained from the settings fasta file
         """
-        bowtie_module = self.cp['TOOLS']['bowtie_module']
+        bowtie_module = None if self.cp['TOOLS']['bowtie_module'] is 'None' else self.cp['TOOLS']['bowtie_module']
         bowtie_build_cmd = self.cp['TOOLS']['bowtie_cmd']
 
         genomes = self.dp['GLOBAL']['genomes'].split(';')
