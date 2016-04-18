@@ -147,7 +147,8 @@ class TranscriptomePipeline:
         print("Done\n\n")
 
     def run_tophat(self):
-        tophat_module = None if self.cp['TOOLS']['tophat_module'] is 'None' else self.cp['TOOLS']['tophat_module']
+        tophat_module = '' if self.cp['TOOLS']['tophat_module'] is 'None' else self.cp['TOOLS']['tophat_module']
+        bowtie_module = '' if self.cp['TOOLS']['bowtie_module'] is 'None' else self.cp['TOOLS']['bowtie_module']
         tophat_se_cmd = self.cp['TOOLS']['tophat_se_cmd']
         tophat_pe_cmd = self.cp['TOOLS']['tophat_pe_cmd']
 
@@ -160,8 +161,8 @@ class TranscriptomePipeline:
         filename_pe = "tophat_pe_%d.sh" % timestamp
         jobname = "tophat_%d" % timestamp
 
-        template_se = build_template(jobname, email, tophat_module, tophat_se_cmd)
-        template_pe = build_template(jobname, email, tophat_module, tophat_pe_cmd)
+        template_se = build_template(jobname, email, bowtie_module + ' ' + tophat_module, tophat_se_cmd)
+        template_pe = build_template(jobname, email, bowtie_module + ' ' + tophat_module, tophat_pe_cmd)
 
         with open(filename_se, "w") as f:
             print(template_se, file=f)
