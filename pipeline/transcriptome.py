@@ -168,9 +168,12 @@ class TranscriptomePipeline:
         with open(filename_pe, "w") as f:
             print(template_pe, file=f)
 
+        print('Mapping reads with tophat...')
+
         for g in genomes:
             if 'trimmomatic_output' in self.dp[g]:
                 tophat_output = self.dp[g]['tophat_output']
+                bowtie_output = self.dp[g]['bowtie_output']
                 trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
                 os.makedirs(tophat_output, exist_ok=True)
 
@@ -187,10 +190,14 @@ class TranscriptomePipeline:
                 pe_files.sort()
                 se_files.sort()
 
-                print(pe_files)
-                print(se_files)
+                for pe_file in pe_files:
+                    if pe_file.contains('_1.trimmed.paired.'):
+                        pair_file = pe_file.replace('_1.trimmed.paired.', '_2.trimmed.paired.')
 
-        print('Mapping reads with tophat...')
+                        forward = os.path.join(trimmed_fastq_dir, pe_file)
+                        reverse = os.path.join(trimmed_fastq_dir, pair_file)
+                        print('Submitting pair %s, %s' % (pe_file, pair_file))
+                        subprocess.call(["qsub", "-v", "out=%s,genome=%s,forward=%s,reverse=%s" % (tophat_output, bowtie_output, forward, reverse), filename_pe])
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
