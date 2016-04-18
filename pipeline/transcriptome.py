@@ -99,8 +99,7 @@ class TranscriptomePipeline:
                     file = fastq_files.pop(0)
 
                     if '_1.' in file:
-                        pair_file = file
-                        pair_file.replace('_1.', '_2.')
+                        pair_file = file.replace('_1.', '_2.')
                         if pair_file in fastq_files:
                             fastq_files.remove(pair_file)
                             print('Submitting pair %s, %s' % (file, pair_file))
