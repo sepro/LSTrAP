@@ -191,7 +191,7 @@ class TranscriptomePipeline:
                 se_files.sort()
 
                 for pe_file in pe_files:
-                    if pe_file.contains('_1.trimmed.paired.'):
+                    if '_1.trimmed.paired.' in pe_file:
                         pair_file = pe_file.replace('_1.trimmed.paired.', '_2.trimmed.paired.')
 
                         forward = os.path.join(trimmed_fastq_dir, pe_file)
