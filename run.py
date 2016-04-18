@@ -25,7 +25,7 @@ def run_pipeline(args):
         else:
             print("Skipping Trimmomatic", file=sys.stderr)
 
-        if args.trim_fastq:
+        if args.tophat:
             tp.run_tophat()
         else:
             print("Skipping Tophat", file=sys.stderr)
