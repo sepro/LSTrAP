@@ -205,7 +205,7 @@ class TranscriptomePipeline:
                 print('Submitting single %s' % se_file)
                 output_dir = se_file.replace('.trimmed.fq.gz', '').replace('.trimmed.fastq.gz', '')
                 output_dir = os.path.join(tophat_output, output_dir)
-                subprocess.call(["qsub", "-v", "out=%s,genome=%s,fq=%s" % (output_dir, bowtie_output, se_file), filename_se])
+                subprocess.call(["qsub", "-v", "out=%s,genome=%s,fq=%s" % (output_dir, bowtie_output, os.path.join(trimmed_fastq_dir, se_file)), filename_se])
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
