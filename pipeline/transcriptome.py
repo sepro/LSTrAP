@@ -174,16 +174,21 @@ class TranscriptomePipeline:
                 trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
                 os.makedirs(tophat_output, exist_ok=True)
 
-                fastq_files = []
+                pe_files = []
+                se_files = []
 
                 for file in os.listdir(trimmed_fastq_dir):
                     if file.endswith('.paired.fq.gz') or file.endswith('.paired.fastq.gz'):
-                        fastq_files.append(file)
+                        pe_files.append(file)
+                    elif not (file.endswith('.unpaired.fq.gz') or file.endswith('.unpaired.fastq.gz')):
+                        se_files.append(file)
 
                 # sort required to make sure _1 files are before _2
-                fastq_files.sort()
+                pe_files.sort()
+                se_files.sort()
 
-                print(fastq_files)
+                print(pe_files)
+                print(se_files)
 
         print('Mapping reads with tophat...')
 
