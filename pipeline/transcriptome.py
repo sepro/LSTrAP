@@ -108,7 +108,24 @@ class TranscriptomePipeline:
                         pair_file = file.replace('_1.', '_2.')
                         if pair_file in fastq_files:
                             fastq_files.remove(pair_file)
+
+                            ina = os.path.join(fastq_input_dir, file)
+                            inb = os.path.join(fastq_input_dir, pair_file)
+
+                            outap = file.replace('.fq.gz', '.trimmed.paired.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.paired.fastq.gz')
+                            outau = file.replace('.fq.gz', '.trimmed.unpaired.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.unpaired.fastq.gz')
+
+                            outbp = pair_file.replace('.fq.gz', '.trimmed.paired.fq.gz') if pair_file.endswith('.fq.gz') else pair_file.replace('.fastq.gz', '.trimmed.paired.fastq.gz')
+                            outbu = pair_file.replace('.fq.gz', '.trimmed.unpaired.fq.gz') if pair_file.endswith('.fq.gz') else pair_file.replace('.fastq.gz', '.trimmed.unpaired.fastq.gz')
+
+                            outap = os.path.join(trimmed_output, outap)
+                            outau = os.path.join(trimmed_output, outau)
+
+                            outbp = os.path.join(trimmed_output, outbp)
+                            outbu = os.path.join(trimmed_output, outbu)
+
                             print('Submitting pair %s, %s' % (file, pair_file))
+                            subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s" % (ina, inb, outap, outau, outbp, outbu), filename_se])
                         else:
                             print('Submitting single %s' % file)
                             outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
@@ -121,7 +138,7 @@ class TranscriptomePipeline:
         print('Trimming fastq files...')
 
         # wait for all jobs to complete
-        wait_for_job(jobname)
+        wait_for_job(jobname, sleep_time=1)
 
         # remove the submission script
         os.remove(filename_se)
