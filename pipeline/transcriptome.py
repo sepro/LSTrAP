@@ -87,53 +87,52 @@ class TranscriptomePipeline:
             print(template_pe, file=f)
 
         for g in genomes:
-            if 'fastq_dir' in self.dp[g]:
-                fastq_input_dir = self.dp[g]['fastq_dir']
-                trimmed_output = self.dp[g]['trimmomatic_output']
-                os.makedirs(trimmed_output, exist_ok=True)
+            fastq_input_dir = self.dp[g]['fastq_dir']
+            trimmed_output = self.dp[g]['trimmomatic_output']
+            os.makedirs(trimmed_output, exist_ok=True)
 
-                fastq_files = []
+            fastq_files = []
 
-                for file in os.listdir(fastq_input_dir):
-                    if file.endswith('.fq.gz') or file.endswith('.fastq.gz'):
-                        fastq_files.append(file)
+            for file in os.listdir(fastq_input_dir):
+                if file.endswith('.fq.gz') or file.endswith('.fastq.gz'):
+                    fastq_files.append(file)
 
-                # sort required to make sure _1 files are before _2
-                fastq_files.sort()
+            # sort required to make sure _1 files are before _2
+            fastq_files.sort()
 
-                while len(fastq_files) > 0:
-                    file = fastq_files.pop(0)
+            while len(fastq_files) > 0:
+                file = fastq_files.pop(0)
 
-                    if '_1.' in file:
-                        pair_file = file.replace('_1.', '_2.')
-                        if pair_file in fastq_files:
-                            fastq_files.remove(pair_file)
+                if '_1.' in file:
+                    pair_file = file.replace('_1.', '_2.')
+                    if pair_file in fastq_files:
+                        fastq_files.remove(pair_file)
 
-                            ina = os.path.join(fastq_input_dir, file)
-                            inb = os.path.join(fastq_input_dir, pair_file)
+                        ina = os.path.join(fastq_input_dir, file)
+                        inb = os.path.join(fastq_input_dir, pair_file)
 
-                            outap = file.replace('.fq.gz', '.trimmed.paired.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.paired.fastq.gz')
-                            outau = file.replace('.fq.gz', '.trimmed.unpaired.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.unpaired.fastq.gz')
+                        outap = file.replace('.fq.gz', '.trimmed.paired.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.paired.fastq.gz')
+                        outau = file.replace('.fq.gz', '.trimmed.unpaired.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.unpaired.fastq.gz')
 
-                            outbp = pair_file.replace('.fq.gz', '.trimmed.paired.fq.gz') if pair_file.endswith('.fq.gz') else pair_file.replace('.fastq.gz', '.trimmed.paired.fastq.gz')
-                            outbu = pair_file.replace('.fq.gz', '.trimmed.unpaired.fq.gz') if pair_file.endswith('.fq.gz') else pair_file.replace('.fastq.gz', '.trimmed.unpaired.fastq.gz')
+                        outbp = pair_file.replace('.fq.gz', '.trimmed.paired.fq.gz') if pair_file.endswith('.fq.gz') else pair_file.replace('.fastq.gz', '.trimmed.paired.fastq.gz')
+                        outbu = pair_file.replace('.fq.gz', '.trimmed.unpaired.fq.gz') if pair_file.endswith('.fq.gz') else pair_file.replace('.fastq.gz', '.trimmed.unpaired.fastq.gz')
 
-                            outap = os.path.join(trimmed_output, outap)
-                            outau = os.path.join(trimmed_output, outau)
+                        outap = os.path.join(trimmed_output, outap)
+                        outau = os.path.join(trimmed_output, outau)
 
-                            outbp = os.path.join(trimmed_output, outbp)
-                            outbu = os.path.join(trimmed_output, outbu)
+                        outbp = os.path.join(trimmed_output, outbp)
+                        outbu = os.path.join(trimmed_output, outbu)
 
-                            print('Submitting pair %s, %s' % (file, pair_file))
-                            subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s" % (ina, inb, outap, outau, outbp, outbu), filename_pe])
-                        else:
-                            print('Submitting single %s' % file)
-                            outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
-                            subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile), filename_se])
+                        print('Submitting pair %s, %s' % (file, pair_file))
+                        subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s" % (ina, inb, outap, outau, outbp, outbu), filename_pe])
                     else:
                         print('Submitting single %s' % file)
                         outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
                         subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile), filename_se])
+                else:
+                    print('Submitting single %s' % file)
+                    outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
+                    subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile), filename_se])
 
         print('Trimming fastq files...')
 
@@ -173,41 +172,40 @@ class TranscriptomePipeline:
         print('Mapping reads with tophat...')
 
         for g in genomes:
-            if 'trimmomatic_output' in self.dp[g]:
-                tophat_output = self.dp[g]['tophat_output']
-                bowtie_output = self.dp[g]['bowtie_output']
-                trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
-                os.makedirs(tophat_output, exist_ok=True)
+            tophat_output = self.dp[g]['tophat_output']
+            bowtie_output = self.dp[g]['bowtie_output']
+            trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
+            os.makedirs(tophat_output, exist_ok=True)
 
-                pe_files = []
-                se_files = []
+            pe_files = []
+            se_files = []
 
-                for file in os.listdir(trimmed_fastq_dir):
-                    if file.endswith('.paired.fq.gz') or file.endswith('.paired.fastq.gz'):
-                        pe_files.append(file)
-                    elif not (file.endswith('.unpaired.fq.gz') or file.endswith('.unpaired.fastq.gz')):
-                        se_files.append(file)
+            for file in os.listdir(trimmed_fastq_dir):
+                if file.endswith('.paired.fq.gz') or file.endswith('.paired.fastq.gz'):
+                    pe_files.append(file)
+                elif not (file.endswith('.unpaired.fq.gz') or file.endswith('.unpaired.fastq.gz')):
+                    se_files.append(file)
 
-                # sort required to make sure _1 files are before _2
-                pe_files.sort()
-                se_files.sort()
+            # sort required to make sure _1 files are before _2
+            pe_files.sort()
+            se_files.sort()
 
-                for pe_file in pe_files:
-                    if '_1.trimmed.paired.' in pe_file:
-                        pair_file = pe_file.replace('_1.trimmed.paired.', '_2.trimmed.paired.')
+            for pe_file in pe_files:
+                if '_1.trimmed.paired.' in pe_file:
+                    pair_file = pe_file.replace('_1.trimmed.paired.', '_2.trimmed.paired.')
 
-                        output_dir = pe_file.replace('_1.trimmed.paired.fq.gz', '').replace('_1.trimmed.paired.fastq.gz', '')
-                        output_dir = os.path.join(tophat_output, output_dir)
-                        forward = os.path.join(trimmed_fastq_dir, pe_file)
-                        reverse = os.path.join(trimmed_fastq_dir, pair_file)
-                        print('Submitting pair %s, %s' % (pe_file, pair_file))
-                        subprocess.call(["qsub", "-v", "out=%s,genome=%s,forward=%s,reverse=%s" % (output_dir, bowtie_output, forward, reverse), filename_pe])
-
-                for se_file in se_files:
-                    print('Submitting single %s' % se_file)
-                    output_dir = se_file.replace('.trimmed.fq.gz', '').replace('.trimmed.fastq.gz', '')
+                    output_dir = pe_file.replace('_1.trimmed.paired.fq.gz', '').replace('_1.trimmed.paired.fastq.gz', '')
                     output_dir = os.path.join(tophat_output, output_dir)
-                    subprocess.call(["qsub", "-v", "out=%s,genome=%s,fq=%s" % (output_dir, bowtie_output, se_file), filename_se])
+                    forward = os.path.join(trimmed_fastq_dir, pe_file)
+                    reverse = os.path.join(trimmed_fastq_dir, pair_file)
+                    print('Submitting pair %s, %s' % (pe_file, pair_file))
+                    subprocess.call(["qsub", "-v", "out=%s,genome=%s,forward=%s,reverse=%s" % (output_dir, bowtie_output, forward, reverse), filename_pe])
+
+            for se_file in se_files:
+                print('Submitting single %s' % se_file)
+                output_dir = se_file.replace('.trimmed.fq.gz', '').replace('.trimmed.fastq.gz', '')
+                output_dir = os.path.join(tophat_output, output_dir)
+                subprocess.call(["qsub", "-v", "out=%s,genome=%s,fq=%s" % (output_dir, bowtie_output, se_file), filename_se])
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
@@ -215,5 +213,42 @@ class TranscriptomePipeline:
         # remove the submission script
         os.remove(filename_se)
         os.remove(filename_pe)
+
+        print("Done\n\n")
+
+    def run_samtools(self):
+        samtools_module = None if self.cp['TOOLS']['samtools_module'] is 'None' else self.cp['TOOLS']['samtools_module']
+        samtools_cmd = self.cp['TOOLS']['samtools_cmd']
+
+        genomes = self.dp['GLOBAL']['genomes'].split(';')
+        email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
+
+        # Filename should include a unique timestamp !
+        timestamp = int(time.time())
+        filename = "samtools_%d.sh" % timestamp
+        jobname = "samtools_%d" % timestamp
+
+        template = build_template(jobname, email, samtools_module, samtools_cmd)
+
+        with open(filename, "w") as f:
+            print(template, file=f)
+
+        for g in genomes:
+            tophat_output = self.dp[g]['tophat_output']
+            samtools_output = self.dp[g]['samtools_output']
+            os.makedirs(samtools_output, exist_ok=True)
+
+            dirs = [os.path.join(tophat_output, o) for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
+            for d in dirs:
+                bam_file = os.path.join(d, 'accepted_hits.bam')
+                if os.path.exists(bam_file):
+                    sam_file = os.path.join(samtools_output, d + '.sam')
+                    subprocess.call(["qsub", "-v", "out=%s,bam=%s" % (sam_file, bam_file), filename])
+
+        # wait for all jobs to complete
+        wait_for_job(jobname, sleep_time=1)
+
+        # remove the submission script
+        os.remove(filename)
 
         print("Done\n\n")
