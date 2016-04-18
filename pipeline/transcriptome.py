@@ -243,6 +243,7 @@ class TranscriptomePipeline:
                 bam_file = os.path.join(d, 'accepted_hits.bam')
                 if os.path.exists(bam_file):
                     sam_file = os.path.join(samtools_output, d + '.sam')
+                    print(sam_file, bam_file)
                     subprocess.call(["qsub", "-v", "out=%s,bam=%s" % (sam_file, bam_file), filename])
 
         # wait for all jobs to complete
