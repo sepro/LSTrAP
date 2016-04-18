@@ -24,7 +24,10 @@ def check_sanity_data(filename):
                     for i in list_data:
                         if i not in cp[g].keys():
                             print("missing" + " " + i, file=sys.stderr)
-
+                            list_files = ['cds_fasta', 'genome_fasta', 'gff_file', 'fastq_dir']
+                            for f in list_files:
+                                if not all([os.path.exists(f) for f in list_files]):
+                                    print(f + " doesn't exist")
                     return False
 
         else:
