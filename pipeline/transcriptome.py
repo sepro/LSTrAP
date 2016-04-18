@@ -146,8 +146,52 @@ class TranscriptomePipeline:
 
         print("Done\n\n")
 
-
     def run_tophat(self):
-        pass
+        tophat_se_cmd = self.cp['TOOLS']['tophat_se_command']
+        tophat_pe_cmd = self.cp['TOOLS']['tophat_pe_command']
 
+        genomes = self.dp['GLOBAL']['genomes'].split(';')
+        email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
 
+        # Filename should include a unique timestamp !
+        timestamp = int(time.time())
+        filename_se = "tophat_se_%d.sh" % timestamp
+        filename_pe = "tophat_pe_%d.sh" % timestamp
+        jobname = "tophat_%d" % timestamp
+
+        template_se = build_template(jobname, email, None, tophat_se_cmd)
+        template_pe = build_template(jobname, email, None, tophat_pe_cmd)
+
+        with open(filename_se, "w") as f:
+            print(template_se, file=f)
+
+        with open(filename_pe, "w") as f:
+            print(template_pe, file=f)
+
+        for g in genomes:
+            if 'trimmomatic_output' in self.dp[g]:
+                tophat_output = self.dp[g]['tophat_output']
+                trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
+                os.makedirs(tophat_output, exist_ok=True)
+
+                fastq_files = []
+
+                for file in os.listdir(trimmed_fastq_dir):
+                    if file.endswith('.paired.fq.gz') or file.endswith('.paired.fastq.gz'):
+                        fastq_files.append(file)
+
+                # sort required to make sure _1 files are before _2
+                fastq_files.sort()
+
+                print(fastq_files)
+
+        print('Mapping reads with tophat...')
+
+        # wait for all jobs to complete
+        wait_for_job(jobname, sleep_time=1)
+
+        # remove the submission script
+        os.remove(filename_se)
+        os.remove(filename_pe)
+
+        print("Done\n\n")
