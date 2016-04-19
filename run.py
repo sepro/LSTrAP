@@ -35,7 +35,7 @@ def run_pipeline(args):
         else:
             print("Skipping Samtools", file=sys.stderr)
 
-        if args.samtools:
+        if args.htseq:
             tp.run_htseq_count()
         else:
             print("Skipping htseq-counts", file=sys.stderr)
