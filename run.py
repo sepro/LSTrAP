@@ -40,6 +40,11 @@ def run_pipeline(args):
         else:
             print("Skipping htseq-counts", file=sys.stderr)
 
+        if args.exp_matrix:
+            tp.htseq_to_matrix()
+        else:
+            print("Skipping expression matrix", file=sys.stderr)
+
     else:
         print("Sanity check failed, cannot start pipeline", file=sys.stderr)
 
@@ -56,12 +61,14 @@ if __name__ == "__main__":
     parser.add_argument('--skip-tophat', dest='tophat', action='store_false', help='add --skip-tophat to skip read mapping with tophat')
     parser.add_argument('--skip-samtools', dest='samtools', action='store_false', help='add --skip-samtools to skip bam to sam conversion using samtools')
     parser.add_argument('--skip-htseq', dest='htseq', action='store_false', help='add --skip-htseq to skip counting reads per gene with htseq-count')
+    parser.add_argument('--skip-exp-matrix', dest='exp_matrix', action='store_false', help='add --skip-exp-matrix to skip converting htseq files to an expression matrix')
 
     parser.set_defaults(bowtie_build=True)
     parser.set_defaults(trim_fastq=True)
     parser.set_defaults(tophat=True)
     parser.set_defaults(samtools=True)
     parser.set_defaults(htseq=True)
+    parser.set_defaults(exp_matrix=True)
 
     # Parse arguments and start pipeline
     args = parser.parse_args()

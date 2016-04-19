@@ -18,7 +18,7 @@ def check_sanity_data(filename):
             genomes = cp['GLOBAL']['genomes'].split(';')
             # For each genome test that section
             list_data = ['cds_fasta', 'genome_fasta', 'gff_file', 'gff_feature', 'gff_id', 'fastq_dir', 'bowtie_output',
-                         'trimmomatic_output', 'tophat_output', 'samtools_output', 'htseq_output']
+                         'trimmomatic_output', 'tophat_output', 'samtools_output', 'htseq_output', 'exp_matrix_output']
 
             for g in genomes:
                 if not all([i in cp[g].keys() for i in list_data]):
