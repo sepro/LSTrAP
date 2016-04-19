@@ -33,8 +33,8 @@ class PipelineBase:
 
     def write_submission_script(self, jobname, module, command, filename):
         timestamp = int(time.time())
-        stamped_filename = str(jobname % timestamp)
-        stamped_jobname = str(filename % timestamp)
+        stamped_filename = str(filename % timestamp)
+        stamped_jobname = str(jobname % timestamp)
 
         template = build_template(stamped_jobname, self.email, module, command)
 
