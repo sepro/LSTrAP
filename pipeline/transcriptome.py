@@ -6,23 +6,13 @@ import os, sys
 from cluster import wait_for_job
 from cluster.templates import build_template
 
+from pipeline.base import PipelineBase
 
-class TranscriptomePipeline:
+
+class TranscriptomePipeline(PipelineBase):
     """
     TranscriptomePipeline class. Reads a settings ini file and runs the transcriptome pipeline
     """
-    def __init__(self, config, data):
-        """
-        Constructor run with path to ini file with settings
-
-        :param config: path to setttings ini file
-        """
-        self.cp = configparser.ConfigParser()
-        self.cp.read(config)
-
-        self.dp = configparser.ConfigParser()
-        self.dp.read(data)
-
     def prepare_genome(self):
         """
         Runs bowtie-build for each genome on the cluster. All settings are obtained from the settings fasta file

@@ -3,21 +3,12 @@ import configparser
 
 from utils.parser.fasta import Fasta
 from math import ceil
+from pipeline.base import PipelineBase
 
+class InterProPipeline(PipelineBase):
 
-class InterProPipeline:
-    def __init__(self, config, data):
-        """
-        Constructor run with path to ini file with settings
-
-        :param config: path to setttings ini file
-        """
-        self.cp = configparser.ConfigParser()
-        self.cp.read(config)
-
-        self.dp = configparser.ConfigParser()
-        self.dp.read(data)
-
+    def run_interproscan(self):
+        pass
 
 def generate_script(filename, job_name, job_count, input_string, output_string, interpro_module=None, interpro_cmd="interproscan.sh", email=None):
     load_module = "" if interpro_module is None else "module load " + interpro_module
