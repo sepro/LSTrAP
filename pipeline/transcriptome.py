@@ -277,7 +277,7 @@ class TranscriptomePipeline:
         for g in genomes:
             samtools_output = self.dp[g]['samtools_output']
             htseq_output = self.dp[g]['htseq_output']
-            os.makedirs(htseq_output)
+            os.makedirs(htseq_output, exist_ok=True)
 
             gff_file = self.dp[g]['gff_file']
             gff_feature = self.dp[g]['gff_feature']
