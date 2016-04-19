@@ -24,19 +24,18 @@ def check_sanity_data(filename):
 
             for g in genomes:
                 if not all([i in cp[g].keys() for i in required_keys]):
-                    print("missing data", file=sys.stderr)
+                    print("Missing key in", g, file=sys.stderr)
 
                     for i in required_keys:
                         if i not in cp[g].keys():
-                            print("missing" + " " + i, file=sys.stderr)
+                            print("\tMissing", i, file=sys.stderr)
                     return False
 
                 if not all([os.path.exists(cp[g][f]) for f in required_paths]):
+                    print("Missing file/dir for", g, file=sys.stderr)
                     for f in required_paths:
-                        print(f + " doesn't point to a valid file", file=sys.stderr)
+                        print(f + " doesn't point to a valid file/dir", file=sys.stderr)
                     return False
-
-
         else:
             print("genomes missing from GLOBAL section", file=sys.stderr)
             return False
@@ -63,13 +62,15 @@ def check_sanity_config(filename):
 
     if 'TOOLS' in cp:
         if not all(k in cp['TOOLS'].keys() for k in required_keys):
-            print("missing tool", file=sys.stderr)
+            print("Missing tool found in config file", file=sys.stderr)
 
             for k in required_keys:
                 if k not in cp['TOOLS'].keys():
-                    print("missing" + " " + k, file=sys.stderr)
+                    print("Missing", k, file=sys.stderr)
             return False
-
+    else:
+        print("Tools section missing from config file", file=sys.stderr)
+        return False
     return True
 
 
