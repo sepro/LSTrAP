@@ -12,20 +12,26 @@ class TranscriptomePipeline(PipelineBase):
     """
     TranscriptomePipeline class. Reads a settings ini file and runs the transcriptome pipeline
     """
+    def __write_submission_script(self, jobname, module, command, filename):
+        timestamp = int(time.time())
+        stamped_filename = jobname % timestamp
+        stamped_jobname = filename % timestamp
+
+        template = build_template(stamped_jobname, self.email, module, command)
+
+        with open(stamped_filename, "w") as f:
+            print(template, file=f)
+
+        return stamped_filename, stamped_jobname
+
     def prepare_genome(self):
         """
         Runs bowtie-build for each genome on the cluster. All settings are obtained from the settings fasta file
         """
-
-        # Filename should include a unique timestamp !
-        timestamp = int(time.time())
-        filename = "bowtie_build_%d.sh" % timestamp
-        jobname = "bowtie_build_%d" % timestamp
-
-        template = build_template(jobname, self.email, self.bowtie_module, self.bowtie_build_cmd)
-
-        with open(filename, "w") as f:
-            print(template, file=f)
+        filename, jobname = self.__write_submission_script("bowtie_build_%d",
+                                                           self.bowtie_module,
+                                                           self.bowtie_build_cmd,
+                                                           "bowtie_build_%d.sh")
 
         for g in self.genomes:
             con_file = self.dp[g]['genome_fasta']
@@ -51,19 +57,14 @@ class TranscriptomePipeline(PipelineBase):
         """
         Runs Trimmomatic on all fastq files
         """
-        timestamp = int(time.time())
-        filename_se = "trimmomatic_se_%d.sh" % timestamp
-        filename_pe = "trimmomatic_pe_%d.sh" % timestamp
-        jobname = "trimmomatic_%d" % timestamp
-
-        template_se = build_template(jobname, self.email, None, self.trimmomatic_se_cmd)
-        template_pe = build_template(jobname, self.email, None, self.trimmomatic_pe_cmd)
-
-        with open(filename_se, "w") as f:
-            print(template_se, file=f)
-
-        with open(filename_pe, "w") as f:
-            print(template_pe, file=f)
+        filename_se, jobname = self.__write_submission_script("trimmomatic_%d",
+                                                              None,
+                                                              self.trimmomatic_se_cmd,
+                                                              "trimmomatic_se_%d.sh")
+        filename_pe, jobname = self.__write_submission_script("trimmomatic_%d",
+                                                              None,
+                                                              self.trimmomatic_pe_cmd,
+                                                              "trimmomatic_pe_%d.sh")
 
         for g in self.genomes:
             fastq_input_dir = self.dp[g]['fastq_dir']
@@ -125,20 +126,15 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_tophat(self):
+        filename_se, jobname = self.__write_submission_script("tophat_%d",
+                                                              self.bowtie_module + ' ' + self.tophat_module,
+                                                              self.tophat_se_cmd,
+                                                              "tophat_se_%d.sh")
 
-        timestamp = int(time.time())
-        filename_se = "tophat_se_%d.sh" % timestamp
-        filename_pe = "tophat_pe_%d.sh" % timestamp
-        jobname = "tophat_%d" % timestamp
-
-        template_se = build_template(jobname, self.email, self.bowtie_module + ' ' + self.tophat_module, self.tophat_se_cmd)
-        template_pe = build_template(jobname, self.email, self.bowtie_module + ' ' + self.tophat_module, self.tophat_pe_cmd)
-
-        with open(filename_se, "w") as f:
-            print(template_se, file=f)
-
-        with open(filename_pe, "w") as f:
-            print(template_pe, file=f)
+        filename_pe, jobname = self.__write_submission_script("tophat_%d",
+                                                              self.bowtie_module + ' ' + self.tophat_module,
+                                                              self.tophat_pe_cmd,
+                                                              "tophat_pe_%d.sh")
 
         print('Mapping reads with tophat...')
 
@@ -188,14 +184,10 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_samtools(self):
-        timestamp = int(time.time())
-        filename = "samtools_%d.sh" % timestamp
-        jobname = "samtools_%d" % timestamp
-
-        template = build_template(jobname, self.email, self.samtools_module, self.samtools_cmd)
-
-        with open(filename, "w") as f:
-            print(template, file=f)
+        filename, jobname = self.__write_submission_script("samtools_%d",
+                                                           self.samtools_module,
+                                                           self.samtools_cmd,
+                                                           "samtools_%d.sh")
 
         for g in self.genomes:
             tophat_output = self.dp[g]['tophat_output']
@@ -220,14 +212,11 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_htseq_count(self):
-        timestamp = int(time.time())
-        filename = "htseq_count_%d.sh" % timestamp
-        jobname = "htseq_count_%d" % timestamp
 
-        template = build_template(jobname, self.email, self.python_module, self.htseq_count_cmd)
-
-        with open(filename, "w") as f:
-            print(template, file=f)
+        filename, jobname = self.__write_submission_script("htseq_count_%d",
+                                                           self.python_module,
+                                                           self.htseq_count_cmd,
+                                                           "htseq_count_%d.sh")
 
         for g in self.genomes:
             samtools_output = self.dp[g]['samtools_output']
