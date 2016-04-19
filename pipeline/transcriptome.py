@@ -1,9 +1,7 @@
-import time
 import subprocess
 import os
 
 from cluster import wait_for_job
-from cluster.templates import build_template
 
 from pipeline.base import PipelineBase
 

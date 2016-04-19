@@ -5,42 +5,13 @@ from utils.parser.fasta import Fasta
 from math import ceil
 from pipeline.base import PipelineBase
 
+
 class InterProPipeline(PipelineBase):
 
     def run_interproscan(self):
-        pass
+        filename, jobname = self.write_submission_script("interproscan_%d", self.interproscan_module, self.interproscan_cmd, "%interproscan_%d.sh")
 
-def generate_script(filename, job_name, job_count, input_string, output_string, interpro_module=None, interpro_cmd="interproscan.sh", email=None):
-    load_module = "" if interpro_module is None else "module load " + interpro_module
-    include_email = "" if email is None else "#$ -m bea\n#$ -M " + email
 
-    input_string = input_string.replace('%d', "${SGE_TASK_ID}")
-    output_string = output_string.replace('%d', "${SGE_TASK_ID}")
-
-    output = """#!/bin/bash
-#
-
-#$ -N %s
-#$ -cwd
-#$ -j y
-#$ -S /bin/bash
-#$ -t 1-%d
-#$ -o OUT_$JOB_NAME.$JOB_ID
-#$ -e ERR_$JOB_NAME.$JOB_ID
-
-#email
-%s
-
-#
-%s
-date
-hostname
-%s -i %s -o %s -f tsv -dp -iprlookup -goterms
-date
-""" % (job_name, job_count, include_email, load_module, interpro_cmd, input_string, output_string)
-
-    with open(filename, 'w') as f:
-        print(output, file=f)
 
 
 def split_fasta(file, chunks, output_directory, filenames="proteins_%d.fasta"):
