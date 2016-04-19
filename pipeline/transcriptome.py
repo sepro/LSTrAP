@@ -17,27 +17,22 @@ class TranscriptomePipeline(PipelineBase):
         """
         Runs bowtie-build for each genome on the cluster. All settings are obtained from the settings fasta file
         """
-        bowtie_module = None if self.cp['TOOLS']['bowtie_module'] is 'None' else self.cp['TOOLS']['bowtie_module']
-        bowtie_build_cmd = self.cp['TOOLS']['bowtie_cmd']
-
-        genomes = self.dp['GLOBAL']['genomes'].split(';')
-        email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
 
         # Filename should include a unique timestamp !
         timestamp = int(time.time())
         filename = "bowtie_build_%d.sh" % timestamp
         jobname = "bowtie_build_%d" % timestamp
 
-        template = build_template(jobname, email, bowtie_module, bowtie_build_cmd)
+        template = build_template(jobname, self.email, self.bowtie_module, self.bowtie_build_cmd)
 
         with open(filename, "w") as f:
             print(template, file=f)
 
-        for g in genomes:
+        for g in self.genomes:
             con_file = self.dp[g]['genome_fasta']
             output = self.dp[g]['bowtie_output']
 
-            os.makedirs(os.path.dirname(output))
+            os.makedirs(os.path.dirname(output), exist_ok=True)
 
             print("in=" + con_file + ",out=" + output)
 
@@ -57,20 +52,13 @@ class TranscriptomePipeline(PipelineBase):
         """
         Runs Trimmomatic on all fastq files
         """
-        trimmomatic_se_cmd = self.cp['TOOLS']['trimmomatic_se_command']
-        trimmomatic_pe_cmd = self.cp['TOOLS']['trimmomatic_pe_command']
-
-        genomes = self.dp['GLOBAL']['genomes'].split(';')
-        email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
-
-        # Filename should include a unique timestamp !
         timestamp = int(time.time())
         filename_se = "trimmomatic_se_%d.sh" % timestamp
         filename_pe = "trimmomatic_pe_%d.sh" % timestamp
         jobname = "trimmomatic_%d" % timestamp
 
-        template_se = build_template(jobname, email, None, trimmomatic_se_cmd)
-        template_pe = build_template(jobname, email, None, trimmomatic_pe_cmd)
+        template_se = build_template(jobname, self.email, None, self.trimmomatic_se_cmd)
+        template_pe = build_template(jobname, self.email, None, self.trimmomatic_pe_cmd)
 
         with open(filename_se, "w") as f:
             print(template_se, file=f)
@@ -78,7 +66,7 @@ class TranscriptomePipeline(PipelineBase):
         with open(filename_pe, "w") as f:
             print(template_pe, file=f)
 
-        for g in genomes:
+        for g in self.genomes:
             fastq_input_dir = self.dp[g]['fastq_dir']
             trimmed_output = self.dp[g]['trimmomatic_output']
             os.makedirs(trimmed_output, exist_ok=True)
@@ -138,22 +126,14 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_tophat(self):
-        tophat_module = '' if self.cp['TOOLS']['tophat_module'] is 'None' else self.cp['TOOLS']['tophat_module']
-        bowtie_module = '' if self.cp['TOOLS']['bowtie_module'] is 'None' else self.cp['TOOLS']['bowtie_module']
-        tophat_se_cmd = self.cp['TOOLS']['tophat_se_cmd']
-        tophat_pe_cmd = self.cp['TOOLS']['tophat_pe_cmd']
 
-        genomes = self.dp['GLOBAL']['genomes'].split(';')
-        email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
-
-        # Filename should include a unique timestamp !
         timestamp = int(time.time())
         filename_se = "tophat_se_%d.sh" % timestamp
         filename_pe = "tophat_pe_%d.sh" % timestamp
         jobname = "tophat_%d" % timestamp
 
-        template_se = build_template(jobname, email, bowtie_module + ' ' + tophat_module, tophat_se_cmd)
-        template_pe = build_template(jobname, email, bowtie_module + ' ' + tophat_module, tophat_pe_cmd)
+        template_se = build_template(jobname, self.email, self.bowtie_module + ' ' + self.tophat_module, self.tophat_se_cmd)
+        template_pe = build_template(jobname, self.email, self.bowtie_module + ' ' + self.tophat_module, self.tophat_pe_cmd)
 
         with open(filename_se, "w") as f:
             print(template_se, file=f)
@@ -163,7 +143,7 @@ class TranscriptomePipeline(PipelineBase):
 
         print('Mapping reads with tophat...')
 
-        for g in genomes:
+        for g in self.genomes:
             tophat_output = self.dp[g]['tophat_output']
             bowtie_output = self.dp[g]['bowtie_output']
             trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
@@ -209,23 +189,16 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_samtools(self):
-        samtools_module = None if self.cp['TOOLS']['samtools_module'] is 'None' else self.cp['TOOLS']['samtools_module']
-        samtools_cmd = self.cp['TOOLS']['samtools_cmd']
-
-        genomes = self.dp['GLOBAL']['genomes'].split(';')
-        email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
-
-        # Filename should include a unique timestamp !
         timestamp = int(time.time())
         filename = "samtools_%d.sh" % timestamp
         jobname = "samtools_%d" % timestamp
 
-        template = build_template(jobname, email, samtools_module, samtools_cmd)
+        template = build_template(jobname, self.email, self.samtools_module, self.samtools_cmd)
 
         with open(filename, "w") as f:
             print(template, file=f)
 
-        for g in genomes:
+        for g in self.genomes:
             tophat_output = self.dp[g]['tophat_output']
             samtools_output = self.dp[g]['samtools_output']
             os.makedirs(samtools_output, exist_ok=True)
@@ -248,23 +221,16 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_htseq_count(self):
-        python_module = self.cp['TOOLS']['python_module']
-        htseq_count_cmd = self.cp['TOOLS']['htseq_count_cmd']
-
-        genomes = self.dp['GLOBAL']['genomes'].split(';')
-        email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
-
-        # Filename should include a unique timestamp !
         timestamp = int(time.time())
         filename = "htseq_count_%d.sh" % timestamp
         jobname = "htseq_count_%d" % timestamp
 
-        template = build_template(jobname, email, python_module, htseq_count_cmd)
+        template = build_template(jobname, self.email, self.python_module, self.htseq_count_cmd)
 
         with open(filename, "w") as f:
             print(template, file=f)
 
-        for g in genomes:
+        for g in self.genomes:
             samtools_output = self.dp[g]['samtools_output']
             htseq_output = self.dp[g]['htseq_output']
             os.makedirs(htseq_output, exist_ok=True)
@@ -294,10 +260,10 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def htseq_to_matrix(self):
-        genomes = self.dp['GLOBAL']['genomes'].split(';')
-
-        for g in genomes:
+        for g in self.genomes:
             path = self.dp[g]['htseq_output']
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+
             dirs = os.listdir(path)
             counts = {}
 
