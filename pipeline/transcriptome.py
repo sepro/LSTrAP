@@ -1,7 +1,7 @@
 import configparser
 import time
 import subprocess
-import os
+import os, sys
 
 from cluster import wait_for_job
 from cluster.templates import build_template
@@ -300,3 +300,43 @@ class TranscriptomePipeline:
         os.remove(filename)
 
         print("Done\n\n")
+
+    def htseq_to_matrix(self):
+        genomes = self.dp['GLOBAL']['genomes'].split(';')
+
+        for g in genomes:
+            path = self.dp[g]['htseq_output']
+            dirs = os.listdir(path)
+            counts = {}
+
+            for file in dirs:
+                full_path = os.path.join(path, file)
+
+                f = open(full_path, "r")
+                for row in f:
+                    gene_id, count = row.strip().split('\t')
+
+                    if gene_id not in counts.keys():
+                        counts[gene_id] = {}
+
+                    counts[gene_id][file] = count
+
+                f.close()
+
+            output_file = self.dp[g]['exp_matrix_output']
+            f_out = open(output_file, "w")
+            header = '\t'.join(dirs)
+            print('gene\t' + header, file=f_out)
+            bad_fields = ['no_feature', 'ambiguous', 'too_low_aQual', 'not_aligned', 'alignment_not_unique']
+            for gene_id in counts:
+                values = []
+                for f in dirs:
+                    if f in counts[gene_id].keys():
+                        values.append(counts[gene_id][f])
+                    else:
+                        values.append('0')
+                if all([x not in gene_id for x in bad_fields]):
+                    print(gene_id + '\t' + '\t'.join(values), file=f_out)
+            f_out.close()
+
+            print("Done\n\n")
