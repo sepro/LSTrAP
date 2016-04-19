@@ -275,12 +275,23 @@ class TranscriptomePipeline:
         for g in genomes:
             samtools_output = self.dp[g]['samtools_output']
             htseq_output = self.dp[g]['htseq_output']
+            os.makedirs(htseq_output)
 
             gff_file = self.dp[g]['gff_file']
             gff_feature = self.dp[g]['gff_feature']
             gff_id = self.dp[g]['gff_id']
 
+            sam_files = []
 
+            for file in os.listdir(samtools_output):
+                if file.endswith('.sam'):
+                    sam_files.append(file)
+
+            for sam_file in sam_files:
+                sam_in = os.path.join(samtools_output, sam_file)
+                htseq_out = os.path.join(htseq_output, sam_file.replace('.sam', '.htseq'))
+
+                subprocess.call(["qsub", "-v", "feature=%s,field=%s,sam=%s,gff=%s,out=%s" % (gff_feature, gff_id, sam_in, gff_file, htseq_out), filename])
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
