@@ -14,8 +14,8 @@ class TranscriptomePipeline(PipelineBase):
     """
     def __write_submission_script(self, jobname, module, command, filename):
         timestamp = int(time.time())
-        stamped_filename = jobname % timestamp
-        stamped_jobname = filename % timestamp
+        stamped_filename = str(jobname % timestamp)
+        stamped_jobname = str(filename % timestamp)
 
         template = build_template(stamped_jobname, self.email, module, command)
 
@@ -38,8 +38,6 @@ class TranscriptomePipeline(PipelineBase):
             output = self.dp[g]['bowtie_output']
 
             os.makedirs(os.path.dirname(output), exist_ok=True)
-
-            print("in=" + con_file + ",out=" + output)
 
             subprocess.call(["qsub", "-v", "in=" + con_file + ",out=" + output, filename])
 
@@ -195,12 +193,11 @@ class TranscriptomePipeline(PipelineBase):
             os.makedirs(samtools_output, exist_ok=True)
 
             dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
-            print(dirs)
             for d in dirs:
                 bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
                 if os.path.exists(bam_file):
                     sam_file = os.path.join(samtools_output, d + '.sam')
-                    print(sam_file, bam_file)
+                    print("Converting %s to %s" % (sam_file, bam_file))
                     subprocess.call(["qsub", "-v", "out=%s,bam=%s" % (sam_file, bam_file), filename])
 
         # wait for all jobs to complete
@@ -249,40 +246,39 @@ class TranscriptomePipeline(PipelineBase):
 
     def htseq_to_matrix(self):
         for g in self.genomes:
-            path = self.dp[g]['htseq_output']
-            os.makedirs(os.path.dirname(path), exist_ok=True)
+            htseq_output = self.dp[g]['htseq_output']
+            os.makedirs(os.path.dirname(htseq_output), exist_ok=True)
 
-            dirs = os.listdir(path)
+            htseq_files = [f for f in os.listdir(htseq_output) if f.endswith('.htseq')]
             counts = {}
 
-            for file in dirs:
-                full_path = os.path.join(path, file)
+            for file in htseq_files:
+                full_path = os.path.join(htseq_output, file)
 
-                f = open(full_path, "r")
-                for row in f:
-                    gene_id, count = row.strip().split('\t')
+                with open(full_path, "r") as f:
+                    for row in f:
+                        gene_id, count = row.strip().split('\t')
 
-                    if gene_id not in counts.keys():
-                        counts[gene_id] = {}
+                        if gene_id not in counts.keys():
+                            counts[gene_id] = {}
 
-                    counts[gene_id][file] = count
-
-                f.close()
+                        counts[gene_id][file] = count
 
             output_file = self.dp[g]['exp_matrix_output']
-            f_out = open(output_file, "w")
-            header = '\t'.join(dirs)
-            print('gene\t' + header, file=f_out)
-            bad_fields = ['no_feature', 'ambiguous', 'too_low_aQual', 'not_aligned', 'alignment_not_unique']
-            for gene_id in counts:
-                values = []
-                for f in dirs:
-                    if f in counts[gene_id].keys():
-                        values.append(counts[gene_id][f])
-                    else:
-                        values.append('0')
-                if all([x not in gene_id for x in bad_fields]):
-                    print(gene_id + '\t' + '\t'.join(values), file=f_out)
-            f_out.close()
+            with open(output_file, "w") as f_out:
+
+                header = '\t'.join(htseq_files)
+                print('gene\t' + header, file=f_out)
+
+                bad_fields = ['no_feature', 'ambiguous', 'too_low_aQual', 'not_aligned', 'alignment_not_unique']
+                for gene_id in counts:
+                    values = []
+                    for f in htseq_files:
+                        if f in counts[gene_id].keys():
+                            values.append(counts[gene_id][f])
+                        else:
+                            values.append('0')
+                    if all([x not in gene_id for x in bad_fields]):
+                        print(gene_id + '\t' + '\t'.join(values), file=f_out)
 
             print("Done\n\n")
