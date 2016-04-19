@@ -248,7 +248,42 @@ class TranscriptomePipeline:
                     subprocess.call(["qsub", "-v", "out=%s,bam=%s" % (sam_file, bam_file), filename])
 
         # wait for all jobs to complete
-        # wait_for_job(jobname, sleep_time=1)
+        wait_for_job(jobname, sleep_time=1)
+
+        # remove the submission script
+        os.remove(filename)
+
+        print("Done\n\n")
+
+    def run_htseq_count(self):
+        python_module = self.cp['TOOLS']['python_module']
+        htseq_count_cmd = self.cp['TOOLS']['htseq_count_cmd']
+
+        genomes = self.dp['GLOBAL']['genomes'].split(';')
+        email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
+
+        # Filename should include a unique timestamp !
+        timestamp = int(time.time())
+        filename = "htseq_count_%d.sh" % timestamp
+        jobname = "htseq_count_%d" % timestamp
+
+        template = build_template(jobname, email, python_module, htseq_count_cmd)
+
+        with open(filename, "w") as f:
+            print(template, file=f)
+
+        for g in genomes:
+            samtools_output = self.dp[g]['samtools_output']
+            htseq_output = self.dp[g]['htseq_output']
+
+            gff_file = self.dp[g]['gff_file']
+            gff_feature = self.dp[g]['gff_feature']
+            gff_id = self.dp[g]['gff_id']
+
+
+
+        # wait for all jobs to complete
+        wait_for_job(jobname, sleep_time=1)
 
         # remove the submission script
         os.remove(filename)
