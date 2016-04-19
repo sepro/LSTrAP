@@ -54,7 +54,9 @@ def check_sanity_config(filename):
 
     list_tools = ['bowtie_module', 'samtools_module', 'sratoolkit_module', 'tophat_module', 'interproscan_module',
                   'blast_module', 'mcl_module', 'python_module', 'bowtie_cmd', 'trimmomatic_se_command',
-                  'trimmomatic_pe_command', 'tophat_se_cmd', 'tophat_pe_cmd', 'samtools_cmd', 'htseq_count_cmd']
+                  'trimmomatic_pe_command', 'tophat_se_cmd', 'tophat_pe_cmd', 'samtools_cmd', 'htseq_count_cmd',
+                  'interproscan_cmd']
+
     if 'TOOLS' in cp:
         if not all(k in cp['TOOLS'].keys() for k in list_tools):
             print("missing tool", file=sys.stderr)

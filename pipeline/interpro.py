@@ -5,6 +5,20 @@ from utils.parser.fasta import Fasta
 from math import ceil
 
 
+class InterProPipeline:
+    def __init__(self, config, data):
+        """
+        Constructor run with path to ini file with settings
+
+        :param config: path to setttings ini file
+        """
+        self.cp = configparser.ConfigParser()
+        self.cp.read(config)
+
+        self.dp = configparser.ConfigParser()
+        self.dp.read(data)
+
+
 def generate_script(filename, job_name, job_count, input_string, output_string, interpro_module=None, interpro_cmd="interproscan.sh", email=None):
     load_module = "" if interpro_module is None else "module load " + interpro_module
     include_email = "" if email is None else "#$ -m bea\n#$ -M " + email
