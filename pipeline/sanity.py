@@ -17,21 +17,25 @@ def check_sanity_data(filename):
         if 'genomes' in cp['GLOBAL']:
             genomes = cp['GLOBAL']['genomes'].split(';')
             # For each genome test that section
-            list_data = ['cds_fasta', 'genome_fasta', 'gff_file', 'gff_feature', 'gff_id', 'fastq_dir', 'bowtie_output',
-                         'trimmomatic_output', 'tophat_output', 'samtools_output', 'htseq_output', 'exp_matrix_output']
+            required_keys = ['cds_fasta', 'genome_fasta', 'gff_file', 'gff_feature', 'gff_id', 'fastq_dir',
+                             'bowtie_output', 'trimmomatic_output', 'tophat_output', 'samtools_output', 'htseq_output',
+                             'exp_matrix_output']
+            required_paths = ['cds_fasta', 'genome_fasta', 'gff_file', 'fastq_dir']
 
             for g in genomes:
-                if not all([i in cp[g].keys() for i in list_data]):
+                if not all([i in cp[g].keys() for i in required_keys]):
                     print("missing data", file=sys.stderr)
 
-                    for i in list_data:
+                    for i in required_keys:
                         if i not in cp[g].keys():
                             print("missing" + " " + i, file=sys.stderr)
-                            list_files = ['cds_fasta', 'genome_fasta', 'gff_file', 'fastq_dir']
-                            for f in list_files:
-                                if not all([os.path.exists(f) for f in list_files]):
-                                    print(f + " doesn't exist", file=sys.stderr)
                     return False
+
+                if not all([os.path.exists(cp[g][f]) for f in required_paths]):
+                    for f in required_paths:
+                        print(f + " doesn't point to a valid file", file=sys.stderr)
+                    return False
+
 
         else:
             print("genomes missing from GLOBAL section", file=sys.stderr)

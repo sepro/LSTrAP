@@ -12,18 +12,6 @@ class TranscriptomePipeline(PipelineBase):
     """
     TranscriptomePipeline class. Reads a settings ini file and runs the transcriptome pipeline
     """
-    def __write_submission_script(self, jobname, module, command, filename):
-        timestamp = int(time.time())
-        stamped_filename = str(jobname % timestamp)
-        stamped_jobname = str(filename % timestamp)
-
-        template = build_template(stamped_jobname, self.email, module, command)
-
-        with open(stamped_filename, "w") as f:
-            print(template, file=f)
-
-        return stamped_filename, stamped_jobname
-
     def prepare_genome(self):
         """
         Runs bowtie-build for each genome on the cluster. All settings are obtained from the settings fasta file

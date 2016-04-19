@@ -1,5 +1,6 @@
 import configparser
-
+import time
+from cluster.templates import build_template
 
 class PipelineBase:
     def __init__(self, config, data):
@@ -29,3 +30,15 @@ class PipelineBase:
 
         self.genomes = self.dp['GLOBAL']['genomes'].split(';')
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
+
+    def __write_submission_script(self, jobname, module, command, filename):
+        timestamp = int(time.time())
+        stamped_filename = str(jobname % timestamp)
+        stamped_jobname = str(filename % timestamp)
+
+        template = build_template(stamped_jobname, self.email, module, command)
+
+        with open(stamped_filename, "w") as f:
+            print(template, file=f)
+
+        return stamped_filename, stamped_jobname
