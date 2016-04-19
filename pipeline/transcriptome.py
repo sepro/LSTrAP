@@ -47,6 +47,8 @@ class TranscriptomePipeline:
             con_file = self.dp[g]['genome_fasta']
             output = self.dp[g]['bowtie_output']
 
+            os.makedirs(os.path.dirname(output))
+
             print("in=" + con_file + ",out=" + output)
 
             subprocess.call(["qsub", "-v", "in=" + con_file + ",out=" + output, filename])
