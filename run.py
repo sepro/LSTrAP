@@ -34,6 +34,12 @@ def run_pipeline(args):
             tp.run_samtools()
         else:
             print("Skipping Samtools", file=sys.stderr)
+
+        if args.samtools:
+            tp.run_htseq_count()
+        else:
+            print("Skipping htseq-counts", file=sys.stderr)
+
     else:
         print("Sanity check failed, cannot start pipeline", file=sys.stderr)
 
@@ -49,11 +55,13 @@ if __name__ == "__main__":
     parser.add_argument('--skip-trim-fastq', dest='trim_fastq', action='store_false', help='add --skip-trim-fastq to skip trimming fastq files using trimmomatic')
     parser.add_argument('--skip-tophat', dest='tophat', action='store_false', help='add --skip-tophat to skip read mapping with tophat')
     parser.add_argument('--skip-samtools', dest='samtools', action='store_false', help='add --skip-samtools to skip bam to sam conversion using samtools')
+    parser.add_argument('--skip-htseq', dest='htseq', action='store_false', help='add --skip-htseq to skip counting reads per gene with htseq-count')
 
     parser.set_defaults(bowtie_build=True)
     parser.set_defaults(trim_fastq=True)
     parser.set_defaults(tophat=True)
     parser.set_defaults(samtools=True)
+    parser.set_defaults(htseq=True)
 
     # Parse arguments and start pipeline
     args = parser.parse_args()
