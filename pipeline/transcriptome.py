@@ -16,10 +16,10 @@ class TranscriptomePipeline(PipelineBase):
         """
         Runs bowtie-build for each genome on the cluster. All settings are obtained from the settings fasta file
         """
-        filename, jobname = self.__write_submission_script("bowtie_build_%d",
-                                                           self.bowtie_module,
-                                                           self.bowtie_build_cmd,
-                                                           "bowtie_build_%d.sh")
+        filename, jobname = self.write_submission_script("bowtie_build_%d",
+                                                         self.bowtie_module,
+                                                         self.bowtie_build_cmd,
+                                                         "bowtie_build_%d.sh")
 
         for g in self.genomes:
             con_file = self.dp[g]['genome_fasta']
@@ -43,14 +43,14 @@ class TranscriptomePipeline(PipelineBase):
         """
         Runs Trimmomatic on all fastq files
         """
-        filename_se, jobname = self.__write_submission_script("trimmomatic_%d",
-                                                              None,
-                                                              self.trimmomatic_se_cmd,
-                                                              "trimmomatic_se_%d.sh")
-        filename_pe, jobname = self.__write_submission_script("trimmomatic_%d",
-                                                              None,
-                                                              self.trimmomatic_pe_cmd,
-                                                              "trimmomatic_pe_%d.sh")
+        filename_se, jobname = self.write_submission_script("trimmomatic_%d",
+                                                            None,
+                                                            self.trimmomatic_se_cmd,
+                                                            "trimmomatic_se_%d.sh")
+        filename_pe, jobname = self.write_submission_script("trimmomatic_%d",
+                                                            None,
+                                                            self.trimmomatic_pe_cmd,
+                                                            "trimmomatic_pe_%d.sh")
 
         for g in self.genomes:
             fastq_input_dir = self.dp[g]['fastq_dir']
@@ -112,15 +112,15 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_tophat(self):
-        filename_se, jobname = self.__write_submission_script("tophat_%d",
-                                                              self.bowtie_module + ' ' + self.tophat_module,
-                                                              self.tophat_se_cmd,
-                                                              "tophat_se_%d.sh")
+        filename_se, jobname = self.write_submission_script("tophat_%d",
+                                                            self.bowtie_module + ' ' + self.tophat_module,
+                                                            self.tophat_se_cmd,
+                                                            "tophat_se_%d.sh")
 
-        filename_pe, jobname = self.__write_submission_script("tophat_%d",
-                                                              self.bowtie_module + ' ' + self.tophat_module,
-                                                              self.tophat_pe_cmd,
-                                                              "tophat_pe_%d.sh")
+        filename_pe, jobname = self.write_submission_script("tophat_%d",
+                                                            self.bowtie_module + ' ' + self.tophat_module,
+                                                            self.tophat_pe_cmd,
+                                                            "tophat_pe_%d.sh")
 
         print('Mapping reads with tophat...')
 
@@ -170,10 +170,10 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_samtools(self):
-        filename, jobname = self.__write_submission_script("samtools_%d",
-                                                           self.samtools_module,
-                                                           self.samtools_cmd,
-                                                           "samtools_%d.sh")
+        filename, jobname = self.write_submission_script("samtools_%d",
+                                                         self.samtools_module,
+                                                         self.samtools_cmd,
+                                                         "samtools_%d.sh")
 
         for g in self.genomes:
             tophat_output = self.dp[g]['tophat_output']
@@ -198,10 +198,10 @@ class TranscriptomePipeline(PipelineBase):
 
     def run_htseq_count(self):
 
-        filename, jobname = self.__write_submission_script("htseq_count_%d",
-                                                           self.python_module,
-                                                           self.htseq_count_cmd,
-                                                           "htseq_count_%d.sh")
+        filename, jobname = self.write_submission_script("htseq_count_%d",
+                                                         self.python_module,
+                                                         self.htseq_count_cmd,
+                                                         "htseq_count_%d.sh")
 
         for g in self.genomes:
             samtools_output = self.dp[g]['samtools_output']

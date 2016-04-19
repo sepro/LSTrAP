@@ -31,7 +31,7 @@ class PipelineBase:
         self.genomes = self.dp['GLOBAL']['genomes'].split(';')
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
 
-    def __write_submission_script(self, jobname, module, command, filename):
+    def write_submission_script(self, jobname, module, command, filename):
         timestamp = int(time.time())
         stamped_filename = str(jobname % timestamp)
         stamped_jobname = str(filename % timestamp)
