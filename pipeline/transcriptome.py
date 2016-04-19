@@ -1,7 +1,6 @@
-import configparser
 import time
 import subprocess
-import os, sys
+import os
 
 from cluster import wait_for_job
 from cluster.templates import build_template
