@@ -1,6 +1,6 @@
 import configparser
 import time
-from cluster.templates import build_template
+from cluster.templates import build_template, build_batch_template
 
 
 class PipelineBase:
@@ -40,6 +40,18 @@ class PipelineBase:
         stamped_jobname = str(jobname % timestamp)
 
         template = build_template(stamped_jobname, self.email, module, command)
+
+        with open(stamped_filename, "w") as f:
+            print(template, file=f)
+
+        return stamped_filename, stamped_jobname
+
+    def write_batch_submission_script(self, jobname, module, command, filename, jobcount=100):
+        timestamp = int(time.time())
+        stamped_filename = str(filename % timestamp)
+        stamped_jobname = str(jobname % timestamp)
+
+        template = build_batch_template(stamped_jobname, self.email, module, command, jobcount)
 
         with open(stamped_filename, "w") as f:
             print(template, file=f)
