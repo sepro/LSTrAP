@@ -30,6 +30,12 @@ class InterProPipeline(PipelineBase):
 
         filename, jobname = self.write_batch_submission_script("interproscan_%d", self.interproscan_module, self.interproscan_cmd, "interproscan_%d.sh")
 
+        for g in self.genomes:
+            tmp_dir = os.join(self.dp[g]['interpro_output'], 'tmp')
+            os.makedirs(self.dp[g]['interpro_output'], exist_ok=True)
+            os.makedirs(tmp_dir, exist_ok=True)
 
-        os.remove(filename)
-        PipelineBase.clean_out_files(jobname)
+            split_fasta(self.dp[g]['protein_fasta'], 100, tmp_dir, filenames="interpro_in_%d")
+
+        # os.remove(filename)
+        # PipelineBase.clean_out_files(jobname)
