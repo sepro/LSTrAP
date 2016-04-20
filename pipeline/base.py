@@ -37,6 +37,15 @@ class PipelineBase:
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
 
     def write_submission_script(self, jobname, module, command, filename):
+        """
+        Writes a job submission script that includes a timestamp, required to keep track if a job is running or not
+
+        :param jobname: name of the job include %d for the timestamp !
+        :param module: Module to load, separate multiple modules using spaces in case more than one module is required
+        :param command: The command to execute, separate multiple commands using newlines
+        :param filename: filename for the script include %d for the timestamp !
+        :return: tuple with stamped_filename and stamped_jobname
+        """
         timestamp = int(time.time())
         stamped_filename = str(filename % timestamp)
         stamped_jobname = str(jobname % timestamp)
@@ -49,6 +58,16 @@ class PipelineBase:
         return stamped_filename, stamped_jobname
 
     def write_batch_submission_script(self, jobname, module, command, filename, jobcount=100):
+        """
+        Writes a job submission script that includes a timestamp, required to keep track if a job is running or not
+
+        :param jobname: Name of the job include %d for the timestamp !
+        :param module: Module to load, separate multiple modules using spaces in case more than one module is required
+        :param command: The command to execute, separate multiple commands using newlines
+        :param filename: Filename for the script include %d for the timestamp !
+        :param jobcount: Number of jobs included in the batch (default = 100)
+        :return: Tuple with stamped_filename and stamped_jobname
+        """
         timestamp = int(time.time())
         stamped_filename = str(filename % timestamp)
         stamped_jobname = str(jobname % timestamp)
@@ -62,8 +81,19 @@ class PipelineBase:
 
     @staticmethod
     def clean_out_files(jobname):
+        """
+        Concatenates output of jobs into a single log file and removes the individual files
+
+        :param jobname: name of the job
+        """
 
         def write_log(files, log):
+            """
+            Function to concatenate files into a log
+
+            :param files: list of file to concatenate
+            :param log: filename of the log
+            """
             if len(files) > 0:
                 with open(log, "w") as f_out:
                     for f in files:
@@ -77,7 +107,7 @@ class PipelineBase:
         out_files = []
         err_files = []
 
-        for file in os.listdir():
+        for file in os.listdir('./'):
             if file.startswith('OUT_'+jobname+'.'):
                 out_files.append(file)
             elif file.startswith('ERR_'+jobname+'.'):
