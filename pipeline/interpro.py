@@ -1,6 +1,8 @@
 import os
 import subprocess
 
+from cluster import wait_for_job
+
 from utils.parser.fasta import Fasta
 from math import ceil
 from pipeline.base import PipelineBase
@@ -9,8 +11,19 @@ from pipeline.base import PipelineBase
 class InterProPipeline(PipelineBase):
 
     def run_interproscan(self):
+        """
+        Runs interproscan for all or
+        """
 
         def split_fasta(file, chunks, output_directory, filenames="proteins_%d.fasta"):
+            """
+            Splits a fasta file into a number of chuncks
+
+            :param file: input fasta file
+            :param chunks: number of parts to split the file into
+            :param output_directory: output directory
+            :param filenames: template for the filenames, should contain %d for the number
+            """
             fasta = Fasta()
             fasta.readfile(file)
 
@@ -37,7 +50,9 @@ class InterProPipeline(PipelineBase):
             os.makedirs(tmp_dir, exist_ok=True)
 
             split_fasta(self.dp[g]['protein_fasta'], 100, tmp_dir, filenames="interpro_in_%d")
-            subprocess.call(["qsub", "-v", "in_dir=%s,in_prefix=%s,out_dir=%s,out_prefix=%s" % (tmp_dir, "interpro_in_", self.dp[g]['interpro_output'], "output_"), filename])
+            subprocess.call(["qsub", "-pe", "cores", "5", "-v", "in_dir=%s,in_prefix=%s,out_dir=%s,out_prefix=%s" % (tmp_dir, "interpro_in_", self.dp[g]['interpro_output'], "output_"), filename])
+
+        wait_for_job(jobname, sleep_time=1)
 
         os.remove(filename)
         PipelineBase.clean_out_files(jobname)
