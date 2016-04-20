@@ -35,6 +35,9 @@ class TranscriptomePipeline(PipelineBase):
         # remove the submission script
         os.remove(filename)
 
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
+
         print("Done\n\n")
 
     def trim_fastq(self):
@@ -107,6 +110,9 @@ class TranscriptomePipeline(PipelineBase):
         os.remove(filename_se)
         os.remove(filename_pe)
 
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
+
         print("Done\n\n")
 
     def run_tophat(self):
@@ -165,6 +171,9 @@ class TranscriptomePipeline(PipelineBase):
         os.remove(filename_se)
         os.remove(filename_pe)
 
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
+
         print("Done\n\n")
 
     def run_samtools(self):
@@ -191,6 +200,9 @@ class TranscriptomePipeline(PipelineBase):
 
         # remove the submission script
         os.remove(filename)
+
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
 
         print("Done\n\n")
 
@@ -227,6 +239,9 @@ class TranscriptomePipeline(PipelineBase):
 
         # remove the submission script
         os.remove(filename)
+
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
 
         print("Done\n\n")
 

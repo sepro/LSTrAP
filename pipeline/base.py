@@ -1,5 +1,7 @@
 import configparser
 import time
+import os
+
 from cluster.templates import build_template, build_batch_template
 
 
@@ -57,3 +59,32 @@ class PipelineBase:
             print(template, file=f)
 
         return stamped_filename, stamped_jobname
+
+    @staticmethod
+    def clean_out_files(jobname):
+
+        def write_log(files, log):
+            if len(files) > 0:
+                with open(log, "w") as f_out:
+                    for f in files:
+                        with open(f, "r") as f_in:
+                            for l in f_in:
+                                f_out.write(l)
+
+        out_log = jobname + '.out.log'
+        err_log = jobname + '.err.log'
+
+        out_files = []
+        err_files = []
+
+        for file in os.listdir():
+            if file.startswith('OUT_'+jobname+'.'):
+                out_files.append(file)
+            elif file.startswith('ERR_'+jobname+'.'):
+                err_files.append(file)
+
+        write_log(out_files, out_log)
+        write_log(err_files, err_log)
+
+        for f in out_files + err_files:
+            os.remove(f)
