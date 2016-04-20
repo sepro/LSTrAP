@@ -37,7 +37,7 @@ class InterProPipeline(PipelineBase):
             os.makedirs(tmp_dir, exist_ok=True)
 
             split_fasta(self.dp[g]['protein_fasta'], 100, tmp_dir, filenames="interpro_in_%d")
-            subprocess.call(["qsub", "-v", "in_dire=%s,in_prefix=%s,out_dir=%s,out_prefix=%s" % (tmp_dir, "interpro_in_", self.dp[g]['interpro_output'], "output_"), filename])
+            subprocess.call(["qsub", "-v", "in_dir=%s,in_prefix=%s,out_dir=%s,out_prefix=%s" % (tmp_dir, "interpro_in_", self.dp[g]['interpro_output'], "output_"), filename])
 
         os.remove(filename)
         PipelineBase.clean_out_files(jobname)
