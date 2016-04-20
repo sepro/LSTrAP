@@ -31,7 +31,7 @@ class InterProPipeline(PipelineBase):
         filename, jobname = self.write_batch_submission_script("interproscan_%d", self.interproscan_module, self.interproscan_cmd, "interproscan_%d.sh")
 
         for g in self.genomes:
-            tmp_dir = os.join(self.dp[g]['interpro_output'], 'tmp')
+            tmp_dir = os.path.join(self.dp[g]['interpro_output'], 'tmp')
             os.makedirs(self.dp[g]['interpro_output'], exist_ok=True)
             os.makedirs(tmp_dir, exist_ok=True)
 
