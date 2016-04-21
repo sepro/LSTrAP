@@ -1,3 +1,5 @@
+from .parser.fasta import Fasta
+
 def read_matrix(filename):
     """
     :param: filename , reads the file
@@ -77,11 +79,12 @@ def normalize_matrix_length(data, fasta_file):
     calculates the read_counts divided by the gene lenght
     :returns dictionary with the obtained values in which gene_id is the key
     """
-    fasta_data = read_fasta(fasta_file)
+    fasta_reader = Fasta()
+    fasta_reader.readfile(fasta_file)
     fasta_lengths = {}
     length_normalized_data = {}
 
-    for gene_id, sequence in fasta_data.items():
+    for gene_id, sequence in fasta_reader.sequences.items():
         # length in kb so divided by 1000
         lenseq = len(sequence)/1000
         fasta_lengths[gene_id] = lenseq
