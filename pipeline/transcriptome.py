@@ -257,7 +257,6 @@ class TranscriptomePipeline(PipelineBase):
         """
         Groups all htseq files into one expression matrix
 
-        TODO: normalize the matrix
         """
         for g in self.genomes:
             htseq_output = self.dp[g]['htseq_output']
@@ -296,3 +295,28 @@ class TranscriptomePipeline(PipelineBase):
                         print(gene_id + '\t' + '\t'.join(values), file=f_out)
 
             print("Done\n\n")
+
+    def normalize_rpkm(self):
+        for g in self.genomes:
+            from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
+            data, conditions = read_matrix(self.dp[g]['exp_matrix_output'])
+            normalized_data = normalize_matrix_counts(data, conditions)
+            length_normalized_data = normalize_matrix_length(normalized_data, self.dp[g]['cds_fasta'])
+            write_matrix(self.dp[g]['exp_matrix_rpkm_output'], conditions, length_normalized_data)
+
+    def normalize_tpm(self):
+        for g in self.genomes:
+            from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
+            data, conditions = read_matrix(self.dp[g]['exp_matrix_output'])
+            length_normalized_data = normalize_matrix_length(data, self.dp[g]['cds_fasta'])
+            normalized_data = normalize_matrix_counts(length_normalized_data, conditions)
+            write_matrix(self.dp[g]['exp_matrix_tpm_output'], conditions, normalized_data)
+
+
+
+
+
+
+
+
+
