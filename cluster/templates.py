@@ -63,7 +63,7 @@ def build_template(name, email, module, cmd):
 
 def build_batch_template(name, email, module, cmd, jobs):
     """
-    Generates submit script for a normal job.
+    Generates submit script for a batch job.
 
     :param name: Name for the job
     :param email: Email address of the user, set to None to disable email
