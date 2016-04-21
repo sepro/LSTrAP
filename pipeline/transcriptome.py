@@ -2,7 +2,7 @@ import subprocess
 import os
 
 from cluster import wait_for_job
-
+from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
 from pipeline.base import PipelineBase
 
 
@@ -298,7 +298,6 @@ class TranscriptomePipeline(PipelineBase):
 
     def normalize_rpkm(self):
         for g in self.genomes:
-            from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
             data, conditions = read_matrix(self.dp[g]['exp_matrix_output'])
             normalized_data = normalize_matrix_counts(data, conditions)
             length_normalized_data = normalize_matrix_length(normalized_data, self.dp[g]['cds_fasta'])
@@ -306,7 +305,6 @@ class TranscriptomePipeline(PipelineBase):
 
     def normalize_tpm(self):
         for g in self.genomes:
-            from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
             data, conditions = read_matrix(self.dp[g]['exp_matrix_output'])
             length_normalized_data = normalize_matrix_length(data, self.dp[g]['cds_fasta'])
             normalized_data = normalize_matrix_counts(length_normalized_data, conditions)

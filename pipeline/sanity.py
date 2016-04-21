@@ -34,7 +34,8 @@ def check_sanity_data(filename):
                 if not all([os.path.exists(cp[g][f]) for f in required_paths]):
                     print("Missing file/dir for", g, file=sys.stderr)
                     for f in required_paths:
-                        print(f + " doesn't point to a valid file/dir", file=sys.stderr)
+                        if not os.path.exists(cp[g][f]):
+                            print(f + " doesn't point to a valid file/dir", file=sys.stderr)
                     return False
         else:
             print("genomes missing from GLOBAL section", file=sys.stderr)
