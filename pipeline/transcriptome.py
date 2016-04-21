@@ -116,6 +116,9 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_tophat(self):
+        """
+        Maps the reads from the trimmed fastq files to the bowtie-indexed genome
+        """
         filename_se, jobname = self.write_submission_script("tophat_%d",
                                                             self.bowtie_module + ' ' + self.tophat_module,
                                                             self.tophat_se_cmd,
@@ -177,6 +180,9 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_samtools(self):
+        """
+        Convert tophat output (bam file) to sam file
+        """
         filename, jobname = self.write_submission_script("samtools_%d",
                                                          self.samtools_module,
                                                          self.samtools_cmd,
@@ -207,7 +213,9 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def run_htseq_count(self):
-
+        """
+        Based on the gff file and sam file counts the number of reads that map to a given gene
+        """
         filename, jobname = self.write_submission_script("htseq_count_%d",
                                                          self.python_module,
                                                          self.htseq_count_cmd,
@@ -246,6 +254,11 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def htseq_to_matrix(self):
+        """
+        Groups all htseq files into one expression matrix
+
+        TODO: normalize the matrix
+        """
         for g in self.genomes:
             htseq_output = self.dp[g]['htseq_output']
             os.makedirs(os.path.dirname(htseq_output), exist_ok=True)
