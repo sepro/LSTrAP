@@ -51,6 +51,7 @@ def normalize_matrix_counts(data, conditions):
     """
 
     calculates the scoring factor that is needed to claculate TPM
+
     :param data: data form read_matrix
     :param conditions: conditions form read_matrix
     :return: dictionary normalized_data in which gene_id is the key , values are normalized data
@@ -86,6 +87,7 @@ def normalize_matrix_length(data, fasta_file):
 
     Needed during calculating TPM and RPKM
     calculates the read_counts divided by the gene length
+
     :param data: data from read_matrix
     :param fasta_file: fasta file with genes of the analyzed genome
     :return: dictionary with the obtained values in which gene_id is the key
