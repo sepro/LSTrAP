@@ -17,9 +17,9 @@ def check_sanity_data(filename):
         if 'genomes' in cp['GLOBAL']:
             genomes = cp['GLOBAL']['genomes'].split(';')
             # For each genome test that section
-            required_keys = ['cds_fasta', 'protein_fasta', 'genome_fasta', 'gff_file', 'gff_feature', 'gff_id', 'fastq_dir',
-                             'bowtie_output', 'trimmomatic_output', 'tophat_output', 'samtools_output', 'htseq_output',
-                             'exp_matrix_output']
+            required_keys = ['cds_fasta', 'protein_fasta', 'genome_fasta', 'gff_file', 'gff_feature', 'gff_id',
+                             'fastq_dir', 'bowtie_output', 'trimmomatic_output', 'tophat_output', 'samtools_output',
+                             'htseq_output', 'exp_matrix_output', 'exp_matrix_tpm_output', 'exp_matrix_rpkm_output']
             required_paths = ['cds_fasta', 'protein_fasta', 'genome_fasta', 'gff_file', 'fastq_dir']
 
             for g in genomes:
