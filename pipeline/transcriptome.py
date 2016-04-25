@@ -4,6 +4,7 @@ import os
 from cluster import wait_for_job
 from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
 from pipeline.base import PipelineBase
+from pipeline.check.quality import htseq_count_quality
 
 
 class TranscriptomePipeline(PipelineBase):
@@ -267,15 +268,15 @@ class TranscriptomePipeline(PipelineBase):
 
             for file in htseq_files:
                 full_path = os.path.join(htseq_output, file)
+                if htseq_count_quality(full_path, 1):
+                    with open(full_path, "r") as f:
+                        for row in f:
+                            gene_id, count = row.strip().split('\t')
 
-                with open(full_path, "r") as f:
-                    for row in f:
-                        gene_id, count = row.strip().split('\t')
+                            if gene_id not in counts.keys():
+                                counts[gene_id] = {}
 
-                        if gene_id not in counts.keys():
-                            counts[gene_id] = {}
-
-                        counts[gene_id][file] = count
+                            counts[gene_id][file] = count
 
             output_file = self.dp[g]['exp_matrix_output']
             with open(output_file, "w") as f_out:
