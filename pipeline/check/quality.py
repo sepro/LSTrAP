@@ -3,14 +3,15 @@ import sys
 __bad_fields = ['no_feature', 'ambiguous', 'too_low_aQual', 'not_aligned', 'alignment_not_unique']
 
 
-def htseq_count_quality(filename, cutoff):
+def htseq_count_quality(filename, cutoff=1):
+    print("checking quality of htseq-count")
     values = []
     total_count = 0
 
     with open(filename, "r") as fin:
         for l in fin:
             gene, count = l.strip().split('\t')
-            if all([gene not in bf for bf in __bad_fields]):
+            if all([bf not in gene for bf in __bad_fields]):
                 values.append(int(count))
                 total_count += int(count)
 
@@ -25,6 +26,7 @@ def htseq_count_quality(filename, cutoff):
         current_count += v
         if current_count > total_count/2:
             if e >= cutoff:
+                print(filename, e, cutoff, current_count, total_count, len(values))
                 return True
 
             break
