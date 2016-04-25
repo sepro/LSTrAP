@@ -2,9 +2,9 @@
 import argparse
 import sys
 
-from pipeline.transcriptome import TranscriptomePipeline
+from pipeline.check.sanity import check_sanity_config, check_sanity_data
 from pipeline.interpro import InterProPipeline
-from pipeline.sanity import check_sanity_config, check_sanity_data
+from pipeline.transcriptome import TranscriptomePipeline
 
 
 def run_pipeline(args):
