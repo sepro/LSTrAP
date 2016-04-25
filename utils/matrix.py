@@ -74,7 +74,7 @@ def normalize_matrix_counts(data, conditions):
             if read_counts[condition] != 0:
                 gene_normalized_data[condition] = (int(data[gene_id][condition]) * 1000000)/read_counts[condition]
             else:
-                print('Condition without reads', condition)
+                # print('Condition without reads', condition)
                 gene_normalized_data[condition] = 0
 
         normalized_data[gene_id] = gene_normalized_data
