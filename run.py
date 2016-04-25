@@ -44,6 +44,8 @@ def run_pipeline(args):
 
             if args.exp_matrix:
                 tp.htseq_to_matrix()
+                tp.normalize_rpkm()
+                tp.normalize_tpm()
             else:
                 print("Skipping expression matrix", file=sys.stderr)
         else:
