@@ -3,6 +3,7 @@ from .parser.fasta import Fasta
 
 def read_matrix(filename):
     """
+    Reads a matrix and returns a dictionary with the data and list of conditions (tuple of dict and list)
 
     :param filename: the matrix containing genes id , conditions and reads
     :return: data, conditions
@@ -28,11 +29,11 @@ def read_matrix(filename):
 
 def write_matrix(filename, conditions, data):
     """
+    Writes a matrix to a text file
 
     :param filename: the output file
-    :param conditions: exprerimental conditions
+    :param conditions: experimental conditions (will be the header)
     :param data: gene id and reads
-    :return: matrix
     """
     with open(filename, "w") as f_norm:
         # print(header)
@@ -49,8 +50,7 @@ def write_matrix(filename, conditions, data):
 
 def normalize_matrix_counts(data, conditions):
     """
-
-    calculates the scoring factor that is needed to claculate TPM
+    Calculates the scoring factor that is needed to claculate TPM
 
     :param data: data form read_matrix
     :param conditions: conditions form read_matrix
@@ -84,7 +84,6 @@ def normalize_matrix_counts(data, conditions):
 
 def normalize_matrix_length(data, fasta_file):
     """
-
     Needed during calculating TPM and RPKM
     calculates the read_counts divided by the gene length
 
