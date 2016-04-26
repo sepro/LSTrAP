@@ -263,20 +263,21 @@ class TranscriptomePipeline(PipelineBase):
             htseq_output = self.dp[g]['htseq_output']
             os.makedirs(os.path.dirname(htseq_output), exist_ok=True)
 
-            htseq_files = [f for f in os.listdir(htseq_output) if f.endswith('.htseq')]
+            # Check directory for .htseq files and apply quality control, keep valid files
+            # TODO define proper cutoff
+            htseq_files = [f for f in os.listdir(htseq_output) if f.endswith('.htseq') and htseq_count_quality(os.path.join(htseq_output, f))]
             counts = {}
 
             for file in htseq_files:
                 full_path = os.path.join(htseq_output, file)
-                if htseq_count_quality(full_path, 1):
-                    with open(full_path, "r") as f:
-                        for row in f:
-                            gene_id, count = row.strip().split('\t')
+                with open(full_path, "r") as f:
+                    for row in f:
+                        gene_id, count = row.strip().split('\t')
 
-                            if gene_id not in counts.keys():
-                                counts[gene_id] = {}
+                        if gene_id not in counts.keys():
+                            counts[gene_id] = {}
 
-                            counts[gene_id][file] = count
+                        counts[gene_id][file] = count
 
             output_file = self.dp[g]['exp_matrix_output']
             with open(output_file, "w") as f_out:
