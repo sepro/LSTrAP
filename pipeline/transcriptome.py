@@ -41,7 +41,7 @@ class TranscriptomePipeline(PipelineBase):
 
         print("Done\n\n")
 
-    def trim_fastq(self):
+    def trim_fastq(self, overwrite=False):
         """
         Runs Trimmomatic on all fastq files
         """
@@ -90,13 +90,18 @@ class TranscriptomePipeline(PipelineBase):
 
                         outbp = os.path.join(trimmed_output, outbp)
                         outbu = os.path.join(trimmed_output, outbu)
-
-                        print('Submitting pair %s, %s' % (file, pair_file))
-                        subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s" % (ina, inb, outap, outau, outbp, outbu), filename_pe])
+                        if overwrite or not os.path.exists(os.path.join(outap)):
+                            print('Submitting pair %s, %s' % (file, pair_file))
+                            subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s" % (ina, inb, outap, outau, outbp, outbu), filename_pe])
+                        else:
+                            print('Found', outap, 'skipping')
                     else:
-                        print('Submitting single %s' % file)
                         outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
-                        subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile), filename_se])
+                        if overwrite or not os.path.exists(os.path.join(outfile)):
+                            print('Submitting single %s' % file)
+                            subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile), filename_se])
+                        else:
+                            print('Found', outfile, 'skipping')
                 else:
                     print('Submitting single %s' % file)
                     outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
