@@ -35,6 +35,11 @@ In your config file module names need to be specified. To see which modules are 
 Add the module name for each of the tools to your config.ini, also update the paths to e.g. Trimmomatic.
 In case the module load system isn't used, but all software is installed on the cluster + nodes set the modules to None !
 
+In case you would like to tweak parameters passed to tools this would be the place to do so. Note however that the tools
+will run with the same settings for each file. Modifying parameters that would **change the output name or format will 
+cause the pipeline to break**. Arguments with a name lik *${var}* should **not** be changed as this is how the pipeline 
+defines the input and output for each tool.
+
 Example config.ini:
 
 ```ini
@@ -60,8 +65,8 @@ bowtie_cmd=bowtie2-build ${in} ${out}
 trimmomatic_se_command=java -jar /home/sepro/tools/Trimmomatic-0.36/trimmomatic-0.36.jar SE -threads 1  ${in} ${out}  ILLUMINACLIP:/home/sepro/tools/Trimmomatic-0.36/adapters/TruSeq3-SE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 trimmomatic_pe_command=java -jar /home/sepro/tools/Trimmomatic-0.36/trimmomatic-0.36.jar PE -threads 1  ${ina} ${inb} ${outap} ${outau} ${outbp} ${outbu} ILLUMINACLIP:/home/sepro/tools/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 
-tophat_se_cmd=tophat -o ${out} ${genome} ${fq}
-tophat_pe_cmd=tophat -o ${out} ${genome} ${forward},${reverse}
+tophat_se_cmd=tophat -p 3 -o ${out} ${genome} ${fq}
+tophat_pe_cmd=tophat -p 3 -o ${out} ${genome} ${forward},${reverse}
 
 samtools_cmd=samtools view -h -o ${out} ${bam}
 htseq_count_cmd=htseq-count -s no -t ${feature} -i ${field} ${sam} ${gff} > ${out}
