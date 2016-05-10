@@ -6,7 +6,7 @@ from cluster.templates import build_template, build_batch_template
 
 
 class PipelineBase:
-    def __init__(self, config, data):
+    def __init__(self, config, data, enable_log=False):
         """
         Constructor run with path to ini file with settings
 
@@ -35,6 +35,17 @@ class PipelineBase:
 
         self.genomes = self.dp['GLOBAL']['genomes'].split(';')
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
+
+        self.enable_log = enable_log
+
+        if self.enable_log:
+            self.log = open('rstrap.log', 'w')
+        else:
+            self.log = None
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self.enable_log:
+            self.log.close()
 
     def write_submission_script(self, jobname, module, command, filename):
         """

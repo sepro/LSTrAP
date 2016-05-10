@@ -279,7 +279,7 @@ class TranscriptomePipeline(PipelineBase):
 
             # Check directory for .htseq files and apply quality control, keep valid files
             # TODO define proper cutoff
-            htseq_files = [f for f in os.listdir(htseq_output) if f.endswith('.htseq') and htseq_count_quality(os.path.join(htseq_output, f))]
+            htseq_files = [f for f in os.listdir(htseq_output) if f.endswith('.htseq') and htseq_count_quality(os.path.join(htseq_output, f), log=self.log)]
             counts = {}
 
             for file in htseq_files:

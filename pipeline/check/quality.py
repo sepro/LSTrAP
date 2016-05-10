@@ -3,7 +3,7 @@ import sys
 __bad_fields = ['no_feature', 'ambiguous', 'too_low_aQual', 'not_aligned', 'alignment_not_unique']
 
 
-def htseq_count_quality(filename, cutoff=1):
+def htseq_count_quality(filename, cutoff=1, log=None):
     print("checking quality of htseq-count")
     values = []
     total_count = 0
@@ -20,6 +20,13 @@ def htseq_count_quality(filename, cutoff=1):
         return False
 
     values.sort(reverse=True)
+
+    if log is not None:
+        current_count = 0
+        for e, v in enumerate(values, start=1):
+            current_count += v
+            if current_count > total_count / 2:
+                print('N50 found', e, file=log)
 
     current_count = 0
     for e, v in enumerate(values, start=1):

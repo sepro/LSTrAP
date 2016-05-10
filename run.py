@@ -15,7 +15,7 @@ def run_pipeline(args):
     """
     if check_sanity_config(args.config) and check_sanity_data(args.data):
         if args.transcriptomics:
-            tp = TranscriptomePipeline(args.config, args.data)
+            tp = TranscriptomePipeline(args.config, args.data, enable_log=args.enable_log)
 
             if args.bowtie_build:
                 tp.prepare_genome()
@@ -79,6 +79,9 @@ if __name__ == "__main__":
 
     parser.add_argument('--skip-interpro', dest='interpro', action='store_false', help='add --skip-interpro to skip the entire interproscan step')
 
+    parser.add_argument('--enable-log', dest='enable_log', action='store_true',
+                        help='add --enable-log to write additional statistics.')
+
     parser.set_defaults(transcriptomics=True)
 
     parser.set_defaults(bowtie_build=True)
@@ -89,6 +92,8 @@ if __name__ == "__main__":
     parser.set_defaults(exp_matrix=True)
 
     parser.set_defaults(interpro=True)
+
+    parser.set_defaults(enable_log=False)
 
     # Parse arguments and start pipeline
     args = parser.parse_args()
