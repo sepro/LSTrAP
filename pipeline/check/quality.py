@@ -27,7 +27,7 @@ def htseq_count_quality(filename, cutoff=1, log=None):
         for e, v in enumerate(values, start=1):
             current_count += v
             if current_count > total_count / 2:
-                print('N50 found', e, file=log)
+                print('N50 for', filename, ':', e, file=log)
                 break
 
     current_count = 0
