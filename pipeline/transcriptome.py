@@ -313,6 +313,11 @@ class TranscriptomePipeline(PipelineBase):
             print("Done\n\n")
 
     def normalize_rpkm(self):
+        """
+        Applies rpkm normalization to the htseq-counts expression matrix
+
+        Note that as this is not a cpu intensive process it is done as part of the main pipeline
+        """
         for g in self.genomes:
             data, conditions = read_matrix(self.dp[g]['exp_matrix_output'])
             normalized_data = normalize_matrix_counts(data, conditions)
@@ -320,17 +325,71 @@ class TranscriptomePipeline(PipelineBase):
             write_matrix(self.dp[g]['exp_matrix_rpkm_output'], conditions, length_normalized_data)
 
     def normalize_tpm(self):
+        """
+        Applies tpm normalization to the htseq-counts expression matrix
+
+        Note that as this is not a cpu intensive process it is done as part of the main pipeline
+        """
         for g in self.genomes:
             data, conditions = read_matrix(self.dp[g]['exp_matrix_output'])
             length_normalized_data = normalize_matrix_length(data, self.dp[g]['cds_fasta'])
             normalized_data = normalize_matrix_counts(length_normalized_data, conditions)
             write_matrix(self.dp[g]['exp_matrix_tpm_output'], conditions, normalized_data)
 
+    def run_pcc(self, matrix_type='tpm'):
+        filename, jobname = self.write_submission_script("pcc_wrapper_%d",
+                                                         self.python3_module,
+                                                         self.pcc_cmd,
+                                                         "pcc_wrapper_%d.sh")
+
+        for g in self.genomes:
+            pcc_out = self.dp[g]['pcc_output']
+            mcl_out = self.dp[g]['pcc_mcl_output']
+
+            if matrix_type == 'tpm':
+                htseq_matrix = self.dp[g]['exp_matrix_tpm_output']
+            elif matrix_type == 'rpkm':
+                htseq_matrix = self.dp[g]['exp_matrix_rpkm_output']
+            else:
+                print('Matrix type %s unknown, quiting...' % matrix_type)
+                quit()
+
+            subprocess.call(["qsub", "-v", "in=%s,out=%s,mcl_out=%s" % (htseq_matrix, pcc_out, mcl_out), filename])
+
+        # wait for all jobs to complete
+        wait_for_job(jobname, sleep_time=1)
+
+        # remove the submission script
+        os.remove(filename)
+
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
+
+        print("Done\n\n")
+
+    def cluster_pcc(self):
+        filename, jobname = self.write_submission_script("cluster_pcc_%d",
+                                                         self.mcl_module,
+                                                         self.mcl_cmd,
+                                                         "cluster_pcc_%d.sh")
+
+        for g in self.genomes:
+            # TODO naming convention here is confusing, improve this !
+            mcl_out = self.dp[g]['pcc_mcl_output']
+            mcl_clusters = self.dp[g]['mcl_cluster_output']
+
+            subprocess.call(["qsub", "-v", "in=%s,out=%s" % (mcl_out, mcl_clusters), filename])
 
 
+        # wait for all jobs to complete
+        wait_for_job(jobname, sleep_time=1)
 
+        # remove the submission script
+        os.remove(filename)
 
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
 
-
+        print("Done\n\n")
 
 

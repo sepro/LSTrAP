@@ -48,6 +48,16 @@ def run_pipeline(args):
                 tp.normalize_tpm()
             else:
                 print("Skipping expression matrix", file=sys.stderr)
+
+            if args.pcc:
+                tp.run_pcc()
+            else:
+                print("Skipping PCC calculations", file=sys.stderr)
+
+            if args.mcl:
+                tp.cluster_pcc()
+            else:
+                print("Skipping MCL clustering of PCC values", file=sys.stderr)
         else:
             print("Skipping transcriptomics", file=sys.stderr)
 
@@ -76,6 +86,8 @@ if __name__ == "__main__":
     parser.add_argument('--skip-samtools', dest='samtools', action='store_false', help='add --skip-samtools to skip bam to sam conversion using samtools')
     parser.add_argument('--skip-htseq', dest='htseq', action='store_false', help='add --skip-htseq to skip counting reads per gene with htseq-count')
     parser.add_argument('--skip-exp-matrix', dest='exp_matrix', action='store_false', help='add --skip-exp-matrix to skip converting htseq files to an expression matrix')
+    parser.add_argument('--skip-pcc', dest='pcc', action='store_false', help='add --skip-pcc to skip calculating PCC values')
+    parser.add_argument('--skip-mcl', dest='mcl', action='store_false', help='add --skip-mcl to skip clustering PCC values using MCL')
 
     parser.add_argument('--skip-interpro', dest='interpro', action='store_false', help='add --skip-interpro to skip the entire interproscan step')
 
@@ -90,6 +102,8 @@ if __name__ == "__main__":
     parser.set_defaults(samtools=True)
     parser.set_defaults(htseq=True)
     parser.set_defaults(exp_matrix=True)
+    parser.set_defaults(pcc=True)
+    parser.set_defaults(mcl=True)
 
     parser.set_defaults(interpro=True)
 

@@ -22,7 +22,9 @@ class PipelineBase:
         self.tophat_module = '' if self.cp['TOOLS']['tophat_module'] is 'None' else self.cp['TOOLS']['tophat_module']
         self.samtools_module = None if self.cp['TOOLS']['samtools_module'] is 'None' else self.cp['TOOLS']['samtools_module']
         self.python_module = None if self.cp['TOOLS']['python_module'] is 'None' else self.cp['TOOLS']['python_module']
+        self.python3_module = None if self.cp['TOOLS']['python3_module'] is 'None' else self.cp['TOOLS']['python3_module']
         self.interproscan_module = None if self.cp['TOOLS']['interproscan_module'] is 'None' else self.cp['TOOLS']['interproscan_module']
+        self.mcl_module = None if self.cp['TOOLS']['mcl_module'] is 'None' else self.cp['TOOLS']['mcl_module']
 
         self.bowtie_build_cmd = self.cp['TOOLS']['bowtie_cmd']
         self.trimmomatic_se_cmd = self.cp['TOOLS']['trimmomatic_se_command']
@@ -32,6 +34,9 @@ class PipelineBase:
         self.samtools_cmd = self.cp['TOOLS']['samtools_cmd']
         self.htseq_count_cmd = self.cp['TOOLS']['htseq_count_cmd']
         self.interproscan_cmd = self.cp['TOOLS']['interproscan_cmd']
+
+        self.pcc_cmd = self.cp['TOOLS']['pcc_cmd']
+        self.mcl_cmd = self.cp['TOOLS']['mcl_cmd']
 
         self.genomes = self.dp['GLOBAL']['genomes'].split(';')
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
