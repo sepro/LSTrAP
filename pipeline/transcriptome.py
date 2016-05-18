@@ -378,8 +378,7 @@ class TranscriptomePipeline(PipelineBase):
             mcl_out = self.dp[g]['pcc_mcl_output']
             mcl_clusters = self.dp[g]['mcl_cluster_output']
 
-            subprocess.call(["qsub", "-v", "in=%s,out=%s" % (mcl_out, mcl_clusters), filename])
-
+            subprocess.call(["qsub", "-pe", "cores", "4", "-v", "in=%s,out=%s" % (mcl_out, mcl_clusters), filename])
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
