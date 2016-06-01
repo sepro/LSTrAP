@@ -294,6 +294,7 @@ class TranscriptomePipeline(PipelineBase):
                         counts[gene_id][file] = count
 
             output_file = self.dp[g]['exp_matrix_output']
+            os.makedirs(os.path.dirname(htseq_output), exist_ok=True)
             with open(output_file, "w") as f_out:
 
                 header = '\t'.join(htseq_files)
@@ -322,6 +323,7 @@ class TranscriptomePipeline(PipelineBase):
             data, conditions = read_matrix(self.dp[g]['exp_matrix_output'])
             normalized_data = normalize_matrix_counts(data, conditions)
             length_normalized_data = normalize_matrix_length(normalized_data, self.dp[g]['cds_fasta'])
+            os.makedirs(os.path.dirname(self.dp[g]['exp_matrix_rpkm_output']), exist_ok=True)
             write_matrix(self.dp[g]['exp_matrix_rpkm_output'], conditions, length_normalized_data)
 
     def normalize_tpm(self):
@@ -334,6 +336,7 @@ class TranscriptomePipeline(PipelineBase):
             data, conditions = read_matrix(self.dp[g]['exp_matrix_output'])
             length_normalized_data = normalize_matrix_length(data, self.dp[g]['cds_fasta'])
             normalized_data = normalize_matrix_counts(length_normalized_data, conditions)
+            os.makedirs(os.path.dirname(self.dp[g]['exp_matrix_rpkm_output']), exist_ok=True)
             write_matrix(self.dp[g]['exp_matrix_tpm_output'], conditions, normalized_data)
 
     def run_pcc(self, matrix_type='tpm'):
@@ -345,6 +348,9 @@ class TranscriptomePipeline(PipelineBase):
         for g in self.genomes:
             pcc_out = self.dp[g]['pcc_output']
             mcl_out = self.dp[g]['pcc_mcl_output']
+
+            os.makedirs(os.path.dirname(self.dp[g]['pcc_output']), exist_ok=True)
+            os.makedirs(os.path.dirname(self.dp[g]['pcc_mcl_output']), exist_ok=True)
 
             if matrix_type == 'tpm':
                 htseq_matrix = self.dp[g]['exp_matrix_tpm_output']
