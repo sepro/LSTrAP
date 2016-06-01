@@ -294,7 +294,7 @@ class TranscriptomePipeline(PipelineBase):
                         counts[gene_id][file] = count
 
             output_file = self.dp[g]['exp_matrix_output']
-            os.makedirs(os.path.dirname(htseq_output), exist_ok=True)
+            os.makedirs(os.path.dirname(output_file), exist_ok=True)
             with open(output_file, "w") as f_out:
 
                 header = '\t'.join(htseq_files)
