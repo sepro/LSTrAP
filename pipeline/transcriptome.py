@@ -124,9 +124,12 @@ class TranscriptomePipeline(PipelineBase):
 
         print("Done\n\n")
 
-    def run_tophat(self, overwrite=False):
+    def run_tophat(self, overwrite=False, keep_previous=False):
         """
         Maps the reads from the trimmed fastq files to the bowtie-indexed genome
+
+        :param overwrite: when true the pipeline will start tophat even if the output exists
+        :param keep_previous: when true trimmed fastq files will not be removed after tophat completes
         """
         filename_se, jobname = self.write_submission_script("tophat_%d",
                                                             self.bowtie_module + ' ' + self.tophat_module,
@@ -185,6 +188,13 @@ class TranscriptomePipeline(PipelineBase):
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
 
+        # remove all trimmed fastq files when keep_previous is disabled
+        if not keep_previous:
+            for g in self.genomes:
+                trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
+                for file in os.listdir(trimmed_fastq_dir):
+                    os.remove(file)
+
         # remove the submission script
         os.remove(filename_se)
         os.remove(filename_pe)
@@ -194,9 +204,11 @@ class TranscriptomePipeline(PipelineBase):
 
         print("Done\n\n")
 
-    def run_samtools(self):
+    def run_samtools(self, keep_previous=False):
         """
         Convert tophat output (bam file) to sam file
+
+        :param keep_previous: when true trimmed tophat output will not be removed after samtools completes
         """
         filename, jobname = self.write_submission_script("samtools_%d",
                                                          self.samtools_module,
@@ -219,6 +231,16 @@ class TranscriptomePipeline(PipelineBase):
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
 
+        # remove all tophat files files when keep_previous is disabled
+        # NOTE: only the large bam file is removed (for now)
+        if not keep_previous:
+            for g in self.genomes:
+                tophat_output = self.dp[g]['tophat_output']
+                dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
+                for d in dirs:
+                    bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
+                    os.remove(bam_file)
+
         # remove the submission script
         os.remove(filename)
 
@@ -227,9 +249,11 @@ class TranscriptomePipeline(PipelineBase):
 
         print("Done\n\n")
 
-    def run_htseq_count(self):
+    def run_htseq_count(self, keep_previous=False):
         """
         Based on the gff file and sam file counts the number of reads that map to a given gene
+
+        :param keep_previous: when true sam files output will not be removed after htseq-count completes
         """
         filename, jobname = self.write_submission_script("htseq_count_%d",
                                                          self.python_module,
@@ -259,6 +283,14 @@ class TranscriptomePipeline(PipelineBase):
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
+
+        # remove all sam files files when keep_previous is disabled
+        if not keep_previous:
+            for g in self.genomes:
+                samtools_output = self.dp[g]['samtools_output']
+                for file in os.listdir(samtools_output):
+                    if file.endswith('.sam'):
+                        os.remove(file)
 
         # remove the submission script
         os.remove(filename)

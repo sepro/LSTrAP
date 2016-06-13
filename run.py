@@ -28,17 +28,17 @@ def run_pipeline(args):
                 print("Skipping Trimmomatic", file=sys.stderr)
 
             if args.tophat:
-                tp.run_tophat()
+                tp.run_tophat(keep_previous=args.keep_previous)
             else:
                 print("Skipping Tophat", file=sys.stderr)
 
             if args.samtools:
-                tp.run_samtools()
+                tp.run_samtools(keep_previous=args.keep_previous)
             else:
                 print("Skipping Samtools", file=sys.stderr)
 
             if args.htseq:
-                tp.run_htseq_count()
+                tp.run_htseq_count(keep_previous=args.keep_previous)
             else:
                 print("Skipping htseq-counts", file=sys.stderr)
 
@@ -91,11 +91,15 @@ if __name__ == "__main__":
 
     parser.add_argument('--skip-interpro', dest='interpro', action='store_false', help='add --skip-interpro to skip the entire interproscan step')
 
+    parser.add_argument('--keep-intermediate', dest='keep_intermediate', action='store_true', help='add --keep-intermediate to prevent the pipeline from removing finished steps')
     parser.add_argument('--enable-log', dest='enable_log', action='store_true',
                         help='add --enable-log to write additional statistics.')
 
+    # Flags for the big sections of the pipeline
     parser.set_defaults(transcriptomics=True)
+    parser.set_defaults(interpro=True)
 
+    # Flags for individual tools for transcriptomics
     parser.set_defaults(bowtie_build=True)
     parser.set_defaults(trim_fastq=True)
     parser.set_defaults(tophat=True)
@@ -104,8 +108,6 @@ if __name__ == "__main__":
     parser.set_defaults(exp_matrix=True)
     parser.set_defaults(pcc=True)
     parser.set_defaults(mcl=True)
-
-    parser.set_defaults(interpro=True)
 
     parser.set_defaults(enable_log=False)
 
