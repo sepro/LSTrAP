@@ -303,7 +303,6 @@ class TranscriptomePipeline(PipelineBase):
     def htseq_to_matrix(self):
         """
         Groups all htseq files into one expression matrix
-
         """
         for g in self.genomes:
             htseq_output = self.dp[g]['htseq_output']
@@ -372,6 +371,11 @@ class TranscriptomePipeline(PipelineBase):
             write_matrix(self.dp[g]['exp_matrix_tpm_output'], conditions, normalized_data)
 
     def run_pcc(self, matrix_type='tpm'):
+        """
+        Calculates pcc values on the cluster using the pcc.py script included in RSTrAP.
+
+        :param matrix_type: tpm or rpkm, select the desired matrix
+        """
         filename, jobname = self.write_submission_script("pcc_wrapper_%d",
                                                          self.python3_module,
                                                          self.pcc_cmd,
@@ -406,6 +410,9 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def cluster_pcc(self):
+        """
+        Creates co-expression clusters using mcl.
+        """
         filename, jobname = self.write_submission_script("cluster_pcc_%d",
                                                          self.mcl_module,
                                                          self.mcl_cmd,
