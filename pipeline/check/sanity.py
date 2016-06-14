@@ -14,6 +14,9 @@ def check_sanity_data(filename):
     cp.read(filename)
 
     if 'GLOBAL' in cp:
+        if 'orthofinder_output' not in cp['GLOBAL']:
+            print('orthofinder_output missing', file=sys.stderr)
+
         if 'genomes' in cp['GLOBAL']:
             genomes = cp['GLOBAL']['genomes'].split(';')
             # For each genome test that section
@@ -60,7 +63,7 @@ def check_sanity_config(filename):
     required_keys = ['bowtie_module', 'samtools_module', 'sratoolkit_module', 'tophat_module', 'interproscan_module',
                      'blast_module', 'mcl_module', 'python_module', 'python3_module', 'bowtie_cmd', 'trimmomatic_se_command',
                      'trimmomatic_pe_command', 'tophat_se_cmd', 'tophat_pe_cmd', 'samtools_cmd', 'htseq_count_cmd',
-                     'interproscan_cmd', 'pcc_cmd', 'mcl_cmd']
+                     'interproscan_cmd', 'pcc_cmd', 'mcl_cmd', 'orthofinder_cmd', 'orthofinder_cores']
 
     if 'TOOLS' in cp:
         if not all(k in cp['TOOLS'].keys() for k in required_keys):
