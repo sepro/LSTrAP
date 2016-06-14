@@ -5,6 +5,7 @@ import sys
 from pipeline.check.sanity import check_sanity_config, check_sanity_data
 from pipeline.interpro import InterProPipeline
 from pipeline.transcriptome import TranscriptomePipeline
+from pipeline.orthology import OrthologyPipeline
 
 
 def run_pipeline(args):
@@ -61,11 +62,19 @@ def run_pipeline(args):
         else:
             print("Skipping transcriptomics", file=sys.stderr)
 
+        # Run InterPro Section
         if args.interpro:
             ip = InterProPipeline(args.config, args.data)
             ip.run_interproscan()
         else:
             print("Skipping Interpro", file=sys.stderr)
+
+        # Run Orthology Section
+        if args.orthology:
+            op = OrthologyPipeline(args.config, args.data)
+            op.run_orthofinder()
+        else:
+            print("Skipping Orthology", file=sys.stderr)
 
     else:
         print("Sanity check failed, cannot start pipeline", file=sys.stderr)
@@ -90,6 +99,7 @@ if __name__ == "__main__":
     parser.add_argument('--skip-mcl', dest='mcl', action='store_false', help='add --skip-mcl to skip clustering PCC values using MCL')
 
     parser.add_argument('--skip-interpro', dest='interpro', action='store_false', help='add --skip-interpro to skip the entire interproscan step')
+    parser.add_argument('--skip-orthology', dest='orthology', action='store_false', help='add --skip-orthology to skip orthofinder')
 
     parser.add_argument('--keep-intermediate', dest='keep_intermediate', action='store_true', help='add --keep-intermediate to prevent the pipeline from removing finished steps')
     parser.add_argument('--enable-log', dest='enable_log', action='store_true',
@@ -98,6 +108,7 @@ if __name__ == "__main__":
     # Flags for the big sections of the pipeline
     parser.set_defaults(transcriptomics=True)
     parser.set_defaults(interpro=True)
+    parser.set_defaults(orthology=True)
 
     # Flags for individual tools for transcriptomics
     parser.set_defaults(bowtie_build=True)

@@ -5,7 +5,7 @@ from cluster import wait_for_job
 
 from utils.parser.fasta import Fasta
 from math import ceil
-from pipeline.base import PipelineBase
+from .base import PipelineBase
 
 
 class InterProPipeline(PipelineBase):

@@ -3,8 +3,8 @@ import os
 
 from cluster import wait_for_job
 from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
-from pipeline.base import PipelineBase
-from pipeline.check.quality import htseq_count_quality
+from .base import PipelineBase
+from .check.quality import htseq_count_quality
 
 
 class TranscriptomePipeline(PipelineBase):
