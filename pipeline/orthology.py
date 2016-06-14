@@ -26,7 +26,7 @@ class OrthologyPipeline(PipelineBase):
                                                          "orthofinder_%d.sh")
 
         for g in self.genomes:
-            copyfile(self.dp[g]['protein_fasta'], orthofinder_dir)
+            copyfile(self.dp[g]['protein_fasta'], os.path.join(orthofinder_dir, g + '.fasta'))
 
         subprocess.call(["qsub", "-pe", "cores", orthofinder_cores, "-v", "fasta_dir=" + orthofinder_dir + ",num_cores=" + orthofinder_cores, filename])
 
