@@ -28,7 +28,7 @@ class OrthologyPipeline(PipelineBase):
         for g in self.genomes:
             copyfile(self.dp[g]['protein_fasta'], orthofinder_dir)
 
-        subprocess.call(["qsub", "-v", "fasta_dir=" + orthofinder_dir + ",num_cores=" + orthofinder_cores, filename])
+        subprocess.call(["qsub", "-pe", "cores", orthofinder_cores, "-v", "fasta_dir=" + orthofinder_dir + ",num_cores=" + orthofinder_cores, filename])
 
          # wait for all jobs to complete
         wait_for_job(jobname)
