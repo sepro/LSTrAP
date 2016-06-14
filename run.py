@@ -28,17 +28,17 @@ def run_pipeline(args):
                 print("Skipping Trimmomatic", file=sys.stderr)
 
             if args.tophat:
-                tp.run_tophat(keep_previous=args.keep_previous)
+                tp.run_tophat(keep_previous=args.keep_intermediate)
             else:
                 print("Skipping Tophat", file=sys.stderr)
 
             if args.samtools:
-                tp.run_samtools(keep_previous=args.keep_previous)
+                tp.run_samtools(keep_previous=args.keep_intermediate)
             else:
                 print("Skipping Samtools", file=sys.stderr)
 
             if args.htseq:
-                tp.run_htseq_count(keep_previous=args.keep_previous)
+                tp.run_htseq_count(keep_previous=args.keep_intermediate)
             else:
                 print("Skipping htseq-counts", file=sys.stderr)
 
