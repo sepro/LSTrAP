@@ -193,7 +193,7 @@ class TranscriptomePipeline(PipelineBase):
             for g in self.genomes:
                 trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
                 for file in os.listdir(trimmed_fastq_dir):
-                    os.remove(file)
+                    os.remove(os.path.join(trimmed_fastq_dir, file))
 
         # remove the submission script
         os.remove(filename_se)
@@ -290,7 +290,7 @@ class TranscriptomePipeline(PipelineBase):
                 samtools_output = self.dp[g]['samtools_output']
                 for file in os.listdir(samtools_output):
                     if file.endswith('.sam'):
-                        os.remove(file)
+                        os.remove(os.path.join(samtools_output, file))
 
         # remove the submission script
         os.remove(filename)
