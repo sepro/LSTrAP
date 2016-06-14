@@ -18,6 +18,7 @@ class PipelineBase:
         self.dp = configparser.ConfigParser()
         self.dp.read(data)
 
+        self.blast_module = None if self.cp['TOOLS']['blast_module'] is 'None' else self.cp['TOOLS']['blast_module']
         self.bowtie_module = None if self.cp['TOOLS']['bowtie_module'] is 'None' else self.cp['TOOLS']['bowtie_module']
         self.tophat_module = '' if self.cp['TOOLS']['tophat_module'] is 'None' else self.cp['TOOLS']['tophat_module']
         self.samtools_module = None if self.cp['TOOLS']['samtools_module'] is 'None' else self.cp['TOOLS']['samtools_module']
@@ -34,6 +35,7 @@ class PipelineBase:
         self.samtools_cmd = self.cp['TOOLS']['samtools_cmd']
         self.htseq_count_cmd = self.cp['TOOLS']['htseq_count_cmd']
         self.interproscan_cmd = self.cp['TOOLS']['interproscan_cmd']
+        self.orthofinder_cmd = self.cp['TOOLS']['orthofinder_cmd']
 
         self.pcc_cmd = self.cp['TOOLS']['pcc_cmd']
         self.mcl_cmd = self.cp['TOOLS']['mcl_cmd']
