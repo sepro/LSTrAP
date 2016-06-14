@@ -2,7 +2,7 @@ import configparser
 import time
 import os
 
-from ..cluster.templates import build_template, build_batch_template
+from cluster.templates import build_template, build_batch_template
 
 
 class PipelineBase:
