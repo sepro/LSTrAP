@@ -14,7 +14,7 @@ class OrthologyPipeline(PipelineBase):
         Runs orthofinder for all genomes
         """
         orthofinder_dir = self.dp['GLOBAL']['orthofinder_output']
-        orthofinder_cores = int(self.dp['GLOBAL']['orthofinder_cores'])
+        orthofinder_cores = self.cp['TOOLS']['orthofinder_cores']
 
         os.makedirs(os.path.dirname(orthofinder_dir), exist_ok=True)
 
