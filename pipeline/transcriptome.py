@@ -192,6 +192,9 @@ class TranscriptomePipeline(PipelineBase):
         if not keep_previous:
             for g in self.genomes:
                 trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
+                print(trimmed_fastq_dir)
+                files = os.listdir(trimmed_fastq_dir)
+                print(files)
                 for file in os.listdir(trimmed_fastq_dir):
                     os.remove(os.path.join(trimmed_fastq_dir, file))
 
