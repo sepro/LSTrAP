@@ -73,8 +73,9 @@ def pcc(filename, output, mcl_output):
             fout.writelines(gene + ": " + '\t'.join([s['string'] for s in subset]) + "\n")
 
             for s in subset:
+                # Keep scores > 0.7 substract 0.7 from result to remap values to [0,0.3] as this is important for mcl
                 if s['score'] > 0.7:
-                    print(gene, s['gene'], s['score'], sep='\t', file=mcl_out)
+                    print(gene, s['gene'], s['score'] - 0.7, sep='\t', file=mcl_out)
 
     print("PCCs calculated and saved as %s and %s." % (output, mcl_output), file=sys.stderr)
 
