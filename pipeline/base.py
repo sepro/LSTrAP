@@ -39,6 +39,7 @@ class PipelineBase:
 
         self.pcc_cmd = self.cp['TOOLS']['pcc_cmd']
         self.mcl_cmd = self.cp['TOOLS']['mcl_cmd']
+        self.mcxdeblast_cmd = self.cp['TOOLS']['mcxdeblast_cmd']
 
         self.genomes = self.dp['GLOBAL']['genomes'].split(';')
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
