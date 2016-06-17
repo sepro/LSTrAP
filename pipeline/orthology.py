@@ -83,6 +83,20 @@ class OrthologyPipeline(PipelineBase):
         # wait for all jobs to complete
         wait_for_job(jobname)
 
+        id_conversion = {}
+        with open(os.path.join(working_dir, 'SequenceIDs.txt')) as infile:
+            for line in infile:
+                parts = line.strip().split()
+                id = parts[0].strip(':')
+                gene = parts[1]
+
+                id_conversion[id] = gene
+
+        with open(mcl_families_out, 'r') as infile, open(os.path.join(orthofinder_dir, 'mcl_families.processed.txt')) as outfile:
+            for l in mcl_families_out:
+                parts = [id_conversion[id] if id in id_conversion.keys() else '!error!' for id in l.strip.split()]
+                print('\t'.join(parts), outfile)
+
         # remove the submission script
         os.remove(filename)
 
