@@ -74,7 +74,7 @@ class OrthologyPipeline(PipelineBase):
                                                          self.mcl_cmd,
                                                          "mcl_%d.sh")
         # submit job
-        subprocess.call(["qsub", "-pe", "cores", 4,
+        subprocess.call(["qsub", "-pe", "cores", "4",
                          "-v", "blast_in=" + full_blast +
                          ",abc_out=" + full_blast_abc +
                          ",in=" + full_blast_abc +
