@@ -92,7 +92,7 @@ class OrthologyPipeline(PipelineBase):
 
                 id_conversion[id] = gene
 
-        with open(mcl_families_out, 'r') as infile, open(os.path.join(orthofinder_dir, 'mcl_families.processed.txt')) as outfile:
+        with open(mcl_families_out, 'r') as infile, open(os.path.join(orthofinder_dir, 'mcl_families.processed.txt'), 'w') as outfile:
             for l in infile:
                 parts = [id_conversion[id] if id in id_conversion.keys() else '!error!' for id in l.strip.split()]
                 print('\t'.join(parts), outfile)
