@@ -72,7 +72,7 @@ def run_pipeline(args):
         # Run Orthology Section
         if args.orthology:
             op = OrthologyPipeline(args.config, args.data)
-            if args.ortofinder:
+            if args.orthofinder:
                 op.run_orthofinder()
 
             if args.mcl_families:
