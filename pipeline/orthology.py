@@ -58,18 +58,29 @@ class OrthologyPipeline(PipelineBase):
         # Concatenate OrthoFinder blast files
         working_dir = os.path.join(orthofinder_dir, orthofinder_results_dir, 'WorkingDirectory')
         orthofinder_blast_files = list(filter(lambda x: x.startswith('Blast'), os.listdir(working_dir)))
+        full_blast = os.path.join(working_dir, 'full_blast.out')
+        full_blast_abc = os.path.join(working_dir, 'full_blast.abc')
+        mcl_families_out = os.path.join(orthofinder_dir, 'mcl_families.unprocessed.txt')
 
-
+        with open(full_blast, 'w') as outfile:
+            for fname in orthofinder_blast_files:
+                with open(fname) as infile:
+                    for line in infile:
+                        outfile.write(line)
 
         filename, jobname = self.write_submission_script("mcl_%d",
                                                          self.mcl_module,
                                                          self.mcxdeblast_cmd + '\n' +
                                                          self.mcl_cmd,
                                                          "mcl_%d.sh")
+        # submit job
+        subprocess.call(["qsub", "-pe", "cores", 4,
+                         "-v", "blast_in=" + full_blast +
+                         ",abc_out=" + full_blast_abc +
+                         ",in=" + full_blast_abc +
+                         ",out=" + mcl_families_out, filename])
 
-
-
-         # wait for all jobs to complete
+        # wait for all jobs to complete
         wait_for_job(jobname)
 
         # remove the submission script

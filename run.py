@@ -72,7 +72,11 @@ def run_pipeline(args):
         # Run Orthology Section
         if args.orthology:
             op = OrthologyPipeline(args.config, args.data)
-            op.run_orthofinder()
+            if args.ortofinder:
+                op.run_orthofinder()
+
+            if args.mcl_families:
+                op.run_mcl()
         else:
             print("Skipping Orthology", file=sys.stderr)
 
@@ -88,6 +92,8 @@ if __name__ == "__main__":
 
     # Optional arguments
     parser.add_argument('--skip-transcriptomics', dest='transcriptomics', action='store_false', help='add --skip-transcriptomics to skip the entire transcriptome step')
+    parser.add_argument('--skip-interpro', dest='interpro', action='store_false', help='add --skip-interpro to skip the entire interproscan step')
+    parser.add_argument('--skip-orthology', dest='orthology', action='store_false', help='add --skip-orthology to skip orthofinder')
 
     parser.add_argument('--skip-bowtie-build', dest='bowtie_build', action='store_false', help='add --skip-bowtie-build to skip the step that indexes the genomes using bowtie-build')
     parser.add_argument('--skip-trim-fastq', dest='trim_fastq', action='store_false', help='add --skip-trim-fastq to skip trimming fastq files using trimmomatic')
@@ -98,8 +104,8 @@ if __name__ == "__main__":
     parser.add_argument('--skip-pcc', dest='pcc', action='store_false', help='add --skip-pcc to skip calculating PCC values')
     parser.add_argument('--skip-mcl', dest='mcl', action='store_false', help='add --skip-mcl to skip clustering PCC values using MCL')
 
-    parser.add_argument('--skip-interpro', dest='interpro', action='store_false', help='add --skip-interpro to skip the entire interproscan step')
-    parser.add_argument('--skip-orthology', dest='orthology', action='store_false', help='add --skip-orthology to skip orthofinder')
+    parser.add_argument('--skip-orthofinder', dest='orthofinder', action='store_false', help='add --skip-orthofinder to skip the orthology detection')
+    parser.add_argument('--skip-mcl-families', dest='mcl_families', action='store_false', help='add --skip-mcl to skip clustering blast with MCL')
 
     parser.add_argument('--keep-intermediate', dest='keep_intermediate', action='store_true', help='add --keep-intermediate to prevent the pipeline from removing finished steps')
     parser.add_argument('--enable-log', dest='enable_log', action='store_true',
@@ -119,6 +125,9 @@ if __name__ == "__main__":
     parser.set_defaults(exp_matrix=True)
     parser.set_defaults(pcc=True)
     parser.set_defaults(mcl=True)
+
+    parser.set_defaults(orthofinder=True)
+    parser.set_defaults(mcl_families=True)
 
     parser.set_defaults(enable_log=False)
 
