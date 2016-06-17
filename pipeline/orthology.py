@@ -64,7 +64,7 @@ class OrthologyPipeline(PipelineBase):
 
         with open(full_blast, 'w') as outfile:
             for fname in orthofinder_blast_files:
-                with open(fname) as infile:
+                with open(os.path.join(working_dir, fname)) as infile:
                     for line in infile:
                         outfile.write(line)
 
