@@ -211,8 +211,7 @@ class TranscriptomePipeline(PipelineBase):
         :param keep_previous: when true sam files output will not be removed after htseq-count completes
         """
         filename, jobname = self.write_submission_script("htseq_count_%d",
-                                                         self.samtools_module,
-                                                         self.python_module,
+                                                         (self.samtools_module + '\t' + self.python_module),
                                                          self.htseq_count_cmd,
                                                          "htseq_count_%d.sh")
 
