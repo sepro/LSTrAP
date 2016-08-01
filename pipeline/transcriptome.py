@@ -261,6 +261,7 @@ class TranscriptomePipeline(PipelineBase):
                                                          "htseq_count_%d.sh")
 
         for g in self.genomes:
+            tophat_output = self.dp[g]['tophat_output']
             samtools_output = self.dp[g]['samtools_output']
             htseq_output = self.dp[g]['htseq_output']
             os.makedirs(htseq_output, exist_ok=True)
@@ -269,28 +270,30 @@ class TranscriptomePipeline(PipelineBase):
             gff_feature = self.dp[g]['gff_feature']
             gff_id = self.dp[g]['gff_id']
 
-            sam_files = []
+            dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
+            bam_files = []
+            for d in dirs:
+                bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
+                if os.path.exists(bam_file):
+                    bam_files.append((d, bam_file))
 
-            for file in os.listdir(samtools_output):
-                if file.endswith('.sam'):
-                    sam_files.append(file)
+            for d, bam_file in bam_files:
+                htseq_out = os.path.join(htseq_output, d + '.htseq')
 
-            for sam_file in sam_files:
-                sam_in = os.path.join(samtools_output, sam_file)
-                htseq_out = os.path.join(htseq_output, sam_file.replace('.sam', '.htseq'))
-
-                subprocess.call(["qsub", "-v", "feature=%s,field=%s,sam=%s,gff=%s,out=%s" % (gff_feature, gff_id, sam_in, gff_file, htseq_out), filename])
+                # subprocess.call(["qsub", "-v", "feature=%s,field=%s,sam=%s,gff=%s,out=%s" % (gff_feature, gff_id, sam_in, gff_file, htseq_out), filename])
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
 
-        # remove all sam files files when keep_previous is disabled
+        # remove all tophat files files when keep_previous is disabled
+        # NOTE: only the large bam file is removed (for now)
         if not keep_previous:
             for g in self.genomes:
-                samtools_output = self.dp[g]['samtools_output']
-                for file in os.listdir(samtools_output):
-                    if file.endswith('.sam'):
-                        os.remove(os.path.join(samtools_output, file))
+                tophat_output = self.dp[g]['tophat_output']
+                dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
+                for d in dirs:
+                    bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
+                    os.remove(bam_file)
 
         # remove the submission script
         os.remove(filename)
