@@ -21,7 +21,7 @@ def check_sanity_data(filename):
             genomes = cp['GLOBAL']['genomes'].split(';')
             # For each genome test that section
             required_keys = ['cds_fasta', 'protein_fasta', 'genome_fasta', 'gff_file', 'gff_feature', 'gff_id',
-                             'fastq_dir', 'bowtie_output', 'trimmomatic_output', 'tophat_output', 'samtools_output',
+                             'fastq_dir', 'bowtie_output', 'trimmomatic_output', 'tophat_output',
                              'htseq_output', 'exp_matrix_output', 'exp_matrix_tpm_output', 'exp_matrix_rpkm_output',
                              'interpro_output', 'pcc_output', 'pcc_mcl_output', 'mcl_cluster_output']
             required_paths = ['cds_fasta', 'protein_fasta', 'genome_fasta', 'gff_file', 'fastq_dir']
@@ -62,7 +62,7 @@ def check_sanity_config(filename):
 
     required_keys = ['bowtie_module', 'samtools_module', 'sratoolkit_module', 'tophat_module', 'interproscan_module',
                      'blast_module', 'mcl_module', 'python_module', 'python3_module', 'bowtie_cmd', 'trimmomatic_se_command',
-                     'trimmomatic_pe_command', 'tophat_se_cmd', 'tophat_pe_cmd', 'samtools_cmd', 'htseq_count_cmd',
+                     'trimmomatic_pe_command', 'tophat_se_cmd', 'tophat_pe_cmd', 'htseq_count_cmd',
                      'interproscan_cmd', 'pcc_cmd', 'mcl_cmd', 'orthofinder_cmd', 'orthofinder_cores', 'mcxdeblast_cmd']
 
     if 'TOOLS' in cp:

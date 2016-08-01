@@ -204,51 +204,6 @@ class TranscriptomePipeline(PipelineBase):
 
         print("Done\n\n")
 
-    def run_samtools(self, keep_previous=False):
-        """
-        Convert tophat output (bam file) to sam file
-
-        :param keep_previous: when true trimmed tophat output will not be removed after samtools completes
-        """
-        filename, jobname = self.write_submission_script("samtools_%d",
-                                                         self.samtools_module,
-                                                         self.samtools_cmd,
-                                                         "samtools_%d.sh")
-
-        for g in self.genomes:
-            tophat_output = self.dp[g]['tophat_output']
-            samtools_output = self.dp[g]['samtools_output']
-            os.makedirs(samtools_output, exist_ok=True)
-
-            dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
-            for d in dirs:
-                bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
-                if os.path.exists(bam_file):
-                    sam_file = os.path.join(samtools_output, d + '.sam')
-                    print("Converting %s to %s" % (sam_file, bam_file))
-                    subprocess.call(["qsub", "-v", "out=%s,bam=%s" % (sam_file, bam_file), filename])
-
-        # wait for all jobs to complete
-        wait_for_job(jobname, sleep_time=1)
-
-        # remove all tophat files files when keep_previous is disabled
-        # NOTE: only the large bam file is removed (for now)
-        if not keep_previous:
-            for g in self.genomes:
-                tophat_output = self.dp[g]['tophat_output']
-                dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
-                for d in dirs:
-                    bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
-                    os.remove(bam_file)
-
-        # remove the submission script
-        os.remove(filename)
-
-        # remove OUT_ files
-        PipelineBase.clean_out_files(jobname)
-
-        print("Done\n\n")
-
     def run_htseq_count(self, keep_previous=False):
         """
         Based on the gff file and sam file counts the number of reads that map to a given gene
@@ -280,7 +235,7 @@ class TranscriptomePipeline(PipelineBase):
             for d, bam_file in bam_files:
                 htseq_out = os.path.join(htseq_output, d + '.htseq')
 
-                # subprocess.call(["qsub", "-v", "feature=%s,field=%s,sam=%s,gff=%s,out=%s" % (gff_feature, gff_id, sam_in, gff_file, htseq_out), filename])
+                subprocess.call(["qsub", "-v", "feature=%s,field=%s,bam=%s,gff=%s,out=%s" % (gff_feature, gff_id, bam_file, gff_file, htseq_out), filename])
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
