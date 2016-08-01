@@ -211,13 +211,13 @@ class TranscriptomePipeline(PipelineBase):
         :param keep_previous: when true sam files output will not be removed after htseq-count completes
         """
         filename, jobname = self.write_submission_script("htseq_count_%d",
+                                                         self.samtools_module,
                                                          self.python_module,
                                                          self.htseq_count_cmd,
                                                          "htseq_count_%d.sh")
 
         for g in self.genomes:
             tophat_output = self.dp[g]['tophat_output']
-            samtools_output = self.dp[g]['samtools_output']
             htseq_output = self.dp[g]['htseq_output']
             os.makedirs(htseq_output, exist_ok=True)
 
@@ -234,6 +234,7 @@ class TranscriptomePipeline(PipelineBase):
 
             for d, bam_file in bam_files:
                 htseq_out = os.path.join(htseq_output, d + '.htseq')
+                print(d, bam_file, htseq_out)
 
                 subprocess.call(["qsub", "-v", "feature=%s,field=%s,bam=%s,gff=%s,out=%s" % (gff_feature, gff_id, bam_file, gff_file, htseq_out), filename])
 
