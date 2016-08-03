@@ -26,7 +26,7 @@ for d in os.listdir(path=tophat_path):
         if os.path.exists(summary):
             # process summary file
             with open(summary) as f:
-                lines = '\t'.join(f.readlines().strip())
+                lines = '\t'.join(f.readlines())
                 print(lines)
                 hits = re_mapped.search(lines)
                 print(hits)
