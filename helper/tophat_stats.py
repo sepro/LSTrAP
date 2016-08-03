@@ -13,7 +13,7 @@ tophat_path = argv[1]
 values = defaultdict(list)
 
 # Prepare regex
-re_mapped = re.compile('Mapped   :(.*) of input\)')
+re_mapped = re.compile('Mapped   :\s+(\d+).* of input\)')
 
 # Get all directories in this path
 for d in os.listdir(path=tophat_path):
