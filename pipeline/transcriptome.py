@@ -258,6 +258,23 @@ class TranscriptomePipeline(PipelineBase):
 
         print("Done\n\n")
 
+    def check_quality(self):
+        for g in self.genomes:
+            tophat_output = self.dp[g]['tophat_output']
+            htseq_output = self.dp[g]['htseq_output']
+
+            dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
+            summary_files = []
+            for d in dirs:
+                summary_file = os.path.join(tophat_output, d, 'align_summary.txt')
+                if os.path.exists(summary_file):
+                    summary_files.append((d, summary_file))
+
+            htseq_files = [f for f in os.listdir(htseq_output) if f.endswith('.htseq')]
+
+
+        pass
+
     def htseq_to_matrix(self):
         """
         Groups all htseq files into one expression matrix
@@ -267,8 +284,7 @@ class TranscriptomePipeline(PipelineBase):
             os.makedirs(os.path.dirname(htseq_output), exist_ok=True)
 
             # Check directory for .htseq files and apply quality control, keep valid files
-            # TODO define proper cutoff
-            htseq_files = [f for f in os.listdir(htseq_output) if f.endswith('.htseq') and htseq_count_quality(os.path.join(htseq_output, f), log=self.log)]
+            htseq_files = [f for f in os.listdir(htseq_output) if f.endswith('.htseq')]
             counts = {}
 
             for file in htseq_files:

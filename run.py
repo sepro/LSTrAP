@@ -38,6 +38,8 @@ def run_pipeline(args):
             else:
                 print("Skipping htseq-counts", file=sys.stderr)
 
+            tp.check_quality()
+
             if args.exp_matrix:
                 tp.htseq_to_matrix()
                 tp.normalize_rpkm()

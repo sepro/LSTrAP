@@ -4,6 +4,15 @@ __bad_fields = ['no_feature', 'ambiguous', 'too_low_aQual', 'not_aligned', 'alig
 
 
 def htseq_count_quality(filename, cutoff=1, log=None):
+    """
+    UNUSED: Thes generated a N50 like metric (how many genes are responsable for 50 % of the transcripts). This doesn't
+    work for e.g. pollen
+
+    :param filename: htseq file to check
+    :param cutoff: cutoff value
+    :param log: file to print warnings to
+    :return: Boolean True is check is OK, False if not
+    """
     print("checking quality of htseq-count")
     values = []
     total_count = 0
@@ -44,7 +53,23 @@ def htseq_count_quality(filename, cutoff=1, log=None):
     return False
 
 
+def check_tophat(filename):
+    """
+    Checks the alignment summary of TopHat's output and returns the percentage of reads that map
+
+    :param filename: align_summary.txt to check
+    :return: percentage of reads that map
+    """
+
+    return 0
 
 
+def check_htseq(filename):
+    """
+    Checks the mapping statistics in htseq files how many reads map into coding sequences
 
+    :param filename: htseq file to check
+    :return: percentage of reads that map inside a genome
+    """
 
+    return 0
