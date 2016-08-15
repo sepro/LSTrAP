@@ -260,7 +260,7 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def check_quality(self):
-        print("Checking quality of samples based on TopHat mapping statistics")
+        print("Checking quality of samples based on TopHat and HTSEQ-Count mapping statistics")
         for g in self.genomes:
             tophat_output = self.dp[g]['tophat_output']
             htseq_output = self.dp[g]['htseq_output']
