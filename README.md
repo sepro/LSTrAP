@@ -46,6 +46,8 @@ Example config.ini:
 [TOOLS]
 ; In case there is no module load system on the system set the module name to None
 
+trimmomatic_path=/home/sepro/tools/Trimmomatic-0.36/trimmomatic-0.36.jar
+
 ; Module names
 bowtie_module=biotools/bowtie2-2.2.6
 samtools_module=biotools/samtools-1.3
@@ -62,8 +64,8 @@ python_module=devel/Python-2.7.10
 ; commands to run tools
 bowtie_cmd=bowtie2-build ${in} ${out}
 
-trimmomatic_se_command=java -jar /home/sepro/tools/Trimmomatic-0.36/trimmomatic-0.36.jar SE -threads 1  ${in} ${out}  ILLUMINACLIP:/home/sepro/tools/Trimmomatic-0.36/adapters/TruSeq3-SE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
-trimmomatic_pe_command=java -jar /home/sepro/tools/Trimmomatic-0.36/trimmomatic-0.36.jar PE -threads 1  ${ina} ${inb} ${outap} ${outau} ${outbp} ${outbu} ILLUMINACLIP:/home/sepro/tools/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+trimmomatic_se_command=java -jar ${jar} SE -threads 1  ${in} ${out}  ILLUMINACLIP:/home/sepro/tools/Trimmomatic-0.36/adapters/TruSeq3-SE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+trimmomatic_pe_command=java -jar ${jar} PE -threads 1  ${ina} ${inb} ${outap} ${outau} ${outbp} ${outbu} ILLUMINACLIP:/home/sepro/tools/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 
 tophat_se_cmd=tophat -p 3 -o ${out} ${genome} ${fq}
 tophat_pe_cmd=tophat -p 3 -o ${out} ${genome} ${forward},${reverse}
@@ -81,29 +83,43 @@ The location of your data needs to be defined in your data.ini file.
 Example data.ini file:
 ```ini
 [GLOBAL]
+; add all genomes, use semi-colons to separate multiple cfr. zma;ath
 genomes=zma
+
+; enter email to receive status updates from the cluster
+; setting the email to None will disable this
 email=None
 
+; orthofinder settings (runs on all species)
+orthofinder_output=./output/orthofinder
+
 [zma]
-cds_fasta=/scratch/sepro/RSTrAP/data/zma/Zea_mays.AGPv3.22.cdna.clean.all.fa
-genome_fasta=/scratch/sepro/RSTrAP/data/zma/Zea_mays.AGPv3.31.dna.genome.fa
-gff_file=/scratch/sepro/RSTrAP/data/zma/zea_mays.protein_coding.gff
-protein_fasta=/scratch/sepro/RSTrAP/data/zma/Zea_mays.AGPv3.22.pep.all.fa
+cds_fasta=
+protein_fasta=
+genome_fasta=
+gff_file=
 
 gff_feature=CDS
 gff_id=Parent
 
-fastq_dir=/scratch/sepro/RSTrAP/data/zma/fastq_test
+fastq_dir=./data/zma/fastq
 
-bowtie_output=/scratch/sepro/RSTrAP/output/bowtie/zma
-trimmomatic_output=/scratch/sepro/RSTrAP/output/zma/trimmed
-tophat_output=/scratch/sepro/RSTrAP/output/tophat/zma
-samtools_output=/scratch/sepro/RSTrAP/output/samtools/zma
-htseq_output=/scratch/sepro/RSTrAP/output/htseq/zma
-exp_matrix_output=/scratch/sepro/RSTrAP/output/htseq/zma.expression.matrix.txt
-exp_matrix_tpm_output=/scratch/sepro/RSTrAP/output/htseq/zma.expression.matrix.tpm.txt
-exp_matrix_rpkm_output=/scratch/sepro/RSTrAP/output
-interpro_output=/scratch/sepro/RSTrAP/output/interpro/zma
+tophat_cutoff=65
+htseq_cutoff=40
+
+bowtie_output=./output/bowtie-build/zma
+trimmomatic_output=./output/trimmed_fastq/zma
+tophat_output=./output/tophat/zma
+samtools_output=./output/samtools/zma
+htseq_output=./output/htseq/zma
+
+exp_matrix_output=./output/zma/exp_matrix.txt
+exp_matrix_tpm_output=./output/zma/exp_matrix.tpm.txt
+exp_matrix_rpkm_output=./output/zma/exp_matrix.rpkm.txt
+interpro_output=./output/interpro/zma
+
+pcc_output=./output/zma/pcc.std.txt
+pcc_mcl_output=./output/zma/pcc.mcl.txt
 ```
 
 ## Running RSTrAP

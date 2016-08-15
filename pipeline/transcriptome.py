@@ -95,21 +95,24 @@ class TranscriptomePipeline(PipelineBase):
                         outbu = os.path.join(trimmed_output, outbu)
                         if overwrite or not os.path.exists(outap):
                             print('Submitting pair %s, %s' % (file, pair_file))
-                            subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s" % (ina, inb, outap, outau, outbp, outbu), filename_pe])
+                            subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s,jar=%s" %
+                                             (ina, inb, outap, outau, outbp, outbu, self.trimmomatic_path), filename_pe])
                         else:
                             print('Found', outap, 'skipping')
                     else:
                         outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
                         if overwrite or not os.path.exists(os.path.join(trimmed_output, outfile)):
                             print('Submitting single %s' % file)
-                            subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile), filename_se])
+                            subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile) +
+                                                ",jar=" + self.trimmomatic_path, filename_se])
                         else:
                             print('Found', outfile, 'skipping')
                 else:
                     outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
                     if overwrite or not os.path.exists(os.path.join(trimmed_output, outfile)):
                         print('Submitting single %s' % file)
-                        subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile), filename_se])
+                        subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile) +
+                                         ",jar=" + self.trimmomatic_path, filename_se])
                     else:
                         print('Found', outfile, 'skipping')
 

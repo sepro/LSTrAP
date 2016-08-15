@@ -18,6 +18,8 @@ class PipelineBase:
         self.dp = configparser.ConfigParser()
         self.dp.read(data)
 
+        self.trimmomatic_path = self.cp['TOOLS']['trimmomatic_path']
+
         self.blast_module = None if self.cp['TOOLS']['blast_module'] is 'None' else self.cp['TOOLS']['blast_module']
         self.bowtie_module = None if self.cp['TOOLS']['bowtie_module'] is 'None' else self.cp['TOOLS']['bowtie_module']
         self.tophat_module = '' if self.cp['TOOLS']['tophat_module'] is 'None' else self.cp['TOOLS']['tophat_module']

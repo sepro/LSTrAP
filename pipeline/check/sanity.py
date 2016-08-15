@@ -68,7 +68,9 @@ def check_sanity_config(filename):
     required_keys = ['bowtie_module', 'samtools_module', 'sratoolkit_module', 'tophat_module', 'interproscan_module',
                      'blast_module', 'mcl_module', 'python_module', 'python3_module', 'bowtie_cmd', 'trimmomatic_se_command',
                      'trimmomatic_pe_command', 'tophat_se_cmd', 'tophat_pe_cmd', 'htseq_count_cmd',
-                     'interproscan_cmd', 'pcc_cmd', 'mcl_cmd', 'orthofinder_cmd', 'orthofinder_cores', 'mcxdeblast_cmd']
+                     'interproscan_cmd', 'pcc_cmd', 'mcl_cmd', 'orthofinder_cmd', 'orthofinder_cores', 'mcxdeblast_cmd',
+                     'trimmomatic_path']
+    required_paths = ['trimmomatic_path']
 
     if 'TOOLS' in cp:
         if not all(k in cp['TOOLS'].keys() for k in required_keys):
