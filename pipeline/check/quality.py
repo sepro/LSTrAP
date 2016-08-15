@@ -1,4 +1,5 @@
 import sys
+import re
 
 __bad_fields = ['no_feature', 'ambiguous', 'too_low_aQual', 'not_aligned', 'alignment_not_unique']
 
@@ -53,15 +54,31 @@ def htseq_count_quality(filename, cutoff=1, log=None):
     return False
 
 
-def check_tophat(filename):
+def check_tophat(filename, cutoff=65, log=None):
     """
-    Checks the alignment summary of TopHat's output and returns the percentage of reads that map
+    Checks the alignment summary of TopHat's output, if it passes it returns true, else false
+    Optionally information can be written to a log file
 
     :param filename: align_summary.txt to check
-    :return: percentage of reads that map
+    :param cutoff: If the percentage of mapped reads is below this the sample won't pass
+    :return: True if the sample passed, false otherwise
     """
 
-    return 0
+    re_mapped = re.compile('Mapped   :.*\(\s*(.*)% of input\)')
+
+    with open(filename, 'r') as f:
+        lines = '\t'.join(f.readlines())
+        hits = re_mapped.search(lines)
+        if hits:
+            value = float(hits.group(1))
+            if value >= cutoff:
+                return True
+            else:
+                if log is not None:
+                    print('WARNING:', filename, 'didn\'t pass TopHat Quality check!', value, 'reads mapped. Cutoff,',
+                          cutoff, file=log)
+
+    return False
 
 
 def check_htseq(filename):

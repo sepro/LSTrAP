@@ -1,10 +1,11 @@
 import subprocess
 import os
+import sys
 
 from cluster import wait_for_job
 from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
 from .base import PipelineBase
-from .check.quality import htseq_count_quality
+from .check.quality import check_tophat, check_htseq
 
 
 class TranscriptomePipeline(PipelineBase):
@@ -270,10 +271,17 @@ class TranscriptomePipeline(PipelineBase):
                 if os.path.exists(summary_file):
                     summary_files.append((d, summary_file))
 
-            htseq_files = [f for f in os.listdir(htseq_output) if f.endswith('.htseq')]
+            htseq_files = [os.path.join(htseq_output, f) for f in os.listdir(htseq_output) if f.endswith('.htseq')]
 
+            for (d, s) in summary_files:
+                passed = check_tophat(s, cutoff=65, log=self.log)
 
-        pass
+                if not passed:
+                    print('WARNING: sample with insufficient quality detected:', d, file=sys.stderr)
+                    print('WARNING: check the log for additional information', file=sys.stderr)
+
+            for h in htseq_files:
+                pass
 
     def htseq_to_matrix(self):
         """
