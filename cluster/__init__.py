@@ -15,7 +15,11 @@ def job_running(job_name):
 
     pattern = "Full jobname:\s*" + job_name
 
-    return bool(re.findall(pattern, qstat))
+    running_jobs = re.findall(pattern, qstat)
+
+    print('Still %d jobs running.' % len(running_jobs))
+
+    return bool(len(running_jobs) > 0)
 
 
 def wait_for_job(job_name, sleep_time=5):
