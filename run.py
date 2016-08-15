@@ -38,7 +38,10 @@ def run_pipeline(args):
             else:
                 print("Skipping htseq-counts", file=sys.stderr)
 
-            tp.check_quality()
+            if args.ac:
+                tp.check_quality()
+            else:
+                print("Skipping quality control", file=sys.stderr)
 
             if args.exp_matrix:
                 tp.htseq_to_matrix()
@@ -96,6 +99,7 @@ if __name__ == "__main__":
     parser.add_argument('--skip-trim-fastq', dest='trim_fastq', action='store_false', help='add --skip-trim-fastq to skip trimming fastq files using trimmomatic')
     parser.add_argument('--skip-tophat', dest='tophat', action='store_false', help='add --skip-tophat to skip read mapping with tophat')
     parser.add_argument('--skip-htseq', dest='htseq', action='store_false', help='add --skip-htseq to skip counting reads per gene with htseq-count')
+    parser.add_argument('--skip-qc', dest='qc', action='store_false', help='add --skip-qc to skip quality control of tophat and htseq output')
     parser.add_argument('--skip-exp-matrix', dest='exp_matrix', action='store_false', help='add --skip-exp-matrix to skip converting htseq files to an expression matrix')
     parser.add_argument('--skip-pcc', dest='pcc', action='store_false', help='add --skip-pcc to skip calculating PCC values')
     parser.add_argument('--skip-mcl', dest='mcl', action='store_false', help='add --skip-mcl to skip clustering PCC values using MCL')
@@ -117,6 +121,7 @@ if __name__ == "__main__":
     parser.set_defaults(trim_fastq=True)
     parser.set_defaults(tophat=True)
     parser.set_defaults(htseq=True)
+    parser.set_defaults(qc=True)
     parser.set_defaults(exp_matrix=True)
     parser.set_defaults(pcc=True)
     parser.set_defaults(mcl=True)

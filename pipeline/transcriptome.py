@@ -260,6 +260,10 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def check_quality(self):
+        """
+        Function that checks tophat and htseq quality and throws warnings if insufficient reads map. If the log file is
+        enabled it writes more detailed statistics there.
+        """
         print("Checking quality of samples based on TopHat and HTSEQ-Count mapping statistics")
         for g in self.genomes:
             tophat_output = self.dp[g]['tophat_output']
