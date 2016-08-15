@@ -108,8 +108,8 @@ if __name__ == "__main__":
     parser.add_argument('--skip-mcl-families', dest='mcl_families', action='store_false', help='add --skip-mcl to skip clustering blast with MCL')
 
     parser.add_argument('--keep-intermediate', dest='keep_intermediate', action='store_true', help='add --keep-intermediate to prevent the pipeline from removing finished steps')
-    parser.add_argument('--enable-log', dest='enable_log', action='store_true',
-                        help='add --enable-log to write additional statistics.')
+    parser.add_argument('--disable-log', dest='enable_log', action='store_false',
+                        help='add --disable-log to disable writing additional statistics.')
 
     # Flags for the big sections of the pipeline
     parser.set_defaults(transcriptomics=True)
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     parser.set_defaults(orthofinder=True)
     parser.set_defaults(mcl_families=True)
 
-    parser.set_defaults(enable_log=False)
+    parser.set_defaults(enable_log=True)
 
     # Parse arguments and start pipeline
     args = parser.parse_args()
