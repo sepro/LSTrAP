@@ -281,6 +281,7 @@ class TranscriptomePipeline(PipelineBase):
                     print('WARNING: check the log for additional information', file=sys.stderr)
 
             for h in htseq_files:
+                print(h)
                 passed = check_htseq(h, cutoff=65, log=self.log )
                 if not passed:
                     print('WARNING: sample with insufficient quality (HTSEQ-Count) detected:', d, file=sys.stderr)
