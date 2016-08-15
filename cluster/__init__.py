@@ -17,7 +17,10 @@ def job_running(job_name):
 
     running_jobs = re.findall(pattern, qstat)
 
-    print('Still %d jobs running.' % len(running_jobs))
+    if len(running_jobs) > 0:
+        print('Still %d jobs running.' % len(running_jobs), end='\r')
+    else:
+        print('\nDone!\n')
 
     return bool(len(running_jobs) > 0)
 
