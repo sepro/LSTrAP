@@ -80,6 +80,15 @@ def check_sanity_config(filename):
                 if k not in cp['TOOLS'].keys():
                     print("Missing", k, file=sys.stderr)
             return False
+
+        if not all([os.path.exists(cp['TOOLS'][r]) for r in required_paths]):
+
+            for r in required_paths:
+                if not os.path.exists(cp['TOOLS'][r]):
+                    print(r + " doesn't point to a valid file/dir", file=sys.stderr)
+
+            return False
+
     else:
         print("Tools section missing from config file", file=sys.stderr)
         return False
