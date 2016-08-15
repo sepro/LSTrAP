@@ -8,7 +8,8 @@ RSTrAP wraps multiple existing tools into a single workflow. To use RSTrAP the f
   * [tophat](https://ccb.jhu.edu/software/tophat/manual.shtml)
   * [samtools](http://www.htslib.org/)
   * [sratools](http://ncbi.github.io/sra-tools/)
-  * [python 2.7](https://www.python.org/download/releases/2.7/) + [HTSeq](http://www-huber.embl.de/users/anders/HTSeq/doc/index.html) + all dependencies
+  * [python 2.7](https://www.python.org/download/releases/2.7/) + [HTSeq](http://www-huber.embl.de/users/anders/HTSeq/doc/index.html) + all dependencies (including [PySam](https://github.com/pysam-developers/pysam))
+  * [python 3.5](https://www.python.org/download/releases/3.5.1/)
   * [interproscan](https://www.ebi.ac.uk/interpro/)
 
 The pipeline is designed and tested with Sun Grid Engine configured with a module load system.
@@ -32,8 +33,8 @@ In your config file module names need to be specified. To see which modules are 
 
     module avail
 
-Add the module name for each of the tools to your config.ini, also update the paths to e.g. Trimmomatic.
-In case the module load system isn't used, but all software is installed on the cluster + nodes set the modules to None !
+Add the module name for each of the tools to your config.ini, also update the path to Trimmomatic.
+In case the module load system isn't used, but all software is installed on the cluster + nodes set the modules to **None** !
 
 In case you would like to tweak parameters passed to tools this would be the place to do so. Note however that the tools
 will run with the same settings for each file. Modifying parameters that would **change the output name or format will 
@@ -131,3 +132,10 @@ Options to skip certain steps of the pipeline are included, use the command belo
 
     ./run.py -h
 
+## Quality report
+After running RSTrAP a log file (*rstrap.log*) is written, in which samples which failed a quality measure
+are reported. Note that no samples are excluded from the final network. In case certain samples need to be excluded
+from the final network remove the htseq file for the sample you which to exclude and re-run the pipeline skipping all
+steps prior to building the network.
+
+    ./run.py config.ini data.ini --skip-interpro --skip-orthology --skip-bowtie-build --skip-trim-fastq --skip-tophat --skip-htseq --skip-qc
