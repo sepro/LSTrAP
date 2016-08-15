@@ -31,7 +31,7 @@ def check_tophat(filename, cutoff=65, log=None):
     return False
 
 
-def check_htseq(filename, cutoff=65, log=None):
+def check_htseq(filename, cutoff=40, log=None):
     """
     Checks the mapping statistics in htseq files how many reads map into coding sequences. If the percentage is high
     enough it will return True, otherwise false. Optionally additional information can be written to log
@@ -44,16 +44,18 @@ def check_htseq(filename, cutoff=65, log=None):
     values = {}
 
     with open(filename) as fin:
-
+        mapped_reads = 0
         for line in fin:
             gene, value = line.strip().split()
 
-            if gene in quality_fields:
-                values[gene].append(int(value))
+            if gene not in quality_fields:
+                mapped_reads += int(value)
+            else:
+                values[gene] = int(value)
 
-        total = sum([values['mapped_reads'], values['__no_feature'], values['__ambiguous']])
+        total = sum([mapped_reads, values['__no_feature'], values['__ambiguous']])
 
-        percentage_mapped = (values['mapped_reads']*100)/total
+        percentage_mapped = (mapped_reads*100)/total
 
         if percentage_mapped >= cutoff:
             return True

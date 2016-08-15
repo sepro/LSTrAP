@@ -260,6 +260,7 @@ class TranscriptomePipeline(PipelineBase):
         print("Done\n\n")
 
     def check_quality(self):
+        print("Checking quality of samples based on TopHat mapping statistics")
         for g in self.genomes:
             tophat_output = self.dp[g]['tophat_output']
             htseq_output = self.dp[g]['htseq_output']
@@ -281,8 +282,7 @@ class TranscriptomePipeline(PipelineBase):
                     print('WARNING: check the log for additional information', file=sys.stderr)
 
             for h in htseq_files:
-                print(h)
-                passed = check_htseq(h, cutoff=65, log=self.log )
+                passed = check_htseq(h, cutoff=40, log=self.log)
                 if not passed:
                     print('WARNING: sample with insufficient quality (HTSEQ-Count) detected:', d, file=sys.stderr)
                     print('WARNING: check the log for additional information', file=sys.stderr)
