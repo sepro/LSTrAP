@@ -1,6 +1,7 @@
 import subprocess
 import os
 import sys
+import shutil
 
 from cluster import wait_for_job
 from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
@@ -26,6 +27,7 @@ class TranscriptomePipeline(PipelineBase):
             output = self.dp[g]['bowtie_output']
 
             os.makedirs(os.path.dirname(output), exist_ok=True)
+            shutil.copy(con_file, output + '.fa')
 
             subprocess.call(["qsub", "-v", "in=" + con_file + ",out=" + output, filename])
 
