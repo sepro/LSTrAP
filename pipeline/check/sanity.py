@@ -25,6 +25,7 @@ def check_sanity_data(filename):
                              'htseq_output', 'exp_matrix_output', 'exp_matrix_tpm_output', 'exp_matrix_rpkm_output',
                              'interpro_output', 'pcc_output', 'pcc_mcl_output', 'mcl_cluster_output']
             required_paths = ['cds_fasta', 'protein_fasta', 'genome_fasta', 'gff_file', 'fastq_dir']
+            optional_settings = ['tophat_cutoff', 'htseq_cutoff']
 
             for g in genomes:
                 if not all([i in cp[g].keys() for i in required_keys]):
@@ -41,8 +42,12 @@ def check_sanity_data(filename):
                         if not os.path.exists(cp[g][f]):
                             print(f + " doesn't point to a valid file/dir", file=sys.stderr)
                     return False
+
+                for option in optional_settings:
+                    if option not in cp[g].keys():
+                        print('Optional key', option, 'not set for', g, '! Default value will be used', file=sys.stderr)
         else:
-            print("genomes missing from GLOBAL section", file=sys.stderr)
+            print("Genomes missing from GLOBAL section", file=sys.stderr)
             return False
     else:
         print("GLOBAL section missing", file=sys.stderr)

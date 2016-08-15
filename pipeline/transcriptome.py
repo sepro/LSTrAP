@@ -275,14 +275,16 @@ class TranscriptomePipeline(PipelineBase):
             htseq_files = [os.path.join(htseq_output, f) for f in os.listdir(htseq_output) if f.endswith('.htseq')]
 
             for (d, s) in summary_files:
-                passed = check_tophat(s, cutoff=65, log=self.log)
+                cutoff = int(self.dp[g]['tophat_cutoff']) if 'tophat_cutoff' in self.dp[g] else 0
+                passed = check_tophat(s, cutoff=cutoff, log=self.log)
 
                 if not passed:
                     print('WARNING: sample with insufficient quality (TopHat) detected:', d, file=sys.stderr)
                     print('WARNING: check the log for additional information', file=sys.stderr)
 
             for h in htseq_files:
-                passed = check_htseq(h, cutoff=40, log=self.log)
+                cutoff = int(self.dp[g]['htseq_cutoff']) if 'htseq_cutoff' in self.dp[g] else 0
+                passed = check_htseq(h, cutoff=cutoff, log=self.log)
                 if not passed:
                     print('WARNING: sample with insufficient quality (HTSEQ-Count) detected:', d, file=sys.stderr)
                     print('WARNING: check the log for additional information', file=sys.stderr)

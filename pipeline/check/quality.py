@@ -3,13 +3,13 @@ import re
 quality_fields = ['__no_feature', '__ambiguous', '__too_low_aQual', '__not_aligned', '__alignment_not_unique']
 
 
-def check_tophat(filename, cutoff=65, log=None):
+def check_tophat(filename, cutoff=0, log=None):
     """
     Checks the alignment summary of TopHat's output, if it passes it returns true, else false
     Optionally information can be written to a log file
 
     :param filename: align_summary.txt to check
-    :param cutoff: If the percentage of mapped reads is below this the sample won't pass
+    :param cutoff: If the percentage of mapped reads is below this the sample won't pass (default= 0, no check)
     :param log: filehandle to write log to, set to None for no log
     :return: True if the sample passed, false otherwise
     """
@@ -31,13 +31,13 @@ def check_tophat(filename, cutoff=65, log=None):
     return False
 
 
-def check_htseq(filename, cutoff=40, log=None):
+def check_htseq(filename, cutoff=0, log=None):
     """
     Checks the mapping statistics in htseq files how many reads map into coding sequences. If the percentage is high
     enough it will return True, otherwise false. Optionally additional information can be written to log
 
     :param filename: htseq-file to check
-    :param cutoff: If the percentage of mapped reads is below this the sample won't pass
+    :param cutoff: If the percentage of mapped reads is below this the sample won't pass (default= 0, no check)
     :param log: filehandle to write log to, set to None for no log
     :return: True if the sample passed, false otherwise
     """
