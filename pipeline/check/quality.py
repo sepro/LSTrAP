@@ -1,57 +1,6 @@
-import sys
 import re
 
-__bad_fields = ['no_feature', 'ambiguous', 'too_low_aQual', 'not_aligned', 'alignment_not_unique']
-
-
-def htseq_count_quality(filename, cutoff=1, log=None):
-    """
-    UNUSED: Thes generated a N50 like metric (how many genes are responsable for 50 % of the transcripts). This doesn't
-    work for e.g. pollen
-
-    :param filename: htseq file to check
-    :param cutoff: cutoff value
-    :param log: file to print warnings to
-    :return: Boolean True is check is OK, False if not
-    """
-    print("checking quality of htseq-count")
-    values = []
-    total_count = 0
-
-    with open(filename, "r") as fin:
-        for l in fin:
-            gene, count = l.strip().split('\t')
-            if all([bf not in gene for bf in __bad_fields]):
-                values.append(int(count))
-                total_count += int(count)
-
-    if total_count == 0:
-        print("N50 check for", filename, "failed. No reads found")
-        return False
-
-    values.sort(reverse=True)
-
-    # write lengths to log file !
-    if log is not None:
-        current_count = 0
-        for e, v in enumerate(values, start=1):
-            current_count += v
-            if current_count > total_count / 2:
-                print('N50 for', filename, ':', e, file=log)
-                break
-
-    current_count = 0
-    for e, v in enumerate(values, start=1):
-        current_count += v
-        if current_count > total_count/2:
-            if e >= cutoff:
-                print(filename, e, cutoff, current_count, total_count, len(values))
-                return True
-
-            break
-
-    print("N50 check for", filename, "failed.", e, cutoff)
-    return False
+quality_fields = ['__no_feature', '__ambiguous', '__too_low_aQual', '__not_aligned', '__alignment_not_unique']
 
 
 def check_tophat(filename, cutoff=65, log=None):
@@ -61,6 +10,7 @@ def check_tophat(filename, cutoff=65, log=None):
 
     :param filename: align_summary.txt to check
     :param cutoff: If the percentage of mapped reads is below this the sample won't pass
+    :param log: filehandle to write log to, set to None for no log
     :return: True if the sample passed, false otherwise
     """
 
@@ -81,12 +31,35 @@ def check_tophat(filename, cutoff=65, log=None):
     return False
 
 
-def check_htseq(filename):
+def check_htseq(filename, cutoff=65, log=None):
     """
-    Checks the mapping statistics in htseq files how many reads map into coding sequences
+    Checks the mapping statistics in htseq files how many reads map into coding sequences. If the percentage is high
+    enough it will return True, otherwise false. Optionally additional information can be written to log
 
-    :param filename: htseq file to check
-    :return: percentage of reads that map inside a genome
+    :param filename: htseq-file to check
+    :param cutoff: If the percentage of mapped reads is below this the sample won't pass
+    :param log: filehandle to write log to, set to None for no log
+    :return: True if the sample passed, false otherwise
     """
+    values = {}
 
-    return 0
+    with open(filename) as fin:
+
+        for line in fin:
+            gene, value = line.strip().split()
+
+            if gene in quality_fields:
+                values[gene].append(int(value))
+
+        total = sum([values['mapped_reads'], values['__no_feature'], values['__ambiguous']])
+
+        percentage_mapped = (values['mapped_reads']*100)/total
+
+        if percentage_mapped >= cutoff:
+            return True
+        else:
+             if log is not None:
+                print('WARNING:', filename, 'didn\'t pass HTSEQ-Count Quality check!', percentage_mapped
+                      , 'reads mapped. Cutoff,', cutoff, file=log)
+
+    return False

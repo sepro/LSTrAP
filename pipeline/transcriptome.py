@@ -277,11 +277,14 @@ class TranscriptomePipeline(PipelineBase):
                 passed = check_tophat(s, cutoff=65, log=self.log)
 
                 if not passed:
-                    print('WARNING: sample with insufficient quality detected:', d, file=sys.stderr)
+                    print('WARNING: sample with insufficient quality (TopHat) detected:', d, file=sys.stderr)
                     print('WARNING: check the log for additional information', file=sys.stderr)
 
             for h in htseq_files:
-                pass
+                passed = check_htseq(h, cutoff=65, log=self.log )
+                if not passed:
+                    print('WARNING: sample with insufficient quality (HTSEQ-Count) detected:', d, file=sys.stderr)
+                    print('WARNING: check the log for additional information', file=sys.stderr)
 
     def htseq_to_matrix(self):
         """
