@@ -254,7 +254,8 @@ class TranscriptomePipeline(PipelineBase):
                 dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
                 for d in dirs:
                     bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
-                    os.remove(bam_file)
+                    if os.path.exists(bam_file):
+                        os.remove(bam_file)
 
         # remove the submission script
         os.remove(filename)
