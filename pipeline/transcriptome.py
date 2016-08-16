@@ -296,7 +296,7 @@ class TranscriptomePipeline(PipelineBase):
                 cutoff = int(self.dp[g]['htseq_cutoff']) if 'htseq_cutoff' in self.dp[g] else 0
                 passed = check_htseq(h, cutoff=cutoff, log=self.log)
                 if not passed:
-                    print('WARNING: sample with insufficient quality (HTSEQ-Count) detected:', d, file=sys.stderr)
+                    print('WARNING: sample with insufficient quality (HTSEQ-Count) detected:', h, file=sys.stderr)
                     print('WARNING: check the log for additional information', file=sys.stderr)
 
     def htseq_to_matrix(self):
