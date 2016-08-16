@@ -38,7 +38,7 @@ def run_pipeline(args):
             else:
                 print("Skipping htseq-counts", file=sys.stderr)
 
-            if args.ac:
+            if args.qc:
                 tp.check_quality()
             else:
                 print("Skipping quality control", file=sys.stderr)
