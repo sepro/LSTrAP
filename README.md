@@ -1,5 +1,5 @@
 # LSTrAP
-LSTrAP, shot for __L__arge __S__cale __Tr__anscriptome __A__nalysis __P__ipeline, greatly facilitates the construction of co-expression networks from
+LSTrAP, shot for Large Scale Transcriptome Analysis Pipeline, greatly facilitates the construction of co-expression networks from
 RNA Seq data. The various tools involved are seamlessly connected and  CPU-intensive steps are submitted to a computer cluster 
 automatically. 
 
@@ -11,14 +11,9 @@ LSTrAP wraps multiple existing tools into a single workflow. To use LSTrAP the f
 Steps in bold are submitted to a cluster.
 
 ## Preparation
-
-  * [bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
-  * [tophat](https://ccb.jhu.edu/software/tophat/manual.shtml)
-  * [samtools](http://www.htslib.org/)
-  * [sratools](http://ncbi.github.io/sra-tools/)
-  * [python 2.7](https://www.python.org/download/releases/2.7/) + [HTSeq](http://www-huber.embl.de/users/anders/HTSeq/doc/index.html) + all dependencies (including [PySam](https://github.com/pysam-developers/pysam))
-  * [python 3.5](https://www.python.org/download/releases/3.5.1/)
-  * [interproscan](https://www.ebi.ac.uk/interpro/)
+LSTrAP is designed to run on an [Oracle Grid Engine](https://www.oracle.com/sun/index.html) computer cluster system and requires 
+all external tools to be installed on the compute nodes. The "module load" system is supported. A comprehensive list of all tools 
+necessary can be found  [here](docs/preparation.md)
 
 ## Installation
 Use git to obtain a copy of the LSTrAP code
