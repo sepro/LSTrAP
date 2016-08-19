@@ -48,7 +48,7 @@ class PipelineBase:
         self.enable_log = enable_log
 
         if self.enable_log:
-            self.log = open('rstrap.log', 'w')
+            self.log = open('lstrap.log', 'w')
         else:
             self.log = None
 
