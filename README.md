@@ -1,8 +1,16 @@
-# RSTrAP
-Rna Seq Transcriptome Analysis Pipeline
+# LSTrAP
+LSTrAP, shot for __L__arge __S__cale __Tr__anscriptome __A__nalysis __P__ipeline, greatly facilitates the construction of co-expression networks from
+RNA Seq data. The various tools involved are seamlessly connected and  CPU-intensive steps are submitted to a computer cluster 
+automatically. 
 
-## Requirements
-RSTrAP wraps multiple existing tools into a single workflow. To use RSTrAP the following tools need to be installed
+## Workflow
+LSTrAP wraps multiple existing tools into a single workflow. To use LSTrAP the following tools need to be installed
+
+![LSTrAP Workflow](docs/images/LSTrAP_workflow.png "Steps automated by LSTrAP")
+
+Steps in bold are submitted to a cluster.
+
+## Preparation
 
   * [bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
   * [tophat](https://ccb.jhu.edu/software/tophat/manual.shtml)
@@ -12,10 +20,8 @@ RSTrAP wraps multiple existing tools into a single workflow. To use RSTrAP the f
   * [python 3.5](https://www.python.org/download/releases/3.5.1/)
   * [interproscan](https://www.ebi.ac.uk/interpro/)
 
-The pipeline is designed and tested with Sun Grid Engine configured with a module load system.
-
 ## Installation
-Use git to obtain a copy of the RSTrAP code
+Use git to obtain a copy of the LSTrAP code
 
     git clone https://github.molgen.mpg.de/proost/RSTrAP
 
@@ -38,7 +44,7 @@ In case the module load system isn't used, but all software is installed on the 
 
 In case you would like to tweak parameters passed to tools this would be the place to do so. Note however that the tools
 will run with the same settings for each file. Modifying parameters that would **change the output name or format will 
-cause the pipeline to break**. Arguments with a name lik *${var}* should **not** be changed as this is how the pipeline 
+cause the pipeline to break**. Arguments with a name like *${var}* should **not** be changed as this is how the pipeline 
 defines the input and output for each tool.
 
 Example config.ini:
@@ -124,7 +130,7 @@ pcc_mcl_output=./output/zma/pcc.mcl.txt
 ```
 
 ## Running RSTrAP
-Once properly configured for your system and data, RSTrAP can be run using a single simple command
+Once properly configured for your system and data, LSTrAP can be run using a single simple command (that should be executed on the head node)
 
     ./run.py config.ini data.ini
 
