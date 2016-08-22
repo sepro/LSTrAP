@@ -18,11 +18,11 @@ necessary can be found  [here](docs/preparation.md)
 ## Installation
 Use git to obtain a copy of the LSTrAP code
 
-    git clone https://github.molgen.mpg.de/proost/RSTrAP
+    git clone https://github.molgen.mpg.de/proost/LSTrAP
 
 Next, move into the directory and copy **config.template.ini** and **data.template.ini**
 
-    cd RSTrAP
+    cd LSTrAP
     cp config.template.ini config.ini
     cp data.template.ini data.ini
 
