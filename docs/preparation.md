@@ -15,3 +15,9 @@ When opting for the latter, the configuration file needs to contain the exact na
   * [OrthoFinder](https://github.com/davidemms/OrthoFinder)
   * [MCL](http://www.micans.org/mcl/index.html?sec_software)
   * [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
+  
+Optional tools
+
+  * [scikit-learn](http://scikit-learn.org/) for Python 3, required for PCA analysis (helper script)
+  * [seaborn](https://stanford.edu/~mwaskom/software/seaborn/) for Python 3, required for PCA analysis (helper script)
+  * [Aspera connect client](), required for the *get_sra_ip.py* (helper script)

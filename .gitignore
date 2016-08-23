@@ -56,7 +56,7 @@ docs/_build/
 # PyBuilder
 target/
 .idea/
-data/
+.data/
 
 config.ini
 data.ini
