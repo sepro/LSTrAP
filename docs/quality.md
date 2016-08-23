@@ -9,7 +9,7 @@ to the genome (reported by TopHat) can be indicative for issues. The figure belo
 and the majority have very high mapping percentages (y-axis). Samples from species that are not *Arabidopsis thaliana*
 have fewer reads mapping. 
 
-![LSTrAP Quality](docs/images/LSTrAP_quality.png "LSTrAP quality test")
+![LSTrAP Quality](images/LSTrAP_quality.png "LSTrAP quality test")
 
 Also samples from experiments not designed to determine expression levels might be included, while some of these map 
 very good to the genome (e.g. whole genome sequencing, non-coding RNA or small RNA studies), the reads don't correspond 
