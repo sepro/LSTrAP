@@ -65,7 +65,7 @@ More information on how the quality of samples is determined can be found [here]
 ## Helper Scripts
 
 LSTrAP comes with a few additional scripts to assist users to download and process data from the [Sequence Read Archive](http://www.ncbi.nlm.nih.gov/sra),
-repeat analyses and the case study reported in the manuscript.
+repeat analyses and the case study reported in the manuscript (Proost et al., *under preparation*).
 
 Details for each script can be found [here](docs/helper.md)
 
