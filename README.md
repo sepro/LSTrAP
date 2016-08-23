@@ -74,3 +74,7 @@ Details for each script can be found [here](docs/helper.md)
 LSTrAP was developped by [Sebastian Proost](mailto:proost@mpimp-golm.mpg.de) and [Marek Mutwil](mailto:mutwil@mpimp-golm.mpg.de) at the [Max-Planck Institute for Molecular Plant Physiology](http://www.mpimp-golm.mpg.de/2168/en)
 
 This work is supported by [ERA-CAPS](http://www.eracaps.org/) though the [EVOREPRO](http://www.evorepro.org/) project.
+
+## License
+
+LSTrAP is freely available under the [MIT License](LICENSE.md)
