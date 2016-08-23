@@ -53,6 +53,8 @@ from the final network remove the htseq file for the sample you which to exclude
 steps prior to building the network.
 
     ./run.py config.ini data.ini --skip-interpro --skip-orthology --skip-bowtie-build --skip-trim-fastq --skip-tophat --skip-htseq --skip-qc
+
+More information on how the quality of samples is determined can be found [here](docs/quality.md).
     
 ## Contact
 
