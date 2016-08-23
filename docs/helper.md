@@ -17,3 +17,16 @@ required data is included here as well. Note that this script requires sklearn a
 
     python3 pca_powerlaw.py ./data/sbi.expression.matrix.tpm.txt ./data/sbi_annotation.txt ./data/sbi.power_law.R07.txt
     
+## get_sra_ip.py
+
+Script to download runs from [Sequence Read Archive](http://www.ncbi.nlm.nih.gov/sra), requires the Aspera connect 
+client to be installed and a open ssh key is required (can be obtained from the Apera connect package)
+ 
+    python3 get_sra_ip.py runs.list.txt ./output/directory /absolute/path/to/opensshkey
+     
+## sra_to_fastq.py
+
+Script to convert sra files into fastq. Sratools is required.
+
+    python3 sra_to_fastq.py /sra/files/directory /fastq/output/directory
+    
