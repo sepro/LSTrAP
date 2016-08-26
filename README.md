@@ -69,6 +69,15 @@ repeat analyses and the case study reported in the manuscript (Proost et al., *u
 
 Details for each script can be found [here](docs/helper.md)
 
+## Running LSTrAP on transcriptome data
+
+To use LSTrAP on a *de novo* assembled transcriptome a little pre-processing is required. Instead of the genome a fasta 
+file containing **coding** sequences can be used (remove UTRs). Using the helper script fasta_to_gtf.py a gtf file suited
+for LSTrAP can be generated.
+
+    python3 fasta_to_gtf.py /path/to/transcript.cds.fasta > output.gtf
+    
+
 ## Contact
 
 LSTrAP was developped by [Sebastian Proost](mailto:proost@mpimp-golm.mpg.de) and [Marek Mutwil](mailto:mutwil@mpimp-golm.mpg.de) at the [Max-Planck Institute for Molecular Plant Physiology](http://www.mpimp-golm.mpg.de/2168/en)
