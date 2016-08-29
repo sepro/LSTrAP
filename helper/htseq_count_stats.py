@@ -36,4 +36,5 @@ for f in os.listdir(path=htseq_path):
 print('sample', 'mapped_reads', 'no_feature', 'ambiguous', '% mapped', '% no_feature', '% ambiguous',  sep='\t')
 for s, m, n, a in zip(values['samples'], values['mapped_reads'], values['__no_feature'], values['__ambiguous']):
     total = sum([m, n, a])
-    print(s, m, n, a, m*100/total, n*100/total, a*100/total, sep='\t')
+    if total > 0:
+        print(s, m, n, a, m*100/total, n*100/total, a*100/total, sep='\t')
