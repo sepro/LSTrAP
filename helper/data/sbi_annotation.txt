@@ -1,0 +1,216 @@
+DRX000675	Illmina mRNA-seq analysis for leaf of Sorghum bicolor (L.) Moench BTx623 under 0.01% Tween-20 treatment.	rep1 	leaf_ under_0.01%_Tween-20 treatment	leaf 	0.01%_Tween-20 treatment	7-8 leaf stage	DRR001053
+DRX000676	Illmina mRNA-seq analysis for leaf of Sorghum bicolor (L.) Moench BTx623 infected by Bipolaris sorghicola.	rep1 	leaf_ infected_by_ Bipolaris_ sorghicola	leaf 	infected_by_ Bipolaris_ sorghicola	7-8 leaf stage	DRR001054
+DRX000676	Illmina mRNA-seq analysis for leaf of Sorghum bicolor (L.) Moench BTx623 infected by Bipolaris sorghicola.	rep1 	leaf_ infected_by_ Bipolaris_ sorghicola	leaf 	infected_by_ Bipolaris_ sorghicola	7-8 leaf stage	DRR001055
+DRX005587	Control 0 h	rep1 	leaf infected by Bipolaris sorghicola control0h	leaf 	infected_by_ Bipolaris_ sorghicola control 0h 	NA	DRR006369
+DRX005588	Control 12 h	rep1 	leaf infected by Bipolaris sorghicola control12h	leaf 	infected_by_ Bipolaris_ sorghicola control 12h 	NA	DRR006370
+DRX005589	Infected 12 h	rep1 	leaf infected by Bipolaris sorghicola infected12h	leaf 	infected_by_ Bipolaris_ sorghicola infected 12h	NA	DRR006371
+DRX005590	Control 24 h	rep1 	leaf infected by Bipolaris sorghicola control24h	leaf 	infected_by_ Bipolaris_ sorghicola control 24h 	NA	DRR006372
+DRX005591	Infected 24 h	rep1 	leaf infected by Bipolaris sorghicola infected24h	leaf 	infected_by_ Bipolaris_ sorghicola infected 24h	NA	DRR006373
+DRX013472	Nakei Control	rep1 	leaf color variation control 	leaf 	control	NA	DRR014978
+DRX013473	Nakei Cut-stress	rep1 	leaf color variation cut-stress	leaf 	cut stress	NA	DRR014979
+DRX013474	#96 Control	rep1 	leaf color variation control#96	leaf 	control	NA	DRR014980
+DRX013475	#96 Cut-stress	rep1 	leaf color variation cut-stress#96	leaf 	cut stress	NA	DRR014981
+DRX013476	#62 Control	rep1 	leaf color variation control#62	leaf 	control	NA	DRR014982
+DRX013477	#62 Cut-stress	rep1	leaf color variation cut-stress#62	leaf 	cut stress	NA	DRR014983
+DRX013478	#127 Control	rep1	leaf color variation control#127	leaf 	control	NA	DRR014984
+DRX013479	#127 Cut-stress	rep1	leaf color variation cut-stress#127	leaf 	cut stress	NA	DRR014985
+DRX013480	#3 Control	rep1	leaf color variation control#3	leaf 	control	NA	DRR014986
+DRX013481	#3 Cut-stress	rep1	leaf color variation cut-stress#3	leaf 	cut stress	NA	DRR014987
+DRX013482	M36001 Control	rep1	leaf color variation controlM36001	leaf 	control	NA	DRR014988
+DRX013483	M36001 Cut-stress	rep1	leaf color variation cut-stressM36001	leaf 	cut stress	NA	DRR014989
+DRX013484	SB-1, wt_1, RS	rep1	leaf color variation SB-1 wt_1 RS	leaf 	SB-1, wt_1, RS	NA	DRR014990
+DRX013485	SB-2, wt_4, RS	rep1	leaf color variation SB-2 wt_4 RS	leaf 	SB-2, wt_4, RS	NA	DRR014991
+DRX013486	SB-3, bm_14, RS	rep1	leaf color variation SB-3 bm_14 RS	leaf 	SB-3, bm_14, RS	NA	DRR014992
+DRX013487	SB-4, bm_29, RS	rep1	leaf color variation SB-4 bm_29 RS	leaf 	SB-4, bm_29, RS	NA	DRR014993
+DRX013488	SB-5, bm_68, RS	rep1	leaf color variation SB-5 bm_68 RS	leaf 	SB-5, bm_68, RS	NA	DRR014994
+DRX013492	High level sugar 1475 RNA	rep1	plant High level sugar 1475 RNA	plant 	high level sugar	NA	DRR014998
+DRX013493	High level sugar 1476 RNA	rep1	plant High level sugar 1476 RNA	plant 	high level sugar	NA	DRR014999
+DRX013494	High level sugar 1477 RNA	rep1	plant High level sugar 1477 RNA	plant 	high level sugar	NA	DRR015000
+DRX013495	High level sugar 1478 RNA	rep1	plant High level sugar 1478 RNA	plant 	high level sugar	NA	DRR015001
+DRX013496	Low level sugar 1474 RNA	rep1	plant Low level sugar 1474 RNA	plant 	low level sugar	NA	DRR015002
+DRX013497	Low level sugar 1479 RNA	rep1	plant Low level sugar 1479 RNA	plant 	low level sugar	NA	DRR015003
+DRX013498	Low level sugar 1480 RNA	rep1	plant Low level sugar 1480 RNA	plant 	low level sugar	NA	DRR015004
+DRX013499	Low level sugar 1481 RNA	rep1	plant Low level sugar 1481 RNA	plant 	low level sugar	NA	DRR015005
+DRX027768	Sorghum_Seed_RNA-Seq_replicate1	rep1	seed SDS/phenol method & LiCl purification	seed	NA 	NA	DRR030758
+DRX027769	Sorghum_Seed_RNA-Seq_replicate2	rep2	seed SDS/phenol method & LiCl purification	seed	NA 	NA	DRR030759
+DRX027770	Sorghum_Seed_RNA-Seq_replicate3	rep3	seed SDS/phenol method & LiCl purification	seed	NA 	NA	DRR030760
+DRX027771	Sorghum_Spikelet_RNA-Seq_replicate1	rep1	spikelet SDS/phenol method & LiCl purification 	spikelet	NA 	NA	DRR030761
+DRX027772	Sorghum_Spikelet_RNA-Seq_replicate2	rep2	spikelet SDS/phenol method & LiCl purification	spikelet	NA 	NA	DRR030762
+DRX027773	Sorghum_Spikelet_RNA-Seq_replicate3	rep3	spikelet SDS/phenol method & LiCl purification 	spikelet	NA 	NA	DRR030763
+DRX027774	Sorghum_Stem_RNA-Seq_replicate1	rep1	stem SDS/phenol method & LiCl purification 	stem	NA 	NA	DRR030764
+DRX027775	Sorghum_Stem_RNA-Seq_replicate2	rep2	stem SDS/phenol method & LiCl purification 	stem	NA 	NA	DRR030765
+DRX027776	Sorghum_Stem_RNA-Seq_replicate3	rep3	stem SDS/phenol method & LiCl purification 	stem	NA 	NA	DRR030766
+ERX240645	Drought-responsive small RNAs in Sorghum bicolor (L.) Moench	rep1	leaf Drought-responsive small RNAs 	leaf 	drought	30 days after sowing	ERR266130
+ERX240646	Drought-responsive small RNAs in Sorghum bicolor (L.) Moench	rep2	leaf Drought-responsive small RNAs 	leaf 	drought	30 days after sowing	ERR266127
+ERX240647	Drought-responsive small RNAs in Sorghum bicolor (L.) Moench	rep3	leaf Drought-responsive small RNAs 	leaf 	drought	30 days after sowing	ERR266129
+ERX240648	Drought-responsive small RNAs in Sorghum bicolor (L.) Moench	rep4	leaf Drought-responsive small RNAs 	leaf 	drought	30 days after sowing	ERR266128
+ERX966118	"Illumina HiScanSQ paired end sequencing; RNA-seq of Sorghum bicolor with drought tolerant genotype grown under drought-stress or no-stress control environment"	rep1	leaf drought tolerant genotype 	leaf 	drought	30 days after sowing	ERR886715
+ERX966119	"Illumina HiScanSQ paired end sequencing; RNA-seq of Sorghum bicolor with drought tolerant genotype grown under drought-stress or no-stress control environment"	rep2	leaf drought tolerant genotype 	leaf 	drought	30 days after sowing	ERR886716
+SRX080303	GSM749441: ABA_Sorghum_Root_1	rep1	root ABA 	root 	ABA stress	9 days seedling	SRR299227
+SRX080304	GSM749442: ABA_Sorghum_Root_2	rep2	root ABA 	root 	ABA stress	9 days seedling	SRR299228
+SRX080305	GSM749443: ABA_Sorghum_Root_3	rep3	root ABA 	root 	ABA stress	9 days seedling	SRR299229
+SRX080306	GSM749444: PEG_Sorghum_Root_1	rep1	root PEG 	root 	PEG stress	9 days seedling	SRR299230
+SRX080307	GSM749445: PEG_Sorghum_Root_2	rep2	root PEG 	root 	PEG stress	9 days seedling	SRR299231
+SRX080308	GSM749446: PEG_Sorghum_Root_3	rep3	root PEG 	root 	PEG stress	9 days seedling	SRR299232
+SRX080309	GSM749447: H2O_Sorghum_Root_1	rep1	root H2O 	root 	H2O	9 days seedling	SRR299233
+SRX080310	GSM749448: H2O_Sorghum_Root_2	rep2	root H2O 	root 	H2O	9 days seedling	SRR299234
+SRX080311	GSM749449: H2O_Sorghum_Root_3	rep3	root H2O 	root 	H2O	9 days seedling	SRR299235
+SRX080312	GSM749450: NaOH_Sorghum_Root_1	rep1	root NaOH 	root 	NaOH	9 days seedling	SRR299236
+SRX080313	GSM749451: NaOH_Sorghum_Root_2	rep2	root NaOH 	root 	NaOH	9 days seedling	SRR299237
+SRX080314	GSM749452: NaOH_Sorghum_Root_3	rep3	root NaOH 	root 	NaOH	9 days seedling	SRR299238
+SRX080315	GSM749453: ABA_Sorghum_Shoot_1	rep1	shoot ABA 	shoot	ABA stress	9 days seedling	SRR299239
+SRX080316	GSM749454: ABA_Sorghum_Shoot_2	rep2	shoot ABA 	shoot	ABA stress	9 days seedling	SRR299240
+SRX080317	GSM749455: ABA_Sorghum_Shoot_3	rep3	shoot ABA 	shoot	ABA stress	9 days seedling	SRR299241
+SRX080318	GSM749456: PEG_Sorghum_Shoot_1	rep1	shoot PEG 	shoot	PEG stress	9 days seedling	SRR299242
+SRX080319	GSM749457: PEG_Sorghum_Shoot_2	rep2	shoot PEG 	shoot	PEG stress	9 days seedling	SRR299243
+SRX080320	GSM749458: PEG_Sorghum_Shoot_3	rep3	shoot PEG	shoot	PEG stress	9 days seedling	SRR299244
+SRX080321	GSM749459: H2O_Sorghum_Shoot_1	rep1	shoot H2O 	shoot	H2O	9 days seedling	SRR299245
+SRX080322	GSM749460: H2O_Sorghum_Shoot_2	rep2	shoot H2O 	shoot	H2O	9 days seedling	SRR299246
+SRX080323	GSM749461: H2O_Sorghum_Shoot_3	rep3	shoot H2O 	shoot	H2O	9 days seedling	SRR299247
+SRX080324	GSM749462: NaOH_Sorghum_Shoot_1	rep1	shoot NaOH 	shoot	NaOH	9 days seedling	SRR299248
+SRX080325	GSM749463: NaOH_Sorghum_Shoot_2	rep2	shoot NaOH 	shoot	NaOH	9 days seedling	SRR299249
+SRX080326	GSM749464: NaOH_Sorghum_Shoot_3	rep3	shoot NaOH 	shoot	NaOH	9 days seedling	SRR299250
+SRX099019	Sorghum bicolor, BTx623 20 Day Leaves RNA-Seq (SBB_AA)	rep1	leaf 20day SBB_AA	leaf 	NA	20 days	SRR349643
+SRX099020	Sorghum bicolor, BTx623 Emerging Inflorescence RNA-Seq (SBB_AB)	rep1	flower emerging inflorescence SBB_AB 	flower 	NA 	emerging inflorescence	SRR349644
+SRX099021	Sorghum bicolor, BTx623 Seed 5 Days After Pollination RNA-Seq (SBB_AC)	rep1	seed 5 days after pollination SBB_AD 	seed	NA	5 days after pollination	SRR349645
+SRX099022	Sorghum bicolor, BTx623 Early Inflorescence RNA-Seq (SBB_AD)	rep1	flower early inflorescence SBB_AD	flower 	NA	early inflorescence	SRR349646
+SRX099141	Sorghum bicolor, BTx623 Pistil RNA-Seq (SBB_AE)	rep1	pistil SBB_AE	pistil	NA	NA	SRR349754
+SRX099184	Sorghum bicolor, BTx623 Embryo 25 Days After Pollination RNA-Seq (SBB_AF)	rep1	embryo 25 days after pollination SBB_AF 	embryo 	NA 	25 days after pollination	SRR349767
+SRX099185	Sorghum bicolor, BTx623 Endosperm 25 Days After Pollination RNA-Seq (SBB_AG)	rep1	endosperm 25 days after pollination SBB_AG 	endosperm	NA 	25 days after pollination	SRR349768
+SRX099186	Sorghum bicolor, BTx623 Anther RNA-Seq (SBB_AH)	rep1	anther SBB_AH 	anther	NA	NA	SRR349769
+SRX099189	Sorghum bicolor, BTx623 Seed 10 Days After Pollination RNA-Seq (SBB_AK)	rep1	seed 10 days after pollination SBB_AK	seed	NA 	10 days after pollination	SRR349771
+SRX099190	Sorghum bicolor, BTx623 20 Day Leaves RNA-Seq (SBB_CA)	rep1	leaf 20day SBB_CA 	leaf 	NA 	20day	SRR349772
+SRX103384	GSM822663: sorghum_control	rep1	seedlings antibiotic stresses control 	seedling 	antibiotic stresses control	seedling	SRR358899
+SRX103385	GSM822664: sorghum_drought	rep1	seedlings antibiotic stresses drought 	seedling 	antibiotic stresses drought	seedling	SRR358900
+SRX103386	GSM822665: sorghum_cold	rep1	seedlings antibiotic stresses cold	seedling 	antibiotic stresses cold	seedling	SRR358901
+SRX103387	GSM822666: sorghum_salt	rep1	seedlings antibiotic stresses salt 	seedling 	antibiotic stresses salt 	seedling	SRR358902
+SRX1506486	Sorghum bicolor BTx623 laser microdissected epidermal tissue from developing ligule domain of plastochron 5 staged leaf primordia, rep 1	rep1	leaf  laser microdissected epidermal tissue from developing ligule domain of plastochron 5 staged leaf primordia	leaf 	epidermal tissue from developing ligule domain of plastochron	5 staged leaf primordia	SRR3061391
+SRX1506487	Sorghum bicolor BTx623 laser microdissected epidermal tissue from developing ligule domain of plastochron 5 staged leaf primordia, rep 2	rep2	leaf  laser microdissected epidermal tissue from developing ligule domain of plastochron 5 staged leaf primordia	leaf 	epidermal tissue from developing ligule domain of plastochron	5 staged leaf primordia	SRR3061577
+SRX1506488	Sorghum bicolor BTx623 laser microdissected epidermal tissue from developing blade domain of plastochron 5 staged leaf primordia, rep 1	rep1	leaf  laser microdissected epidermal tissue from developing blade domain of plastochron 5 staged leaf primordia	leaf 	epidermal tissue from developing ligule domain of plastochron	5 staged leaf primordia	SRR3063527
+SRX1506489	Sorghum bicolor BTx623 laser microdissected epidermal tissue from developing blade domain of plastochron 5 staged leaf primordia, rep 2	rep2	leaf  laser microdissected epidermal tissue from developing blade domain of plastochron 5 staged leaf primordia	leaf 	epidermal tissue from developing ligule domain of plastochron	5 staged leaf primordia	SRR3063529
+SRX1507838	Sorghum bicolor BTx623 pollen, rep 1	rep1	pollen mutational analysis	pollen 	mutational analysis 	NA	SRR3064884
+SRX1516345	Sorghum bicolor BTx623 pollen, rep 3	rep3	pollen mutational analysis	pollen 	mutational analysis 	NA	SRR3084691
+SRX1516828	Sorghum bicolor BTx623 pollen, rep 5	rep5	pollen mutational analysis	pollen 	mutational analysis 	NA	SRR3085237
+SRX1518047	Sorghum bicolor BTx623 microspore, rep 2	rep2	microspore mutational analysis	microspore	mutational analysis 	NA	SRR3086642
+SRX1518510	Sorghum bicolor BTx623 microspore, rep 4	rep4	microspore mutational analysis	microspore	mutational analysis 	NA	SRR3086980
+SRX1518649	Sorghum bicolor BTx623 microspore, rep 6	rep6	microspore mutational analysis	microspore	mutational analysis 	NA	SRR3087078
+SRX1519004	Sorghum bicolor BTx623 root including root hairs, rep 1	rep1	root including root hairs mutational analysis	root 	including root hairs mutational analysis	NA	SRR3087372
+SRX1519686	Sorghum bicolor BTx623 root including root hairs, rep 2	rep2	root including root hairs mutational analysis	root 	including root hairs mutational analysis	NA	SRR3087932
+SRX1520356	Sorghum bicolor BTx623 root including root hairs, rep 3	rep3	root including root hairs mutational analysis	root 	including root hairs mutational analysis	NA	SRR3088656
+SRX1520917	Sorghum bicolor BTx623 root with root hairs scraped off, rep 1	rep1	root with root hairs scraped off mutational analysis	root 	with root hairs scraped off mutational analysis 	NA	SRR3089487
+SRX1520922	Sorghum bicolor BTx623 root with root hairs scraped off, rep 2	rep2	root with root hairs scraped off mutational analysis	root 	with root hairs scraped off mutational analysis 	NA	SRR3089525
+SRX1521210	Sorghum bicolor BTx623 root with root hairs scraped off, rep 3	rep3	root with root hairs scraped off mutational analysis	root 	with root hairs scraped off mutational analysis 	NA	SRR3090643
+SRX182693	Sorghum bicolor Liang Tang Ai library	rep1	plant Sorghum bicolor Liang Tang Ai library	plant 	NA 	NA	SRR553484
+SRX185153	Sorghum bicolor BTx631 library	rep1	plant Sorghum bicolor BTx631 library	plant 	NA 	NA	SRR563396
+SRX341654	"GSM1219673: Embryos_Sorghum; Sorghum bicolor; RNA-Seq"	rep1	embryo annotation 	embryo 	NA 	NA	SRR959765
+SRX341655	"GSM1219674: Floral_Meristem_Sorghum; Sorghum bicolor; RNA-Seq"	rep1	floral meristem annotation	floral meristem	NA 	NA	SRR959766
+SRX341655	"GSM1219674: Floral_Meristem_Sorghum; Sorghum bicolor; RNA-Seq"	rep2	floral meristem annotation	floral meristem	NA 	NA	SRR959767
+SRX341656	"GSM1219675: Flowers_Sorghum; Sorghum bicolor; RNA-Seq"	rep1	flower annotation	flower 	NA 	NA	SRR959768
+SRX341656	"GSM1219675: Flowers_Sorghum; Sorghum bicolor; RNA-Seq"	rep2	flower annotation	flower 	NA 	NA	SRR959769
+SRX341656	"GSM1219675: Flowers_Sorghum; Sorghum bicolor; RNA-Seq"	rep3	flower annotation	flower 	NA 	NA	SRR959770
+SRX341656	"GSM1219675: Flowers_Sorghum; Sorghum bicolor; RNA-Seq"	rep4	flower annotation	flower 	NA 	NA	SRR959771
+SRX341657	"GSM1219676: Vegetative_Meristem_Sorghum; Sorghum bicolor; RNA-Seq"	rep1	vegetative meristem annotation 	vegetative meristem	NA 	NA	SRR959772
+SRX341657	"GSM1219676: Vegetative_Meristem_Sorghum; Sorghum bicolor; RNA-Seq"	rep2	vegetative meristem annotation 	vegetative meristem	NA 	NA	SRR959773
+SRX341658	"GSM1219677: ABA_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep1	root annotation ABA 	root 	ABA stress	NA	SRR959774
+SRX341658	"GSM1219677: ABA_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep2	root annotation ABA 	root 	ABA stress	NA	SRR959775
+SRX341658	"GSM1219677: ABA_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep3	root annotation ABA 	root 	ABA stress	NA	SRR959776
+SRX341658	"GSM1219677: ABA_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep4	root annotation ABA 	root 	ABA stress	NA	SRR959777
+SRX341658	"GSM1219677: ABA_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep5	root annotation ABA 	root 	ABA stress	NA	SRR959778
+SRX341659	"GSM1219678: PEG_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep1	root annotation PEG 	root 	PEG stress	NA	SRR959779
+SRX341659	"GSM1219678: PEG_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep2	root annotation PEG 	root 	PEG stress	NA	SRR959780
+SRX341659	"GSM1219678: PEG_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep3	root annotation PEG 	root 	PEG stress	NA	SRR959781
+SRX341660	"GSM1219679: H2O_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep1	root annotation H2O	root 	H2O	NA	SRR959782
+SRX341660	"GSM1219679: H2O_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep2	root annotation H2O	root 	H2O	NA	SRR959783
+SRX341660	"GSM1219679: H2O_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep3	root annotation H2O	root 	H2O	NA	SRR959784
+SRX341660	"GSM1219679: H2O_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep4	root annotation H2O	root 	H2O	NA	SRR959785
+SRX341660	"GSM1219679: H2O_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep5	root annotation H2O	root 	H2O	NA	SRR959786
+SRX341661	"GSM1219680: NaOH_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep1	root annotation NaOH 	root 	NaOH	NA	SRR959787
+SRX341661	"GSM1219680: NaOH_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep2	root annotation NaOH 	root 	NaOH	NA	SRR959788
+SRX341661	"GSM1219680: NaOH_Sorghum_Root; Sorghum bicolor; RNA-Seq"	rep3	root annotation NaOH 	root 	NaOH	NA	SRR959789
+SRX341662	"GSM1219681: ABA_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep1	shoot annotation ABA	shoot	ABA stress	NA	SRR959790
+SRX341662	"GSM1219681: ABA_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep2	shoot annotation ABA	shoot	ABA stress	NA	SRR959791
+SRX341662	"GSM1219681: ABA_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep3	shoot annotation ABA	shoot	ABA stress	NA	SRR959792
+SRX341663	"GSM1219682: PEG_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep1	shoot annotation PEG 	shoot	PEG stress	NA	SRR959793
+SRX341663	"GSM1219682: PEG_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep2	shoot annotation PEG 	shoot	PEG stress	NA	SRR959794
+SRX341663	"GSM1219682: PEG_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep3	shoot annotation PEG 	shoot	PEG stress	NA	SRR959795
+SRX341664	"GSM1219683: H2O_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep1	shoot annotation H2O 	shoot	H2O	NA	SRR959796
+SRX341664	"GSM1219683: H2O_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep2	shoot annotation H2O 	shoot	H2O	NA	SRR959797
+SRX341664	"GSM1219683: H2O_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep3	shoot annotation H2O 	shoot	H2O	NA	SRR959798
+SRX341665	"GSM1219684: NaOH_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep1	shoot annotation NaOH 	shoot	NaOH	NA	SRR959799
+SRX341665	"GSM1219684: NaOH_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep2	shoot annotation NaOH 	shoot	NaOH	NA	SRR959800
+SRX341665	"GSM1219684: NaOH_Sorghum_Shoot; Sorghum bicolor; RNA-Seq"	rep3	shoot annotation NaOH 	shoot	NaOH	NA	SRR959801
+SRX465112	"GSM1322388: CK60-rep1; Sorghum bicolor; RNA-Seq"	rep1	root  CK60	root 	N stress	NA	SRR1161660
+SRX465113	"GSM1322389: CK60-rep2; Sorghum bicolor; RNA-Seq"	rep2	root  CK60	root 	N stress	NA	SRR1161661
+SRX465114	"GSM1322390: CK60-rep3; Sorghum bicolor; RNA-Seq"	rep3	root  CK60	root 	N stress	NA	SRR1161662
+SRX465115	"GSM1322391: CK60-rep4; Sorghum bicolor; RNA-Seq"	rep4	root  CK60	root 	N stress	NA	SRR1161663
+SRX465116	"GSM1322392: TX623-rep1; Sorghum bicolor; RNA-Seq"	rep1	root TX623	root 	N stress	NA	SRR1161664
+SRX465117	"GSM1322393: TX623-rep2; Sorghum bicolor; RNA-Seq"	rep2	root TX623	root 	N stress	NA	SRR1161665
+SRX465118	"GSM1322394: TX623-rep3; Sorghum bicolor; RNA-Seq"	rep3	root TX623	root 	N stress	NA	SRR1161666
+SRX465119	"GSM1322395: TX623-rep4; Sorghum bicolor; RNA-Seq"	rep4	root TX623	root 	N stress	NA	SRR1161667
+SRX465120	"GSM1322396: SCS-rep1; Sorghum bicolor; RNA-Seq"	rep1	root SCS	root 	N stress	NA	SRR1161668
+SRX465121	"GSM1322397: SCS-rep2; Sorghum bicolor; RNA-Seq"	rep2	root SCS	root 	N stress	NA	SRR1161669
+SRX465122	"GSM1322398: SCS-rep3; Sorghum bicolor; RNA-Seq"	rep3	root SCS	root 	N stress	NA	SRR1161670
+SRX465123	"GSM1322399: SCS-rep4; Sorghum bicolor; RNA-Seq"	rep4	root SCS	root 	N stress	NA	SRR1161671
+SRX465124	"GSM1322400: Ch17-rep1; Sorghum bicolor; RNA-Seq"	rep1	root Ch17	root 	N stress	NA	SRR1161672
+SRX465125	"GSM1322401: Ch17-rep2; Sorghum bicolor; RNA-Seq"	rep2	root Ch17	root 	N stress	NA	SRR1161673
+SRX465126	"GSM1322402: Ch17-rep3; Sorghum bicolor; RNA-Seq"	rep3	root Ch17	root 	N stress	NA	SRR1161674
+SRX465127	"GSM1322403: Ch17-rep4; Sorghum bicolor; RNA-Seq"	rep4	root Ch17	root 	N stress	NA	SRR1161675
+SRX465128	"GSM1322404: KS78-rep1; Sorghum bicolor; RNA-Seq"	rep1	root KS78	root 	N stress	NA	SRR1161676
+SRX465129	"GSM1322405: KS78-rep2; Sorghum bicolor; RNA-Seq"	rep2	root KS78	root 	N stress	NA	SRR1161677
+SRX465130	"GSM1322406: KS78-rep3; Sorghum bicolor; RNA-Seq"	rep3	root KS78	root 	N stress	NA	SRR1161678
+SRX465131	"GSM1322407: KS78-rep4; Sorghum bicolor; RNA-Seq"	rep4	root KS78	root 	N stress	NA	SRR1161679
+SRX465132	"GSM1322408: High Bulk-rep1; Sorghum bicolor; RNA-Seq"	rep1	root High Bulk	root 	N stress	NA	SRR1161680
+SRX465133	"GSM1322409: High Bulk-rep2; Sorghum bicolor; RNA-Seq"	rep2	root High Bulk	root 	N stress	NA	SRR1161681
+SRX465134	"GSM1322410: High Bulk-rep3; Sorghum bicolor; RNA-Seq"	rep3	root High Bulk	root 	N stress	NA	SRR1161682
+SRX465135	"GSM1322411: High Bulk-rep4; Sorghum bicolor; RNA-Seq"	rep4	root High Bulk	root 	N stress	NA	SRR1161683
+SRX465136	"GSM1322412: Low Bulk-rep1; Sorghum bicolor; RNA-Seq"	rep1	root Low Bulk	root 	N stress	NA	SRR1161684
+SRX465137	"GSM1322413: Low Bulk-rep2; Sorghum bicolor; RNA-Seq"	rep2	root Low Bulk	root 	N stress	NA	SRR1161685
+SRX465138	"GSM1322414: Low Bulk-rep3; Sorghum bicolor; RNA-Seq"	rep3	root Low Bulk	root 	N stress	NA	SRR1161686
+SRX465139	"GSM1322415: Low Bulk-rep4; Sorghum bicolor; RNA-Seq"	rep4	root Low Bulk	root 	N stress	NA	SRR1161687
+SRX893858	Sample before salt treatment	rep1	leaf before salt treatment 	leaf 	control	senescence	SRR1822329
+SRX894225	5 days after salt treatment	rep1	leaf 5 days after salt treatment	leaf 	5 days after salt treatment 	senescence	SRR1822671
+SRX894598	Sample before dark treatment	rep1	leaf before dark treatment	leaf 	control	senescence	SRR1823059
+SRX894599	6 days after dark treatment	rep1	leaf 6 days after dark treatment	leaf 	6 days after dark treatment	senescence	SRR1823060
+SRX898973	Sample of mature leaves	rep1	leaf mature 	leaf 	NA 	mature	SRR1829997
+SRX900141	Early senescence sample	rep1	leaf Early senescence	leaf 	NA 	Early senescence	SRR1832808
+SRX900148	Middle senescence sample	rep1	leaf Middle senescence 	leaf 	NA 	Middle senescence	SRR1832809
+SRX900151	Late senescence sample	rep1	leaf Late senescence	leaf 	NA 	Late senescence	SRR1832811
+SRX913431	One centimeter leaf segment three centimeters below the leaf ligule. Biological replicate number one.	rep1	leaf C4	leaf 	One centimeter leaf segment three centimeters below the leaf ligule	developing	SRR1873791
+SRX913431	One centimeter leaf segment three centimeters below the leaf ligule. Biological replicate number one.	rep2	leaf C4	leaf 	One centimeter leaf segment three centimeters below the leaf ligule	developing	SRR1873792
+SRX950451	Sorghum_leaf_segment_minus3_rep2	rep2	leaf C4 segment_minus3	leaf 	segment_minus3	developing	SRR1874021
+SRX950453	Sorghum_leaf_segment_minus3_rep3	rep3	leaf C4 segment_minus3	leaf 	segment_minus3	developing	SRR1874023
+SRX950456	Sorghum_leaf_segment_minus2_rep1	rep1	leaf C4 segment_minus2	leaf 	segment_minus2	developing	SRR1874026
+SRX950457	Sorghum_leaf_segment_minus2_rep2	rep2	leaf C4 segment_minus2	leaf 	segment_minus2	developing	SRR1874027
+SRX950458	Sorghum_leaf_segment_minus2_rep3	rep3	leaf C4 segment_minus2	leaf 	segment_minus2	developing	SRR1874028
+SRX950459	Sorghum_leaf_segment_minus1_rep1	rep1	leaf C4 segment_minus1	leaf 	segment_minus1	developing	SRR1874030
+SRX950460	Sorghum_leaf_segment_minus1_rep2	rep2	leaf C4 segment_minus1	leaf 	segment_minus1	developing	SRR1874031
+SRX950461	Sorghum_leaf_segment_minus1_rep3	rep3	leaf C4 segment_minus1	leaf 	segment_minus1	developing	SRR1874033
+SRX950462	Sorghum_leaf_segment_plus1_rep1	rep1	leaf C4 segment_plus1	leaf 	segment_plus1	developing	SRR1874035
+SRX950463	Sorghum_leaf_segment_plus1_rep2	rep2	leaf C4 segment_plus1	leaf 	segment_plus1	developing	SRR1874036
+SRX950464	Sorghum_leaf_segment_plus1_rep3	rep3	leaf C4 segment_plus1	leaf 	segment_plus1	developing	SRR1874037
+SRX950465	Sorghum_leaf_segment_plus2_rep1	rep1	leaf C4 segment_plus2	leaf 	segment_plus2	developing	SRR1874038
+SRX950466	Sorghum_leaf_segment_plus2_rep2	rep2	leaf C4 segment_plus2	leaf 	segment_plus2	developing	SRR1874039
+SRX950467	Sorghum_leaf_segment_plus2_rep3	rep3	leaf C4 segment_plus2	leaf 	segment_plus2	developing	SRR1874040
+SRX950468	Sorghum_leaf_segment_plus3_rep1	rep1	leaf C4 segment_plus3	leaf 	segment_plus3	developing	SRR1874041
+SRX950469	Sorghum_leaf_segment_plus3_rep2	rep2	leaf C4 segment_plus3	leaf 	segment_plus3	developing	SRR1874042
+SRX950471	Sorghum_leaf_segment_plus3_rep3	rep1	leaf C4 segment_plus4	leaf 	segment_plus3	developing	SRR1874043
+SRX950473	Sorghum_leaf_segment_plus4_rep2	rep2	leaf C4 segment_plus4	leaf 	segment_plus4	developing	SRR1874046
+SRX950474	Sorghum_leaf_segment_plus4_rep3	rep3	leaf C4 segment_plus4	leaf 	segment_plus4	developing	SRR1874047
+SRX950475	Sorghum_leaf_segment_plus5_rep1	rep1	leaf C4 segment_plus5	leaf 	segment_plus5	developing	SRR1874049
+SRX950476	Sorghum_leaf_segment_plus5_rep2	rep2	leaf C4 segment_plus5	leaf 	segment_plus5	developing	SRR1874061
+SRX950483	Sorghum_leaf_segment_plus5_rep3	rep3	leaf C4 segment_plus5	leaf 	segment_plus5	developing	SRR1874067
+SRX950484	Sorghum_leaf_segment_plus6_rep1	rep1	leaf C4 segment_plus6	leaf 	segment_plus6	developing	SRR1875520
+SRX950485	Sorghum_leaf_segment_plus6_rep2	rep2	leaf C4 segment_plus6	leaf 	segment_plus6	developing	SRR1876991
+SRX950486	Sorghum_leaf_segment_plus6_rep3	rep3	leaf C4 segment_plus6	leaf 	segment_plus6	developing	SRR1878107
+SRX950487	Sorghum_leaf_segment_plus7_rep1	rep1	leaf C4 segment_plus7	leaf 	segment_plus7	developing	SRR1879518
+SRX950488	Sorghum_leaf_segment_plus7_rep2	rep2	leaf C4 segment_plus7	leaf 	segment_plus7	developing	SRR1880959
+SRX950489	Sorghum_leaf_segment_plus7_rep3	rep3	leaf C4 segment_plus7	leaf 	segment_plus7	developing	SRR1881929
+SRX950490	Sorghum_leaf_segment_plus8_rep1	rep1	leaf C4 segment_plus8	leaf 	segment_plus8	developing	SRR1882919
+SRX950491	Sorghum_leaf_segment_plus8_rep2	rep2	leaf C4 segment_plus8	leaf 	segment_plus8	developing	SRR1883966
+SRX950492	Sorghum_leaf_segment_plus8_rep3	rep3	leaf C4 segment_plus8	leaf 	segment_plus8	developing	SRR1884878
+SRX950494	Sorghum_leaf_segment_plus9_rep1	rep1	leaf C4 segment_plus9	leaf 	segment_plus9	developing	SRR1886389
+SRX950496	Sorghum_leaf_segment_plus9_rep2	rep2	leaf C4 segment_plus9	leaf 	segment_plus9	developing	SRR1887380
+SRX950497	Sorghum_leaf_segment_plus9_rep3	rep3	leaf C4 segment_plus9	leaf 	segment_plus9	developing	SRR1888240
+SRX950498	Sorghum_leaf_segment_plus10_rep1	rep1	leaf C4 segment_plus10	leaf 	segment_plus10	developing	SRR1889422
+SRX950499	Sorghum_leaf_segment_plus10_rep2	rep2	leaf C4 segment_plus10	leaf 	segment_plus10	developing	SRR1890269
+SRX950500	Sorghum_leaf_segment_plus10_rep3	rep3	leaf C4 segment_plus10	leaf 	segment_plus10	developing	SRR1891234
