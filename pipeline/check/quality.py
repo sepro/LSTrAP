@@ -55,7 +55,8 @@ def check_htseq(filename, cutoff=0, log=None):
 
         total = sum([mapped_reads,
                      values['__no_feature'] if '__no_feature' in values.keys() else 0,
-                     values['__ambiguous'] if '__ambiguous' in values.keys() else 0])
+                     values['__ambiguous'] if '__ambiguous' in values.keys() else 0]
+                    )
 
         percentage_mapped = ((mapped_reads*100)/total) if total > 0 else 0
 
