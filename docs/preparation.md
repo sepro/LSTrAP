@@ -20,4 +20,4 @@ Optional tools
 
   * [scikit-learn](http://scikit-learn.org/) for Python 3, required for PCA analysis (helper script)
   * [seaborn](https://stanford.edu/~mwaskom/software/seaborn/) for Python 3, required for PCA analysis (helper script)
-  * [Aspera connect client](), required for the *get_sra_ip.py* (helper script)
+  * [Aspera connect client](http://downloads.asperasoft.com/en/downloads/2), required for the *get_sra_ip.py* (helper script)
