@@ -77,12 +77,14 @@ for LSTrAP can be generated.
 
     python3 fasta_to_gtf.py /path/to/transcript.cds.fasta > output.gtf
     
-
 ## Contact
 
 LSTrAP was developped by [Sebastian Proost](mailto:proost@mpimp-golm.mpg.de) and [Marek Mutwil](mailto:mutwil@mpimp-golm.mpg.de) at the [Max-Planck Institute for Molecular Plant Physiology](http://www.mpimp-golm.mpg.de/2168/en)
 
-This work is supported by [ERA-CAPS](http://www.eracaps.org/) though the [EVOREPRO](http://www.evorepro.org/) project.
+## Acknowledgements and Funding
+
+This work is supported by [ERA-CAPS](http://www.eracaps.org/) though the [EVOREPRO](http://www.evorepro.org/) project. 
+The authors would like to thank Andreas Donath for technical support and helpful discussions.
 
 ## License
 
