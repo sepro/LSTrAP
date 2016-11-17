@@ -15,7 +15,6 @@ class OrthologyPipeline(PipelineBase):
         Runs orthofinder for all genomes
         """
         orthofinder_dir = self.dp['GLOBAL']['orthofinder_output']
-        orthofinder_cores = self.cp['TOOLS']['orthofinder_cores']
 
         os.makedirs(orthofinder_dir, exist_ok=True)
 
@@ -30,9 +29,10 @@ class OrthologyPipeline(PipelineBase):
             print('çopying', self.dp[g]['protein_fasta'], 'to', os.path.join(orthofinder_dir, g + '.fasta'))
             copy(self.dp[g]['protein_fasta'], os.path.join(orthofinder_dir, g + '.fasta'))
 
-        subprocess.call(["qsub", "-pe", "cores", orthofinder_cores, "-v", "fasta_dir=" + orthofinder_dir + ",num_cores=" + orthofinder_cores, filename])
+        command = ["qsub"] + self.qsub_orthofinder + ["-v", "fasta_dir=" + orthofinder_dir, filename]
+        subprocess.call(command)
 
-         # wait for all jobs to complete
+        # wait for all jobs to complete
         wait_for_job(jobname)
 
         # remove the submission script
@@ -74,11 +74,12 @@ class OrthologyPipeline(PipelineBase):
                                                          self.mcl_cmd,
                                                          "mcl_%d.sh")
         # submit job
-        subprocess.call(["qsub", "-pe", "cores", "4",
-                         "-v", "blast_in=" + full_blast +
-                         ",abc_out=" + full_blast_abc +
-                         ",in=" + full_blast_abc +
-                         ",out=" + mcl_families_out, filename])
+        command = ["qsub"] + self.qsub_mcxdeblast + \
+                  ["-v", "blast_in=" + full_blast +
+                   ",abc_out=" + full_blast_abc +
+                   ",in=" + full_blast_abc +
+                   ",out=" + mcl_families_out, filename]
+        subprocess.call(command)
 
         # wait for all jobs to complete
         wait_for_job(jobname)

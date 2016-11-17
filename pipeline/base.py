@@ -1,6 +1,7 @@
 import configparser
 import time
 import os
+import shlex
 
 from cluster.templates import build_template, build_batch_template
 
@@ -41,6 +42,16 @@ class PipelineBase:
         self.pcc_cmd = self.cp['TOOLS']['pcc_cmd']
         self.mcl_cmd = self.cp['TOOLS']['mcl_cmd']
         self.mcxdeblast_cmd = self.cp['TOOLS']['mcxdeblast_cmd']
+
+        self.qsub_bowtie = shlex.split(self.cp['TOOLS']['qsub_bowtie'])
+        self.qsub_trimmomatic = shlex.split(self.cp['TOOLS']['qsub_trimmomatic'])
+        self.qsub_tophat = shlex.split(self.cp['TOOLS']['qsub_tophat'])
+        self.qsub_htseq_count = shlex.split(self.cp['TOOLS']['qsub_htseq_count'])
+        self.qsub_interproscan = shlex.split(self.cp['TOOLS']['qsub_interproscan'])
+        self.qsub_pcc = shlex.split(self.cp['TOOLS']['qsub_pcc'])
+        self.qsub_mcl = shlex.split(self.cp['TOOLS']['qsub_mcl'])
+        self.qsub_orthofinder = shlex.split(self.cp['TOOLS']['qsub_orthofinder'])
+        self.qsub_mcxdeblast = shlex.split(self.cp['TOOLS']['qsub_mcxdeblast'])
 
         self.genomes = self.dp['GLOBAL']['genomes'].split(';')
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']

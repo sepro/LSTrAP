@@ -29,7 +29,9 @@ class TranscriptomePipeline(PipelineBase):
             os.makedirs(os.path.dirname(output), exist_ok=True)
             shutil.copy(con_file, output + '.fa')
 
-            subprocess.call(["qsub", "-v", "in=" + con_file + ",out=" + output, filename])
+            command = ["qsub"] + self.qsub_bowtie + ["in=" + con_file + ",out=" + output, filename]
+
+            subprocess.call(command)
 
         print("Preparing the genomic fasta file...")
 
@@ -95,24 +97,27 @@ class TranscriptomePipeline(PipelineBase):
                         outbu = os.path.join(trimmed_output, outbu)
                         if overwrite or not os.path.exists(outap):
                             print('Submitting pair %s, %s' % (file, pair_file))
-                            subprocess.call(["qsub", "-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s,jar=%s" %
-                                             (ina, inb, outap, outau, outbp, outbu, self.trimmomatic_path), filename_pe])
+                            command = ["qsub"] + self.qsub_trimmomatic + \
+                                      ["-v", "ina=%s,inb=%s,outap=%s,outau=%s,outbp=%s,outbu=%s,jar=%s" % (ina, inb, outap, outau, outbp, outbu, self.trimmomatic_path), filename_pe]
+                            subprocess.call(command)
                         else:
                             print('Found', outap, 'skipping')
                     else:
                         outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
                         if overwrite or not os.path.exists(os.path.join(trimmed_output, outfile)):
                             print('Submitting single %s' % file)
-                            subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile) +
-                                                ",jar=" + self.trimmomatic_path, filename_se])
+                            command = ["qsub"] + self.qsub_trimmomatic + ["-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile) +
+                                                ",jar=" + self.trimmomatic_path, filename_se]
+                            subprocess.call(command)
                         else:
                             print('Found', outfile, 'skipping')
                 else:
                     outfile = file.replace('.fq.gz', '.trimmed.fq.gz') if file.endswith('.fq.gz') else file.replace('.fastq.gz', '.trimmed.fastq.gz')
                     if overwrite or not os.path.exists(os.path.join(trimmed_output, outfile)):
                         print('Submitting single %s' % file)
-                        subprocess.call(["qsub", "-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile) +
-                                         ",jar=" + self.trimmomatic_path, filename_se])
+                        command = ["qsub"] + self.qsub_trimmomatic + ["-v", "in=" + os.path.join(fastq_input_dir, file) + ",out=" + os.path.join(trimmed_output, outfile) +
+                                         ",jar=" + self.trimmomatic_path, filename_se]
+                        subprocess.call(command)
                     else:
                         print('Found', outfile, 'skipping')
 
@@ -178,7 +183,8 @@ class TranscriptomePipeline(PipelineBase):
                     reverse = os.path.join(trimmed_fastq_dir, pair_file)
                     if overwrite or not os.path.exists(os.path.join(output_dir, 'accepted_hits.bam')):
                         print('Submitting pair %s, %s' % (pe_file, pair_file))
-                        subprocess.call(["qsub", "-pe", "cores", "4", "-v", "out=%s,genome=%s,forward=%s,reverse=%s" % (output_dir, bowtie_output, forward, reverse), filename_pe])
+                        command = ["qsub"] + self.qsub_tophat + ["-v", "out=%s,genome=%s,forward=%s,reverse=%s" % (output_dir, bowtie_output, forward, reverse), filename_pe]
+                        subprocess.call(command)
                     else:
                         print('Output exists, skipping', pe_file)
 
@@ -187,7 +193,8 @@ class TranscriptomePipeline(PipelineBase):
                 output_dir = os.path.join(tophat_output, output_dir)
                 if overwrite or not os.path.exists(os.path.join(output_dir, 'accepted_hits.bam')):
                     print('Submitting single %s' % se_file)
-                    subprocess.call(["qsub", "-pe", "cores", "4", "-v", "out=%s,genome=%s,fq=%s" % (output_dir, bowtie_output, os.path.join(trimmed_fastq_dir, se_file)), filename_se])
+                    command = ["qsub"] + self.qsub_tophat + ["-v", "out=%s,genome=%s,fq=%s" % (output_dir, bowtie_output, os.path.join(trimmed_fastq_dir, se_file)), filename_se]
+                    subprocess.call(command)
                 else:
                     print('Output exists, skipping', se_file)
 
@@ -241,7 +248,8 @@ class TranscriptomePipeline(PipelineBase):
                 htseq_out = os.path.join(htseq_output, d + '.htseq')
                 print(d, bam_file, htseq_out)
 
-                subprocess.call(["qsub", "-v", "feature=%s,field=%s,bam=%s,gff=%s,out=%s" % (gff_feature, gff_id, bam_file, gff_file, htseq_out), filename])
+                command = ["qsub"] + self.qsub_htseq_count + ["-v", "feature=%s,field=%s,bam=%s,gff=%s,out=%s" % (gff_feature, gff_id, bam_file, gff_file, htseq_out), filename]
+                subprocess.call(command)
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
@@ -394,7 +402,8 @@ class TranscriptomePipeline(PipelineBase):
                 print('Matrix type %s unknown, quiting...' % matrix_type)
                 quit()
 
-            subprocess.call(["qsub", "-v", "in=%s,out=%s,mcl_out=%s" % (htseq_matrix, pcc_out, mcl_out), filename])
+            command = ["qsub"] + self.qsub_pcc + ["-v", "in=%s,out=%s,mcl_out=%s" % (htseq_matrix, pcc_out, mcl_out), filename]
+            subprocess.call(command)
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
@@ -421,7 +430,8 @@ class TranscriptomePipeline(PipelineBase):
             mcl_out = self.dp[g]['pcc_mcl_output']
             mcl_clusters = self.dp[g]['mcl_cluster_output']
 
-            subprocess.call(["qsub", "-pe", "cores", "4", "-v", "in=%s,out=%s" % (mcl_out, mcl_clusters), filename])
+            command = ["qsub"] + self.qsub_mcl + ["-v", "in=%s,out=%s" % (mcl_out, mcl_clusters), filename]
+            subprocess.call(command)
 
         # wait for all jobs to complete
         wait_for_job(jobname, sleep_time=1)
