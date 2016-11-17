@@ -4,13 +4,26 @@ In your config file module names need to be specified. To see which modules are 
 
     module avail
 
-Add the module name for each of the tools to your config.ini, also update the path to Trimmomatic.
+Add the module name for each of the tools to your config.ini, also update all paths (!) e.g. Trimmomatic.
 In case the module load system isn't used, but all software is installed on the cluster + nodes set the modules to **None** !
 
 In case you would like to tweak parameters passed to tools this would be the place to do so. Note however that the tools
 will run with the same settings for each file. Modifying parameters that would **change the output name or format will 
 cause the pipeline to break**. Arguments with a name like *${var}* should **not** be changed as this is how the pipeline 
 defines the input and output for each tool.
+
+**Paths** will differ on your system, make sure to set these up correctly
+
+Additional parameters can be added to the qsub commands at the bottom, 
+this allows users to submit jobs to specific queues, with specific 
+options, ... Furthermore, while the template is designed for Oracle/Sun 
+Grid Engine this can be set up to work with other job management systems
+such as PBS and Torque.
+
+**Match the number of cores** to the number of cores the job needs. When
+starting TopHat with **-p 3** the job will require 4 cores (3 worker 
+threads and a background thread are active when a job is started this 
+way).
 
 Example config.ini:
 
@@ -32,6 +45,7 @@ blast_module=biotools/ncbi-blast-2.3.0+
 mcl_module=biotools/mcl-14.137
 
 python_module=devel/Python-2.7.10
+python3_module=devel/Python-3.5.1
 
 ; commands to run tools
 bowtie_cmd=bowtie2-build ${in} ${out}
@@ -46,6 +60,26 @@ samtools_cmd=samtools view -h -o ${out} ${bam}
 htseq_count_cmd=htseq-count -s no -t ${feature} -i ${field} ${sam} ${gff} > ${out}
 
 interproscan_cmd=interproscan.sh -i ${in_dir}/${in_prefix}${SGE_TASK_ID} -o ${out_dir}/${out_prefix}${SGE_TASK_ID} -f tsv -dp -iprlookup -goterms --tempdir /tmp
+
+pcc_cmd=python3 ./scripts/pcc.py ${in} ${out} ${mcl_out}
+mcl_cmd=mcl ${in} --abc -o ${out} -te 4
+
+mcxdeblast_cmd=perl /apps/biotools/mcl-14.137/bin/mcxdeblast --m9 --line-mode=abc ${blast_in} > ${abc_out}
+
+orthofinder_cmd=python /home/sepro/OrthoFinder-0.4/orthofinder.py -f ${fasta_dir} -t 8
+
+
+; qsub parameters
+
+qsub_bowtie=''
+qsub_trimmomatic=''
+qsub_tophat='-pe cores 4'
+qsub_htseq_count=''
+qsub_interproscan='-pe cores 5'
+qsub_pcc=''
+qsub_mcl='-pe cores 4'
+qsub_orthofinder='-pe cores 8'
+qsub_mcxdeblast=''
 
 ```
 
