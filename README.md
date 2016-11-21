@@ -16,7 +16,7 @@ Steps in bold are submitted to a cluster.
 
 LSTrAP is designed to run on an [Oracle Grid Engine](https://www.oracle.com/sun/index.html) computer cluster system and requires 
 all external tools to be installed on the compute nodes. The "module load" system is supported. A comprehensive list of all tools 
-necessary can be found  [here](docs/preparation.md)
+necessary can be found  [here](docs/preparation.md). Instructions to run LSTrAP on other systems are provided below.
 
 ## Installation
 
@@ -76,6 +76,20 @@ file containing **coding** sequences can be used (remove UTRs). Using the helper
 for LSTrAP can be generated.
 
     python3 fasta_to_gtf.py /path/to/transcript.cds.fasta > output.gtf
+    
+## Adapting LSTrAP to other cluster managers
+    
+LSTrAP is designed and tested on an Oracle Grid Engine, though with minimal effort it can be adopted to run on PBS and Torque
+based systems (and likely others). First, in the configuration file, check the qsub parameters (e.g. jobs that require multiple
+CPUs to run *-pe cores 4*), that differ between systems are set up properly (the nodes and cores on Torque and PBS need to be 
+set using *-l nodes=4:ppn=2* to request 4 nodes with 2 processes per node). 
+ 
+Furthermore the submission script might differ, these are located in **./cluster/templates.py** . For PBS based systems some
+settings need to be included by adding *#PBS ...*. 
+ 
+We strive to get LSTrAP running on as many systems as possible. Do not hesitate to contact us in case you experience difficulties 
+running LSTrAP on your system.
+ 
     
 ## Contact
 
