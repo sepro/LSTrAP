@@ -4,7 +4,7 @@ import sys
 import os
 import random
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
     print("Error with arguments. Usage ./get_sra_ip.py <INPUT> <OUTPUT_DIR> <ASPERA_KEY>")
     quit()
 
