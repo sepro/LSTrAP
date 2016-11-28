@@ -43,15 +43,15 @@ class PipelineBase:
         self.mcl_cmd = self.cp['TOOLS']['mcl_cmd']
         self.mcxdeblast_cmd = self.cp['TOOLS']['mcxdeblast_cmd']
 
-        self.qsub_bowtie = shlex.split(self.cp['TOOLS']['qsub_bowtie'])
-        self.qsub_trimmomatic = shlex.split(self.cp['TOOLS']['qsub_trimmomatic'])
-        self.qsub_tophat = shlex.split(self.cp['TOOLS']['qsub_tophat'])
-        self.qsub_htseq_count = shlex.split(self.cp['TOOLS']['qsub_htseq_count'])
-        self.qsub_interproscan = shlex.split(self.cp['TOOLS']['qsub_interproscan'])
-        self.qsub_pcc = shlex.split(self.cp['TOOLS']['qsub_pcc'])
-        self.qsub_mcl = shlex.split(self.cp['TOOLS']['qsub_mcl'])
-        self.qsub_orthofinder = shlex.split(self.cp['TOOLS']['qsub_orthofinder'])
-        self.qsub_mcxdeblast = shlex.split(self.cp['TOOLS']['qsub_mcxdeblast'])
+        self.qsub_bowtie = shlex.split(self.cp['TOOLS']['qsub_bowtie'].strip('\''))
+        self.qsub_trimmomatic = shlex.split(self.cp['TOOLS']['qsub_trimmomatic'].strip('\''))
+        self.qsub_tophat = shlex.split(self.cp['TOOLS']['qsub_tophat'].strip('\''))
+        self.qsub_htseq_count = shlex.split(self.cp['TOOLS']['qsub_htseq_count'].strip('\''))
+        self.qsub_interproscan = shlex.split(self.cp['TOOLS']['qsub_interproscan'].strip('\''))
+        self.qsub_pcc = shlex.split(self.cp['TOOLS']['qsub_pcc'].strip('\''))
+        self.qsub_mcl = shlex.split(self.cp['TOOLS']['qsub_mcl'].strip('\''))
+        self.qsub_orthofinder = shlex.split(self.cp['TOOLS']['qsub_orthofinder'].strip('\''))
+        self.qsub_mcxdeblast = shlex.split(self.cp['TOOLS']['qsub_mcxdeblast'].strip('\''))
 
         self.genomes = self.dp['GLOBAL']['genomes'].split(';')
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']

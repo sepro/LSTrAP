@@ -29,7 +29,7 @@ class TranscriptomePipeline(PipelineBase):
             os.makedirs(os.path.dirname(output), exist_ok=True)
             shutil.copy(con_file, output + '.fa')
 
-            command = ["qsub"] + self.qsub_bowtie + ["in=" + con_file + ",out=" + output, filename]
+            command = ["qsub"] + self.qsub_bowtie + ["-v", "in=" + con_file + ",out=" + output, filename]
 
             subprocess.call(command)
 
