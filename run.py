@@ -107,7 +107,7 @@ if __name__ == "__main__":
     parser.add_argument('--skip-orthofinder', dest='orthofinder', action='store_false', help='add --skip-orthofinder to skip the orthology detection')
     parser.add_argument('--skip-mcl-families', dest='mcl_families', action='store_false', help='add --skip-mcl to skip clustering blast with MCL')
 
-    parser.add_argument('--keep-intermediate', dest='keep_intermediate', action='store_true', help='add --keep-intermediate to prevent the pipeline from removing finished steps')
+    parser.add_argument('--remove-intermediate', dest='keep_intermediate', action='store_false', help='add --remove-intermediate to clear trimmomatic and tophat files after completing those steps')
     parser.add_argument('--disable-log', dest='enable_log', action='store_false',
                         help='add --disable-log to disable writing additional statistics.')
 
@@ -129,6 +129,7 @@ if __name__ == "__main__":
     parser.set_defaults(orthofinder=True)
     parser.set_defaults(mcl_families=True)
 
+    parser.set_defaults(keep_intermediate=True)
     parser.set_defaults(enable_log=True)
 
     # Parse arguments and start pipeline
