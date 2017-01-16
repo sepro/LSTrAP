@@ -29,6 +29,9 @@ These scripts will extract the statistics used to assess the quality of samples.
 
 ## Plots and Graphs
 
+Scripts to generate images similar to those presented in the publication. Example data, 
+derived from the *Sorghum bicolor* case study, in included in the repository. 
+
 ### matrix_heatmap.py
     
 Script to draw a sample distance heatmap (with hierarchical clustering) based 
