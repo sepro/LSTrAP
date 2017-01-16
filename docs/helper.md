@@ -45,6 +45,9 @@ on a normalized expression matrix.
     
     # Set png dpi (for publication)
     python3 matrix_heatmap.py ./data/sbi.expression.matrix.tpm.txt --png output.png --dpi 900
+
+
+![matrix example](images/matrix.png "Sample distance heatmap (with hierarchical clustering)")
     
     
 ### pca_powerlaw.py

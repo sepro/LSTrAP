@@ -30,7 +30,7 @@ if __name__ == "__main__":
     parser.add_argument('expression_matrix', help='path to expression matrix')
     parser.add_argument('--hide_labels', dest='show_labels', action='store_false', help='hide labels (useful for plots with many samples)')
     parser.add_argument('--png', help='save output as png file (default: None, don\'t write png to file)', default=None)
-    parser.add_argument('--dpi', help='dpi for the output (default = 300)', default=300)
+    parser.add_argument('--dpi', help='dpi for the output (default = 300)', default=300, type=float)
 
     parser.set_defaults(show_labels=True)
 
