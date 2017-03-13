@@ -92,8 +92,8 @@ if __name__ == "__main__":
 
     # Optional arguments
     parser.add_argument('--skip-transcriptomics', dest='transcriptomics', action='store_false', help='add --skip-transcriptomics to skip the entire transcriptome step')
-    parser.add_argument('--skip-interpro', dest='interpro', action='store_false', help='add --skip-interpro to skip the entire interproscan step')
-    parser.add_argument('--skip-orthology', dest='orthology', action='store_false', help='add --skip-orthology to skip orthofinder')
+    parser.add_argument('--enable-interpro', dest='interpro', action='store_true', help='Runs InterProScan to detect protein domains and provide functional annotation')
+    parser.add_argument('--enable-orthology', dest='orthology', action='store_true', help='Runs OrhtoFinder and MCL to detect orthogroups, gene families and orthologs')
 
     parser.add_argument('--skip-bowtie-build', dest='bowtie_build', action='store_false', help='add --skip-bowtie-build to skip the step that indexes the genomes using bowtie-build')
     parser.add_argument('--skip-trim-fastq', dest='trim_fastq', action='store_false', help='add --skip-trim-fastq to skip trimming fastq files using trimmomatic')
@@ -113,8 +113,8 @@ if __name__ == "__main__":
 
     # Flags for the big sections of the pipeline
     parser.set_defaults(transcriptomics=True)
-    parser.set_defaults(interpro=True)
-    parser.set_defaults(orthology=True)
+    parser.set_defaults(interpro=False)
+    parser.set_defaults(orthology=False)
 
     # Flags for individual tools for transcriptomics
     parser.set_defaults(bowtie_build=True)
