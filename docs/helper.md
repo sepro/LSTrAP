@@ -35,10 +35,19 @@ derived from the *Sorghum bicolor* case study, in included in the repository.
 ### plot_network
 
 Script that plots the co-expression neighborhood for a specific gene. A PCC cutoff of 0.7 is included by default,
-but users can override this setting using the --cutoff parameter. 
+but users can override this setting using the --cutoff parameter. Matplotlib and networkx are required for this
+script.
 
     # To draw plot to screen using a PCC cutoff of >= 0.8
     python3 plot_network.py <PCC_TABLE> <GENE_ID> --cutoff 0.8
+
+    # Save as png
+    python3 plot_network.py <PCC_TABLE> <GENE_ID> --cutoff 0.8 --png output.png
+    
+    # Set png dpi (for publication)
+    python3 plot_network.py <PCC_TABLE> <GENE_ID> --cutoff 0.8 --png output.png --dpi 900
+
+
 
 ![matrix example](images/plot_network.png "Example of plotted network")
 

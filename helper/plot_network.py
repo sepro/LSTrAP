@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 DEBUG = True
 
 
-def plot_network(filename, gene, cutoff=0.7):
+def plot_network(filename, gene, cutoff=0.7, png=None, dpi=300):
     """
     Function to load a co-expression network from LSTrAP and plot the neighborhood for one gene.
 
@@ -89,7 +89,11 @@ def plot_network(filename, gene, cutoff=0.7):
     nx.draw_networkx_labels(graph, pos, {k: k for k in valid_genes}, font_size=16, alpha=0.5)
 
     plt.axis('off')
-    plt.show()
+    if png is None:
+        plt.show()
+    else:
+        plt.savefig(png, format='png', dpi=dpi)
+        print("Wrote output to %s" % png)
 
 
 if __name__ == "__main__":
@@ -100,10 +104,13 @@ if __name__ == "__main__":
 
     parser.add_argument('--cutoff', help='PCC cutoff to use (default = 0.7)', default=0.7, type=float)
 
+    parser.add_argument('--png', help='save output as png file (default: None, don\'t write png to file)', default=None)
+    parser.add_argument('--dpi', help='dpi for the output (default = 300)', default=300, type=float)
+
     parser.set_defaults(show_labels=True)
 
     # Parse arguments and start script
     args = parser.parse_args()
 
-    plot_network(args.filename, args.gene, cutoff=args.cutoff)
+    plot_network(args.filename, args.gene, cutoff=args.cutoff, png=args.png, dpi=args.dpi)
 
