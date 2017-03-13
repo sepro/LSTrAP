@@ -32,6 +32,16 @@ These scripts will extract the statistics used to assess the quality of samples.
 Scripts to generate images similar to those presented in the publication. Example data, 
 derived from the *Sorghum bicolor* case study, in included in the repository. 
 
+### plot_network
+
+Script that plots the co-expression neighborhood for a specific gene. A PCC cutoff of 0.7 is included by default,
+but users can override this setting using the --cutoff parameter. 
+
+    # To draw plot to screen using a PCC cutoff of >= 0.8
+    python3 plot_network.py <PCC_TABLE> <GENE_ID> --cutoff 0.8
+
+![matrix example](images/plot_network.png "Example of plotted network")
+
 ### matrix_heatmap.py
     
 Script to draw a sample distance heatmap (with hierarchical clustering) based 
