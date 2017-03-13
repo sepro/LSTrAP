@@ -32,7 +32,7 @@ These scripts will extract the statistics used to assess the quality of samples.
 Scripts to generate images similar to those presented in the publication. Example data, 
 derived from the *Sorghum bicolor* case study, in included in the repository. 
 
-### plot_network
+### plot_network.py
 
 Script that plots the co-expression neighborhood for a specific gene. A PCC cutoff of 0.7 is included by default,
 but users can override this setting using the --cutoff parameter. Matplotlib and networkx are required for this
