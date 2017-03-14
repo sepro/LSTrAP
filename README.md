@@ -10,7 +10,8 @@ LSTrAP wraps multiple existing tools into a single workflow. To use LSTrAP the f
 
 ![LSTrAP Workflow](docs/images/LSTrAP_workflow.png "Steps automated by LSTrAP")
 
-Steps in bold are submitted to a cluster.
+Steps in bold are submitted to a cluster. Optional steps can be enabled by adding the flag *--enable-interpro* and/or 
+*--enable-orthology*.
 
 ## Preparation
 
@@ -41,13 +42,20 @@ The location of the transcriptome data, the refrence genome and a few per-specie
 
 Detailed instruction how to set up both configuration files can be found [here](docs/configuration.md)
 
+## Obtaining and preparing data
+
+Scripts to download and prepare data from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra) are included in
+LSTrAP in the folder **helper**. Furthermore, it is recommended to remove splice variants from the GFF3 files, a script
+to do that is included there as well. Detailed instructions for each script provided to obtain and prepare data can be
+found [here](docs/helper.md)
+
 ## Running LSTrAP
 
 Once properly configured for your system and data, LSTrAP can be run using a single simple command (that should be executed on the head node)
 
     ./run.py config.ini data.ini
 
-Options to skip certain steps of the pipeline are included, use the command below for more info
+Options to enable InterProScan and/or OrthoFinder or to skip certain steps of the pipeline are included, use the command below for more info
 
     ./run.py -h
 
