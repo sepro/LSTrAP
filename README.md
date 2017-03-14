@@ -10,8 +10,8 @@ LSTrAP wraps multiple existing tools into a single workflow. To use LSTrAP the f
 
 ![LSTrAP Workflow](docs/images/LSTrAP_workflow.png "Steps automated by LSTrAP")
 
-Steps in bold are submitted to a cluster. Optional steps can be enabled by adding the flag *--enable-interpro* and/or 
-*--enable-orthology*.
+Steps in bold are submitted to a cluster. Optional steps can be enabled by adding the flag *&#8209;&#8209;enable&#8209;interpro* and/or 
+*&#8209;&#8209;enable&#8209;orthology*.
 
 ## Preparation
 
@@ -69,6 +69,13 @@ steps prior to building the network.
     ./run.py config.ini data.ini --skip-interpro --skip-orthology --skip-bowtie-build --skip-trim-fastq --skip-tophat --skip-htseq --skip-qc
 
 More information on how the quality of samples is determined can be found [here](docs/quality.md).
+
+## Output
+
+Apart from the output all tools included generate, LSTrAP will generate raw and normalized expression matrices, a 
+co&#8209;expression network and co&#8209;expression clusters.
+
+A detailed overview of files produces, including examples, can be found [here](docs/example_output.md).
 
 ## Helper Scripts
 
