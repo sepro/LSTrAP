@@ -18,6 +18,18 @@ Script to convert sra files into fastq. Sratools is required.
 
     python3 sra_to_fastq.py /sra/files/directory /fastq/output/directory
 
+
+### parse_gff.py
+
+Script to remove splice variants from a GFF3 file, the longest one is retained.
+
+    # print to STDOUT
+    python3 parse_gff.py input.gff
+     
+    # write to file
+    python parse_gff.py input.gff -o output.gff
+    python parse_gff.py input.gff --output output.gff 
+
 ## Quality control
 
 ### htseq_count_stats.py and tophat_stats.py

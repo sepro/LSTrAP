@@ -1,6 +1,7 @@
 import argparse
 import sys
 import json
+from collections import OrderedDict
 
 LOCUS_FEATURES = ['gene']
 TRANSCRIPT_FEATURES = ['mRNA', 'transcript']
@@ -13,8 +14,14 @@ PARENT_ATTRIBUTE = 'Parent'
 
 
 def parse_attributes(attribute_str):
+    """
+    Parse attribute field of GFF3 file
+
+    :param attribute_str: attribute field as string
+    :return: dict with the values for each attribute as key
+    """
     attributes = attribute_str.split(';')
-    output = {}
+    output = OrderedDict()
 
     for attribute in attributes:
         key, value = attribute.split('=')
@@ -24,6 +31,12 @@ def parse_attributes(attribute_str):
 
 
 def parse_line(line):
+    """
+    Parses a (non-comment) line of a GFF3 file. The attribute field is parsed into a dict.
+
+    :param line: line to parse as string
+    :return: dict with for each column (key) the corresponding value
+    """
     parts = line.strip().split('\t')
 
     output = {}
@@ -43,7 +56,13 @@ def parse_line(line):
 
 
 def parse_gff3(filename):
-    genes = {}
+    """
+    Parses a GFF3 file. Returns a dictionary with all loci.
+
+    :param filename: path the GFF3 file to parse
+    :return: dict with data
+    """
+    genes = OrderedDict()
     transcript_to_locus = {}
 
     with open(filename) as gff_in:
@@ -58,7 +77,7 @@ def parse_gff3(filename):
                     if line_data['feature'] in LOCUS_FEATURES:
                         genes[line_data['attributes'][ID_ATTRIBUTE]] = {
                             'data': line_data,
-                            'transcripts': {}
+                            'transcripts': OrderedDict()
                         }
 
                     elif line_data['feature'] in TRANSCRIPT_FEATURES:
@@ -85,16 +104,81 @@ def parse_gff3(filename):
     return genes
 
 
-def filter_genes(genes):
-    return genes
+def format_attributes(attributes):
+    """
+    Takes an attribute dict and converts it to string
+
+    :param attributes: dict with attributes
+    :return: string with attributes in GFF3 format
+    """
+    return ';'.join([k + '=' + v for k, v in attributes.items()])
 
 
-def write_gff(genes, output=sys.stdout):
-    print(json.dumps(genes, sort_keys=True, indent=4, separators=(',', ': ')))
+def format_line(line_data):
+    """
+    Takes parsed GFF3 data (loci, transcripts or parts) and converts it back into a valid GFF3 Line
+
+    :param line_data: dict with data
+    :return: string in GFF3 format
+    """
+    output = []
+    for column in COLUMNS:
+        output.append(str(line_data[column]) if column != 'attributes' else format_attributes(line_data[column]))
+
+    return '\t'.join(output)
+
+
+def format_gene(gene_data):
+    """
+    Takes parsed GFF3 data for a gene and returns it as a formatted GFF3 string
+
+    :param gene_data: dict with parsed data
+    :return: string with GFF3 formatted data
+    """
+    output = [format_line(gene_data['data'])]
+
+    for _, transcript in gene_data['transcripts'].items():
+        output.append(format_line(transcript['data']))
+        for part in transcript['parts']:
+            output.append(format_line(part))
+
+    return '\n'.join(output)
+
+
+def filter_genes(genes, output=sys.stdout):
+    """
+    Select longest transcript and print output
+
+    :param genes: parsed GFF3 data
+    :param output: filehandle to write output to, default stdout
+    """
+    for _, gene_data in genes.items():
+        new_gene = OrderedDict({'data': gene_data['data'], 'transcripts': OrderedDict()})
+
+        sorted_transcripts = sorted(gene_data['transcripts'].values(),
+                                    key=lambda x: x['data']['stop'] - x['data']['start'],
+                                    reverse=True)
+
+        longest_transcript = sorted_transcripts[0]
+
+        new_gene['transcripts'][longest_transcript['data']['attributes']['ID']] = longest_transcript
+        print(format_gene(new_gene), file=output)
+
 
 if __name__ == "__main__":
-    data = parse_gff3(sys.argv[1])
 
-    filtered_genes = filter_genes(data)
+    parser = argparse.ArgumentParser(prog="./parse_gff.py")
 
-    write_gff(filtered_genes)
+    parser.add_argument('filename', help='filename of GFF3 file to parse')
+    parser.add_argument('--output', '-o', help='path to output, default will print to STDOUT', default=None)
+
+    args = parser.parse_args()
+
+    data = parse_gff3(args.filename)
+
+    if args.output is None:
+        filter_genes(data)
+    else:
+        with open(args.output, "w") as f_out:
+            filter_genes(data, output=f_out)
+
