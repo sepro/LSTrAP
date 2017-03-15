@@ -90,7 +90,7 @@ Example data.ini file:
 ```ini
 [GLOBAL]
 ; add all genomes, use semi-colons to separate multiple cfr. zma;ath
-genomes=zma
+genomes=zma;ath
 
 ; enter email to receive status updates from the cluster
 ; setting the email to None will disable this
@@ -100,10 +100,10 @@ email=None
 orthofinder_output=./output/orthofinder
 
 [zma]
-cds_fasta=
-protein_fasta=
-genome_fasta=
-gff_file=
+cds_fasta=./data/zma/cds.fasta
+protein_fasta=./data/zma/pep.fasta
+genome_fasta=./data/zma/genome.fasta
+gff_file=./data/zma/genes.gff3
 
 gff_feature=CDS
 gff_id=Parent
@@ -126,4 +126,32 @@ interpro_output=./output/interpro/zma
 
 pcc_output=./output/zma/pcc.std.txt
 pcc_mcl_output=./output/zma/pcc.mcl.txt
+
+[ath]
+cds_fasta=./data/ath/cds.fasta
+protein_fasta=./data/ath/pep.fasta
+genome_fasta=./data/ath/genome.fasta
+gff_file=./data/ath/genes.gff3
+
+gff_feature=CDS
+gff_id=Parent
+
+fastq_dir=./data/ath/fastq
+
+tophat_cutoff=65
+htseq_cutoff=40
+
+bowtie_output=./output/bowtie-build/ath
+trimmomatic_output=./output/trimmed_fastq/ath
+tophat_output=./output/tophat/ath
+samtools_output=./output/samtools/ath
+htseq_output=./output/htseq/ath
+
+exp_matrix_output=./output/ath/exp_matrix.txt
+exp_matrix_tpm_output=./output/ath/exp_matrix.tpm.txt
+exp_matrix_rpkm_output=./output/ath/exp_matrix.rpkm.txt
+interpro_output=./output/interpro/ath
+
+pcc_output=./output/ath/pcc.std.txt
+pcc_mcl_output=./output/ath/pcc.mcl.txt
 ```
