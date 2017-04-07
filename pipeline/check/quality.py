@@ -46,7 +46,7 @@ def check_htseq(filename, cutoff=0, log=None):
     with open(filename) as fin:
         mapped_reads = 0
         for line in fin:
-            gene, value = line.strip().split()
+            gene, value = line.strip().rsplit(maxsplit=1)
 
             if gene not in quality_fields:
                 mapped_reads += int(value)

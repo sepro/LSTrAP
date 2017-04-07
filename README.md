@@ -94,7 +94,7 @@ for LSTrAP can be generated.
     
 ## Adapting LSTrAP to other cluster managers
     
-LSTrAP is designed and tested on an Oracle Grid Engine, though with minimal effort it can be adopted to run on PBS and Torque
+LSTrAP is designed and tested on a cluster running the Oracle Grid Engine, though with minimal effort it can be adopted to run on PBS and Torque
 based systems (and likely others). First, in the configuration file, check the qsub parameters (e.g. jobs that require multiple
 CPUs to run *-pe cores 4*), that differ between systems are set up properly (the nodes and cores on Torque and PBS need to be 
 set using *-l nodes=4:ppn=2* to request 4 nodes with 2 processes per node). 
