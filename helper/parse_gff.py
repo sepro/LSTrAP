@@ -1,7 +1,7 @@
 import argparse
 import sys
 import json
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 
 LOCUS_FEATURES = ['gene']
 TRANSCRIPT_FEATURES = ['mRNA', 'transcript']
@@ -65,11 +65,21 @@ def parse_gff3(filename):
     genes = OrderedDict()
     transcript_to_locus = {}
 
+    count_per_transcript = defaultdict(lambda: 1)
+
     with open(filename) as gff_in:
         for line in gff_in:
             # Skip comments
             if not line.strip()[0] == '#':
                 line_data = parse_line(line)
+
+                # Parts (e.g. CDS or Exon) might not have an ID. One will be added here
+                if ID_ATTRIBUTE not in line_data['attributes'].keys() and line_data['feature'] in PARTS_FEATURES:
+                    if PARENT_ATTRIBUTE in line_data['attributes'].keys():
+                        counter_id = line_data['attributes'][PARENT_ATTRIBUTE] + '.' + line_data['feature'] + '.'
+                        new_id = counter_id + str(count_per_transcript[counter_id])
+                        count_per_transcript[counter_id] += 1
+                        line_data['attributes'][ID_ATTRIBUTE] = new_id
 
                 # Every line needs a valid ID
                 if ID_ATTRIBUTE in line_data['attributes'].keys():
