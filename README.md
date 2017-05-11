@@ -87,10 +87,10 @@ Details for each script can be found [here](docs/helper.md)
 ## Running LSTrAP on transcriptome data
 
 To use LSTrAP on a *de novo* assembled transcriptome a little pre-processing is required. Instead of the genome a fasta 
-file containing **coding** sequences can be used (remove UTRs). Using the helper script fasta_to_gtf.py a gtf file suited
+file containing **coding** sequences can be used (remove UTRs). Using the helper script fasta_to_gff.py a gff file suited
 for LSTrAP can be generated.
 
-    python3 fasta_to_gtf.py /path/to/transcript.cds.fasta > output.gtf
+    python3 fasta_to_gff.py /path/to/transcript.cds.fasta > output.gff
     
 ## Adapting LSTrAP to other cluster managers
     
