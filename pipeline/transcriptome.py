@@ -346,7 +346,7 @@ class TranscriptomePipeline(PipelineBase):
                         else:
                             values.append('0')
                     if all([x not in gene_id for x in bad_fields]):
-                        print(gene_id + '\t' + '\t'.join(values), file=f_out)
+                        print(gene_id.strip() + '\t' + '\t'.join(values), file=f_out)
 
             print("Done\n\n")
 
