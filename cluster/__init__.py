@@ -1,7 +1,7 @@
 import re
 import sys
 
-from subprocess import check_output
+from subprocess import check_output, DEVNULL
 from time import sleep
 
 
@@ -13,7 +13,7 @@ def detect_cluster_system():
     :return: string "SBE", "PBS" or "other"
     """
     try:
-        which_output = check_output(["which", "sge_qmaster"]).decode("utf-8")
+        which_output = check_output(["which", "sge_qmaster"], stderr=DEVNULL).decode("utf-8")
 
         if "/sge_qmaster" in which_output:
             return "SGE"
@@ -21,7 +21,7 @@ def detect_cluster_system():
         pass
 
     try:
-        which_output = check_output(["which", "pbs_sched"]).decode("utf-8")
+        which_output = check_output(["which", "pbs_sched"], stderr=DEVNULL).decode("utf-8")
 
         if "/pbs_sched" in which_output:
             return "PBS"
