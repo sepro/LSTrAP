@@ -1,7 +1,28 @@
 import re
+import sys
 
 from subprocess import check_output
 from time import sleep
+
+
+def detect_cluster_system():
+    """
+    Checks which cluster manager is installed on the system, return "SGE" for Sun/Oracle Grid Engine, "PBS" for
+    PBS/Torque based systems and otherwise "other"
+
+    :return: string "SBE", "PBS" or "other"
+    """
+    which_output = check_output(["which", "sge_qmaster"]).decode("utf-8")
+
+    if "/sge_qmaster" in which_output:
+        return "SGE"
+
+    which_output = check_output(["which", "pbs_sched"]).decode("utf-8")
+
+    if "/pbs_sched" in which_output:
+        return "PBS"
+
+    return "other"
 
 
 def job_running(job_name):
@@ -11,11 +32,24 @@ def job_running(job_name):
     :param job_name: name of the submitted script/jobname
     :return: boolean true if the job is still running or in the queue
     """
-    qstat = check_output(["qstat", "-r"]).decode("utf-8")
 
-    pattern = "Full jobname:\s*" + job_name
+    running_jobs = []
+    c_system = detect_cluster_system()
 
-    running_jobs = re.findall(pattern, qstat)
+    if c_system == "SGE":
+        # Sun/Oracle Grid engine detected
+        qstat = check_output(["qstat", "-r"]).decode("utf-8")
+
+        pattern = "Full jobname:\s*" + job_name
+
+        running_jobs = re.findall(pattern, qstat)
+    elif c_system == "PBS":
+        # Sun/Oracle Grid engine detected
+        qstat = check_output(["qstat", "-f"]).decode("utf-8")
+        pattern = "Job_Name = \s*" + job_name
+        running_jobs = re.findall(pattern, qstat)
+    else:
+        print("Unsupported System", file=sys.stderr)
 
     if len(running_jobs) > 0:
         print('Still %d jobs running.' % len(running_jobs), end='\r')
