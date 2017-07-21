@@ -25,13 +25,12 @@ def check_tophat(filename, cutoff=0, log=None):
                 return True
             else:
                 if log is not None:
-                    print('WARNING:', filename, 'didn\'t pass  alignment check!', value, 'reads mapped. Cutoff,',
+                    print('WARNING:', filename, 'didn\'t pass alignment check!', value, 'reads mapped. Cutoff,',
                           cutoff, file=log)
 
     return False
 
 
-# TODO implement
 def check_hisat2(filename, cutoff=0, log=None):
     """
     Checks the alignment summary of TopHat's output, if it passes it returns true, else false
@@ -43,7 +42,21 @@ def check_hisat2(filename, cutoff=0, log=None):
     :return: True if the sample passed, false otherwise
     """
 
-    print("NOT IMPLEMENTED !!")
+    # 93.77% overall alignment rate
+    re_mapped = re.compile('(.*)% overall alignment rate')
+
+    with open(filename, 'r') as f:
+        lines = '\t'.join(f.readlines())
+        hits = re_mapped.search(lines[-1])
+        if hits:
+            value = float(hits.group(1))
+            if value >= cutoff:
+                return True
+            else:
+                if log is not None:
+                    print('WARNING:', filename, 'didn\'t pass alignment check!', value, 'reads mapped. Cutoff,',
+                          cutoff, file=log)
+
 
     return False
 
