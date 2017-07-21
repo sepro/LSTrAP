@@ -321,7 +321,7 @@ class TranscriptomePipeline(PipelineBase):
 
         print("Done\n\n")
 
-    def run_htseq_count(self, keep_previous=False):
+    def __run_htseq_count_tophat(self, keep_previous=False):
         """
         Based on the gff file and sam file counts the number of reads that map to a given gene
 
@@ -376,6 +376,65 @@ class TranscriptomePipeline(PipelineBase):
 
         # remove OUT_ files
         PipelineBase.clean_out_files(jobname)
+
+    def __run_htseq_count_hisat2(self, keep_previous=False):
+        filename, jobname = self.write_submission_script("htseq_count_%d",
+                                                         (self.samtools_module + '\t' + self.python_module),
+                                                         self.htseq_count_cmd,
+                                                         "htseq_count_%d.sh")
+        for g in self.genomes:
+            alignment_output = self.dp[g]['alignment_output']
+            htseq_output = self.dp[g]['htseq_output']
+            os.makedirs(htseq_output, exist_ok=True)
+
+            gff_file = self.dp[g]['gff_file']
+            gff_feature = self.dp[g]['gff_feature']
+            gff_id = self.dp[g]['gff_id']
+
+            sam_files = [o for o in os.listdir(alignment_output) if os.path.isfile(os.path.join(alignment_output, o)) and
+                         o.endswith('.sam')]
+
+            for sam_file in sam_files:
+                htseq_out = os.path.join(htseq_output, sam_file.replace('.sam', '.htseq'))
+                print(sam_file, htseq_out)
+
+                command = ["qsub"] + self.qsub_htseq_count + ["-v", "itype=sam,feature=%s,field=%s,bam=%s,gff=%s,out=%s"
+                                                              % (gff_feature, gff_id,
+                                                                 os.path.join(alignment_output, sam_file),
+                                                                 gff_file, htseq_out),
+                                                              filename]
+                subprocess.call(command)
+
+        # wait for all jobs to complete
+        wait_for_job(jobname, sleep_time=1)
+
+        if not keep_previous:
+            for g in self.genomes:
+                alignment_output = self.dp[g]['alignment_output']
+                sam_files = [os.path.isfile(os.path.join(alignment_output, o)) for o in os.listdir(alignment_output) if
+                             os.path.isfile(os.path.join(alignment_output, o)) and
+                             o.endswith('.sam')]
+                for sam_file in sam_files:
+                    if os.path.exists(sam_file):
+                        os.remove(sam_file)
+
+        # remove the submission script
+        os.remove(filename)
+
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
+
+    def run_htseq_count(self, keep_previous=False):
+        """
+        Depending on which alinger was used, run htseq-counts to determine expression levels.
+
+        :param keep_previous: when true sam files output will not be removed after htseq-count completes
+        """
+
+        if self.use_hisat2:
+            self.__run_htseq_count_hisat2(keep_previous=keep_previous)
+        else:
+            self.__run_htseq_count_tophat(keep_previous=keep_previous)
 
         print("Done\n\n")
 
