@@ -17,19 +17,25 @@ class TranscriptomePipeline(PipelineBase):
         """
         Runs bowtie-build for each genome on the cluster. All settings are obtained from the settings fasta file
         """
-        filename, jobname = self.write_submission_script("bowtie_build_%d",
-                                                         self.bowtie_module,
-                                                         self.bowtie_build_cmd,
-                                                         "bowtie_build_%d.sh")
+        if self.use_hisat2:
+            filename, jobname = self.write_submission_script("build_index_%d",
+                                                             self.hisat2_module,
+                                                             self.hisat2_build_cmd,
+                                                             "build_index_%d.sh")
+        else:
+            filename, jobname = self.write_submission_script("build_index_%d",
+                                                             self.bowtie_module,
+                                                             self.bowtie_build_cmd,
+                                                             "build_index_%d.sh")
 
         for g in self.genomes:
             con_file = self.dp[g]['genome_fasta']
-            output = self.dp[g]['bowtie_output']
+            output = self.dp[g]['indexing_output']
 
             os.makedirs(os.path.dirname(output), exist_ok=True)
             shutil.copy(con_file, output + '.fa')
 
-            command = ["qsub"] + self.qsub_bowtie + ["-v", "in=" + con_file + ",out=" + output, filename]
+            command = ["qsub"] + self.qsub_indexing + ["-v", "in=" + con_file + ",out=" + output, filename]
 
             subprocess.call(command)
 

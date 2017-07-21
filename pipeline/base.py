@@ -32,6 +32,7 @@ class PipelineBase:
         self.mcl_module = None if self.cp['TOOLS']['mcl_module'] is 'None' else self.cp['TOOLS']['mcl_module']
 
         self.bowtie_build_cmd = self.cp['TOOLS']['bowtie_cmd']
+        self.hisat2_build_cmd = self.cp['TOOLS']['hisat2_build_cmd']
         self.trimmomatic_se_cmd = self.cp['TOOLS']['trimmomatic_se_command']
         self.trimmomatic_pe_cmd = self.cp['TOOLS']['trimmomatic_pe_command']
         self.tophat_se_cmd = self.cp['TOOLS']['tophat_se_cmd']
@@ -44,7 +45,7 @@ class PipelineBase:
         self.mcl_cmd = self.cp['TOOLS']['mcl_cmd']
         self.mcxdeblast_cmd = self.cp['TOOLS']['mcxdeblast_cmd']
 
-        self.qsub_bowtie = shlex.split(self.cp['TOOLS']['qsub_bowtie'].strip('\''))
+        self.qsub_indexing = shlex.split(self.cp['TOOLS']['qsub_indexing'].strip('\''))
         self.qsub_trimmomatic = shlex.split(self.cp['TOOLS']['qsub_trimmomatic'].strip('\''))
         self.qsub_tophat = shlex.split(self.cp['TOOLS']['qsub_tophat'].strip('\''))
         self.qsub_htseq_count = shlex.split(self.cp['TOOLS']['qsub_htseq_count'].strip('\''))

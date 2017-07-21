@@ -22,11 +22,7 @@ def run_pipeline(args):
                                        use_hisat2=args.use_hisat2)
 
             if args.indexing:
-                if args.use_hisat2:
-                    print("alignment using hisat2 not implemented yet!", file=sys.argv)
-                    quit()
-                else:
-                    tp.prepare_genome()
+                tp.prepare_genome()
             else:
                 print("Skipping Indexing", file=sys.stderr)
 
