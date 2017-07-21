@@ -70,7 +70,8 @@ def check_sanity_config(filename):
                      'trimmomatic_pe_command', 'tophat_se_cmd', 'tophat_pe_cmd', 'htseq_count_cmd',
                      'interproscan_cmd', 'pcc_cmd', 'mcl_cmd', 'orthofinder_cmd', 'mcxdeblast_cmd',
                      'trimmomatic_path', 'qsub_indexing', 'qsub_trimmomatic', 'qsub_tophat', 'qsub_htseq_count',
-                     'qsub_interproscan', 'qsub_pcc', 'qsub_mcl', 'qsub_orthofinder', 'qsub_mcxdeblast']
+                     'qsub_interproscan', 'qsub_pcc', 'qsub_mcl', 'qsub_orthofinder', 'qsub_mcxdeblast',
+                     'hisat2_se_cmd', 'hisat2_pe_cmd']
     required_paths = ['trimmomatic_path']
 
     if 'TOOLS' in cp:

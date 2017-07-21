@@ -141,7 +141,7 @@ class TranscriptomePipeline(PipelineBase):
 
         print("Done\n\n")
 
-    def run_tophat(self, overwrite=False, keep_previous=False):
+    def __run_tophat(self, overwrite=False, keep_previous=False):
         """
         Maps the reads from the trimmed fastq files to the bowtie-indexed genome
 
@@ -162,7 +162,7 @@ class TranscriptomePipeline(PipelineBase):
 
         for g in self.genomes:
             tophat_output = self.dp[g]['tophat_output']
-            bowtie_output = self.dp[g]['bowtie_output']
+            bowtie_output = self.dp[g]['indexing_output']
             trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
             os.makedirs(tophat_output, exist_ok=True)
 
@@ -220,6 +220,46 @@ class TranscriptomePipeline(PipelineBase):
 
         # remove OUT_ files
         PipelineBase.clean_out_files(jobname)
+
+    def __run_hisat2(self, overwrite=False, keep_previous=False):
+        """
+        Maps the reads from the trimmed fastq files to the bowtie-indexed genome
+
+        :param overwrite: when true the pipeline will start tophat even if the output exists
+        :param keep_previous: when true trimmed fastq files will not be removed after tophat completes
+        """
+        filename_se, jobname = self.write_submission_script("hisat2_%d",
+                                                            self.hisat2_module,
+                                                            self.hisat2_se_cmd,
+                                                            "hisat2_se_%d.sh")
+
+        filename_pe, jobname = self.write_submission_script("hisat2_%d",
+                                                            self.hisat2_module,
+                                                            self.hisat2_pe_cmd,
+                                                            "hisat2_pe_%d.sh")
+
+        print('Mapping reads with HISAT2...')
+
+        # remove the submission script
+        os.remove(filename_se)
+        os.remove(filename_pe)
+
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
+
+    def run_alignment(self, overwrite=False, keep_previous=False):
+        """
+
+        Determine which aligner to use and align reads to indexed genome
+
+        :param overwrite: will overwrite existing data when True, otherwise existing runs will be skipped
+        :param keep_previous: will keep trimmed reads upon completion when true,
+        otherwise the trimmed reads will be deleted
+        """
+        if self.use_hisat2:
+            self.__run_hisat2(overwrite=overwrite, keep_previous=keep_previous)
+        else:
+            self.__run_tophat(overwrite=overwrite, keep_previous=keep_previous)
 
         print("Done\n\n")
 

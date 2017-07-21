@@ -32,11 +32,7 @@ def run_pipeline(args):
                 print("Skipping Trimmomatic", file=sys.stderr)
 
             if args.alignment:
-                if args.use_hisat2:
-                    print("alignment using hisat2 not implemented yet!", file=sys.argv)
-                    quit()
-                else:
-                    tp.run_tophat(keep_previous=args.keep_intermediate)
+                    tp.run_alignment(keep_previous=args.keep_intermediate)
             else:
                 print("Skipping Alignment", file=sys.stderr)
 

@@ -33,17 +33,23 @@ class PipelineBase:
 
         self.bowtie_build_cmd = self.cp['TOOLS']['bowtie_cmd']
         self.hisat2_build_cmd = self.cp['TOOLS']['hisat2_build_cmd']
+
         self.trimmomatic_se_cmd = self.cp['TOOLS']['trimmomatic_se_command']
         self.trimmomatic_pe_cmd = self.cp['TOOLS']['trimmomatic_pe_command']
+
         self.tophat_se_cmd = self.cp['TOOLS']['tophat_se_cmd']
         self.tophat_pe_cmd = self.cp['TOOLS']['tophat_pe_cmd']
+        self.hisat2_se_cmd = self.cp['TOOLS']['hisat2_se_cmd']
+        self.hisat2_pe_cmd = self.cp['TOOLS']['hisat2_pe_cmd']
+
         self.htseq_count_cmd = self.cp['TOOLS']['htseq_count_cmd']
-        self.interproscan_cmd = self.cp['TOOLS']['interproscan_cmd']
-        self.orthofinder_cmd = self.cp['TOOLS']['orthofinder_cmd']
 
         self.pcc_cmd = self.cp['TOOLS']['pcc_cmd']
         self.mcl_cmd = self.cp['TOOLS']['mcl_cmd']
         self.mcxdeblast_cmd = self.cp['TOOLS']['mcxdeblast_cmd']
+
+        self.interproscan_cmd = self.cp['TOOLS']['interproscan_cmd']
+        self.orthofinder_cmd = self.cp['TOOLS']['orthofinder_cmd']
 
         self.qsub_indexing = shlex.split(self.cp['TOOLS']['qsub_indexing'].strip('\''))
         self.qsub_trimmomatic = shlex.split(self.cp['TOOLS']['qsub_trimmomatic'].strip('\''))
