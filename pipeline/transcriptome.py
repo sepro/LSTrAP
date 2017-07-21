@@ -161,7 +161,7 @@ class TranscriptomePipeline(PipelineBase):
         print('Mapping reads with tophat...')
 
         for g in self.genomes:
-            tophat_output = self.dp[g]['tophat_output']
+            tophat_output = self.dp[g]['alignment_output']
             bowtie_output = self.dp[g]['indexing_output']
             trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
             os.makedirs(tophat_output, exist_ok=True)
@@ -240,6 +240,64 @@ class TranscriptomePipeline(PipelineBase):
 
         print('Mapping reads with HISAT2...')
 
+        for g in self.genomes:
+            alignment_output = self.dp[g]['alignment_output']
+            indexing_output = self.dp[g]['indexing_output']
+            trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
+            os.makedirs(alignment_output, exist_ok=True)
+
+            pe_files = []
+            se_files = []
+
+            for file in os.listdir(trimmed_fastq_dir):
+                if file.endswith('.paired.fq.gz') or file.endswith('.paired.fastq.gz'):
+                    pe_files.append(file)
+                elif not (file.endswith('.unpaired.fq.gz') or file.endswith('.unpaired.fastq.gz')):
+                    se_files.append(file)
+
+            # sort required to make sure _1 files are before _2
+            pe_files.sort()
+            se_files.sort()
+
+            for pe_file in pe_files:
+                if '_1.trimmed.paired.' in pe_file:
+                    pair_file = pe_file.replace('_1.trimmed.paired.', '_2.trimmed.paired.')
+
+                    output_sam = pe_file.replace('_1.trimmed.paired.fq.gz', '').replace('_1.trimmed.paired.fastq.gz', '') + '.sam'
+                    output_stats = pe_file.replace('_1.trimmed.paired.fq.gz', '').replace('_1.trimmed.paired.fastq.gz', '') + '.stats'
+                    output_sam = os.path.join(alignment_output, output_sam)
+                    output_stats = os.path.join(alignment_output, output_stats)
+                    forward = os.path.join(trimmed_fastq_dir, pe_file)
+                    reverse = os.path.join(trimmed_fastq_dir, pair_file)
+                    if overwrite or not os.path.exists(output_sam):
+                        print('Submitting pair %s, %s' % (pe_file, pair_file))
+                        command = ["qsub"] + self.qsub_tophat + \
+                                  ["-v", "out=%s,genome=%s,forward=%s,reverse=%s,stats=%s" %
+                                   (output_sam, indexing_output, forward, reverse, output_stats), filename_pe]
+                        subprocess.call(command)
+                    else:
+                        print('Output exists, skipping', pe_file)
+
+            for se_file in se_files:
+                output_sam = se_file.replace('.trimmed.fq.gz', '').replace('.trimmed.fastq.gz', '') + '.sam'
+                output_sam = os.path.join(alignment_output, output_sam)
+                output_stats = se_file.replace('.trimmed.fq.gz', '').replace('.trimmed.fastq.gz', '') + '.stats'
+                output_stats = os.path.join(alignment_output, output_stats)
+
+                if overwrite or not os.path.exists(output_sam):
+                    print('Submitting single %s' % se_file)
+                    command = ["qsub"] + self.qsub_tophat + ["-v",
+                                                             "out=%s,genome=%s,fq=%s,stats=%s" %
+                                                             (output_sam, indexing_output,
+                                                              os.path.join(trimmed_fastq_dir, se_file), output_stats),
+                                                             filename_se]
+                    subprocess.call(command)
+                else:
+                    print('Output exists, skipping', se_file)
+
+        # wait for all jobs to complete
+        wait_for_job(jobname, sleep_time=1)
+
         # remove the submission script
         os.remove(filename_se)
         os.remove(filename_pe)
@@ -275,7 +333,7 @@ class TranscriptomePipeline(PipelineBase):
                                                          "htseq_count_%d.sh")
 
         for g in self.genomes:
-            tophat_output = self.dp[g]['tophat_output']
+            tophat_output = self.dp[g]['alignment_output']
             htseq_output = self.dp[g]['htseq_output']
             os.makedirs(htseq_output, exist_ok=True)
 
@@ -306,7 +364,7 @@ class TranscriptomePipeline(PipelineBase):
         # NOTE: only the large bam file is removed (for now)
         if not keep_previous:
             for g in self.genomes:
-                tophat_output = self.dp[g]['tophat_output']
+                tophat_output = self.dp[g]['alignment_output']
                 dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
                 for d in dirs:
                     bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
