@@ -6,7 +6,7 @@ import shutil
 from cluster import wait_for_job
 from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
 from .base import PipelineBase
-from .check.quality import check_tophat, check_htseq
+from .check.quality import check_tophat, check_hisat2, check_htseq
 
 
 class TranscriptomePipeline(PipelineBase):
@@ -445,26 +445,38 @@ class TranscriptomePipeline(PipelineBase):
         """
         print("Checking quality of samples based on TopHat and HTSEQ-Count mapping statistics")
         for g in self.genomes:
-            tophat_output = self.dp[g]['tophat_output']
+            alignment_output = self.dp[g]['alignment_output']
             htseq_output = self.dp[g]['htseq_output']
 
-            dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
-            summary_files = []
-            for d in dirs:
-                summary_file = os.path.join(tophat_output, d, 'align_summary.txt')
-                if os.path.exists(summary_file):
-                    summary_files.append((d, summary_file))
+            if self.use_hisat2:
+                stats_files = [os.path.isfile(os.path.join(alignment_output, o)) for o in os.listdir(alignment_output) if
+                               os.path.isfile(os.path.join(alignment_output, o)) and
+                               o.endswith('.stats')]
 
+                for stats_file in stats_files:
+                    cutoff = int(self.dp[g]['tophat_cutoff']) if 'tophat_cutoff' in self.dp[g] else 0
+                    passed = check_hisat2(stats_file, cutoff=cutoff, log=self.log)
+                    if not passed:
+                        print('WARNING: sample with insufficient quality (HISAT2) detected:', stats_file, file=sys.stderr)
+                        print('WARNING: check the log for additional information', file=sys.stderr)
+            else:
+                dirs = [o for o in os.listdir(alignment_output) if os.path.isdir(os.path.join(alignment_output, o))]
+                summary_files = []
+                for d in dirs:
+                    summary_file = os.path.join(alignment_output, d, 'align_summary.txt')
+                    if os.path.exists(summary_file):
+                        summary_files.append((d, summary_file))
+
+                for (d, s) in summary_files:
+                    cutoff = int(self.dp[g]['tophat_cutoff']) if 'tophat_cutoff' in self.dp[g] else 0
+                    passed = check_tophat(s, cutoff=cutoff, log=self.log)
+
+                    if not passed:
+                        print('WARNING: sample with insufficient quality (TopHat) detected:', d, file=sys.stderr)
+                        print('WARNING: check the log for additional information', file=sys.stderr)
+
+            # Check HTSeq-Counts
             htseq_files = [os.path.join(htseq_output, f) for f in os.listdir(htseq_output) if f.endswith('.htseq')]
-
-            for (d, s) in summary_files:
-                cutoff = int(self.dp[g]['tophat_cutoff']) if 'tophat_cutoff' in self.dp[g] else 0
-                passed = check_tophat(s, cutoff=cutoff, log=self.log)
-
-                if not passed:
-                    print('WARNING: sample with insufficient quality (TopHat) detected:', d, file=sys.stderr)
-                    print('WARNING: check the log for additional information', file=sys.stderr)
-
             for h in htseq_files:
                 cutoff = int(self.dp[g]['htseq_cutoff']) if 'htseq_cutoff' in self.dp[g] else 0
                 passed = check_htseq(h, cutoff=cutoff, log=self.log)
