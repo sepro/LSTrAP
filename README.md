@@ -36,7 +36,7 @@ Configure config.ini and data.ini using the guidelines below
 ## Configuration of LSTrAP
 
 After copying the templates, **config.ini** needs to be set up to run on your system. It requires the path to Trimmomatic's jar and the
-modules where Bowtie, Tophat ... are installed in.
+modules where Bowtie, Tophat ... are installed in (if the [modules](http://modules.sourceforge.net/) environment is used.
 
 The location of the transcriptome data, the refrence genome and a few per-species options need to be defined in **data.ini**. 
 
@@ -62,7 +62,7 @@ Options to enable InterProScan and/or OrthoFinder or to skip certain steps of th
 ## Quality report
 
 After running LSTrAP a log file (*lstrap.log*) is written, in which samples which failed a quality measure
-are reported. Note that no samples are excluded from the final network. In case certain samples need to be excluded
+are reported. Note that __no samples are excluded from the final network__. In case certain samples need to be excluded
 from the final network remove the htseq file for the sample you which to exclude and re-run the pipeline skipping all
 steps prior to building the network.
 
@@ -94,16 +94,9 @@ for LSTrAP can be generated.
     
 ## Adapting LSTrAP to other cluster managers
     
-LSTrAP is designed and tested on a cluster running the Oracle Grid Engine, though with minimal effort it can be adopted to run on PBS and Torque
-based systems (and likely others). First, in the configuration file, check the qsub parameters (e.g. jobs that require multiple
-CPUs to run *-pe cores 4*), that differ between systems are set up properly (the nodes and cores on Torque and PBS need to be 
-set using *-l nodes=4:ppn=2* to request 4 nodes with 2 processes per node). 
- 
-Furthermore the submission script might differ, these are located in **./cluster/templates.py** . For PBS based systems some
-settings need to be included by adding *#PBS ...*. 
- 
-We strive to get LSTrAP running on as many systems as possible. Do not hesitate to contact us in case you experience difficulties 
-running LSTrAP on your system.
+LSTrAP is designed and tested on a cluster running the Oracle Grid Engine (default), PBS/Torque is also supported.
+
+Though due to differences in parameters 
  
     
 ## Contact

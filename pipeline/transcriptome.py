@@ -248,7 +248,9 @@ class TranscriptomePipeline(PipelineBase):
                 htseq_out = os.path.join(htseq_output, d + '.htseq')
                 print(d, bam_file, htseq_out)
 
-                command = ["qsub"] + self.qsub_htseq_count + ["-v", "feature=%s,field=%s,bam=%s,gff=%s,out=%s" % (gff_feature, gff_id, bam_file, gff_file, htseq_out), filename]
+                command = ["qsub"] + self.qsub_htseq_count + ["-v", "itype=bam,feature=%s,field=%s,bam=%s,gff=%s,out=%s"
+                                                              % (gff_feature, gff_id, bam_file, gff_file, htseq_out),
+                                                              filename]
                 subprocess.call(command)
 
         # wait for all jobs to complete
@@ -426,9 +428,8 @@ class TranscriptomePipeline(PipelineBase):
                                                          "cluster_pcc_%d.sh")
 
         for g in self.genomes:
-            # TODO naming convention here is confusing, improve this !
-            mcl_out = self.dp[g]['pcc_mcl_output']
-            mcl_clusters = self.dp[g]['mcl_cluster_output']
+            mcl_out = self.dp[g]['pcc_mcl_output']          # This is the PCC table in mcl format
+            mcl_clusters = self.dp[g]['mcl_cluster_output'] # Desired path for the clusters
 
             command = ["qsub"] + self.qsub_mcl + ["-v", "in=%s,out=%s" % (mcl_out, mcl_clusters), filename]
             subprocess.call(command)

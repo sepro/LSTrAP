@@ -7,11 +7,11 @@ from cluster.templates import build_template, build_batch_template
 
 
 class PipelineBase:
-    def __init__(self, config, data, enable_log=False):
+    def __init__(self, config, data, enable_log=False, use_hisat2=False):
         """
         Constructor run with path to ini file with settings
 
-        :param config: path to setttings ini file
+        :param config: path to settings ini file
         """
         self.cp = configparser.ConfigParser()
         self.cp.read(config)
@@ -24,6 +24,7 @@ class PipelineBase:
         self.blast_module = None if self.cp['TOOLS']['blast_module'] is 'None' else self.cp['TOOLS']['blast_module']
         self.bowtie_module = None if self.cp['TOOLS']['bowtie_module'] is 'None' else self.cp['TOOLS']['bowtie_module']
         self.tophat_module = '' if self.cp['TOOLS']['tophat_module'] is 'None' else self.cp['TOOLS']['tophat_module']
+        self.hisat2_module = '' if self.cp['TOOLS']['hisat2_module'] is 'None' else self.cp['TOOLS']['hisat2_module']
         self.samtools_module = None if self.cp['TOOLS']['samtools_module'] is 'None' else self.cp['TOOLS']['samtools_module']
         self.python_module = None if self.cp['TOOLS']['python_module'] is 'None' else self.cp['TOOLS']['python_module']
         self.python3_module = None if self.cp['TOOLS']['python3_module'] is 'None' else self.cp['TOOLS']['python3_module']
@@ -57,6 +58,7 @@ class PipelineBase:
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
 
         self.enable_log = enable_log
+        self.use_hisat2 = use_hisat2
 
         if self.enable_log:
             self.log = open('lstrap.log', 'w')
