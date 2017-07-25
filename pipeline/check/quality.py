@@ -45,16 +45,19 @@ def check_hisat2(filename, cutoff=0, log=None):
 
     with open(filename, 'r') as f:
         lines = '\t'.join(f.readlines())
-        hits = re_mapped.search(lines[-1])
-        if hits:
-            value = float(hits.group(1))
-            print(value)
-            if value >= cutoff:
-                return True
-            else:
-                if log is not None:
-                    print('WARNING:', filename, 'didn\'t pass alignment check!', value, 'reads mapped. Cutoff,',
-                          cutoff, file=log)
+        for l in lines:
+            if "overall alignment" in l:
+                hits = re_mapped.search(l)
+                print(hits)
+                if hits:
+                    value = float(hits.group(1))
+                    print(value)
+                    if value >= cutoff:
+                        return True
+                    else:
+                        if log is not None:
+                            print('WARNING:', filename, 'didn\'t pass alignment check!', value, 'reads mapped. Cutoff,',
+                                  cutoff, file=log)
 
 
     return False
