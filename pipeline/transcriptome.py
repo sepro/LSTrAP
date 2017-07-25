@@ -449,7 +449,7 @@ class TranscriptomePipeline(PipelineBase):
             htseq_output = self.dp[g]['htseq_output']
 
             if self.use_hisat2:
-                stats_files = [os.path.isfile(os.path.join(alignment_output, o)) for o in os.listdir(alignment_output) if
+                stats_files = [os.path.join(alignment_output, o) for o in os.listdir(alignment_output) if
                                os.path.isfile(os.path.join(alignment_output, o)) and
                                o.endswith('.stats')]
 
