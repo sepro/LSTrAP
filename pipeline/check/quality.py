@@ -45,6 +45,7 @@ def check_hisat2(filename, cutoff=0, log=None):
 
     with open(filename, 'r') as f:
         lines = '\t'.join(f.readlines())
+        print(lines)
         for l in lines:
             if "overall alignment" in l:
                 hits = re_mapped.search(l)
