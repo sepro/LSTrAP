@@ -48,6 +48,7 @@ def check_hisat2(filename, cutoff=0, log=None):
         hits = re_mapped.search(lines[-1])
         if hits:
             value = float(hits.group(1))
+            print(value)
             if value >= cutoff:
                 return True
             else:

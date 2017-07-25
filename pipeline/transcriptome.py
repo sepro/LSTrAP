@@ -454,7 +454,6 @@ class TranscriptomePipeline(PipelineBase):
                                o.endswith('.stats')]
 
                 for stats_file in stats_files:
-                    print(stats_file)
                     cutoff = int(self.dp[g]['tophat_cutoff']) if 'tophat_cutoff' in self.dp[g] else 0
                     passed = check_hisat2(stats_file, cutoff=cutoff, log=self.log)
                     if not passed:
