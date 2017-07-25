@@ -7,6 +7,7 @@ When opting for the latter, the configuration file needs to contain the exact na
 
   * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
   * [TopHat](https://ccb.jhu.edu/software/tophat/manual.shtml)
+  * [HISAT2]
   * [Samtools](http://www.htslib.org/)
   * [SRAtools](http://ncbi.github.io/sra-tools/)
   * [Python 2.7](https://www.python.org/download/releases/2.7/) + [HTSeq](http://www-huber.embl.de/users/anders/HTSeq/doc/index.html) + all dependencies (including [PySam](https://github.com/pysam-developers/pysam))

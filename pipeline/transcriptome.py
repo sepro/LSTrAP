@@ -443,7 +443,7 @@ class TranscriptomePipeline(PipelineBase):
         Function that checks tophat and htseq quality and throws warnings if insufficient reads map. If the log file is
         enabled it writes more detailed statistics there.
         """
-        print("Checking quality of samples based on TopHat and HTSEQ-Count mapping statistics")
+        print("Checking quality of samples based on TopHat 2/HISAT2 and HTSEQ-Count mapping statistics")
         for g in self.genomes:
             alignment_output = self.dp[g]['alignment_output']
             htseq_output = self.dp[g]['htseq_output']
@@ -454,6 +454,7 @@ class TranscriptomePipeline(PipelineBase):
                                o.endswith('.stats')]
 
                 for stats_file in stats_files:
+                    print(stats_file)
                     cutoff = int(self.dp[g]['tophat_cutoff']) if 'tophat_cutoff' in self.dp[g] else 0
                     passed = check_hisat2(stats_file, cutoff=cutoff, log=self.log)
                     if not passed:

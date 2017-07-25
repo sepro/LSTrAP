@@ -41,8 +41,6 @@ def check_hisat2(filename, cutoff=0, log=None):
     :param log: filehandle to write log to, set to None for no log
     :return: True if the sample passed, false otherwise
     """
-
-    # 93.77% overall alignment rate
     re_mapped = re.compile('(.*)% overall alignment rate')
 
     with open(filename, 'r') as f:
