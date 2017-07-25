@@ -82,9 +82,16 @@ on a normalized expression matrix.
 
 
 ![matrix example](images/matrix.png "Sample distance heatmap (with hierarchical clustering)")
-    
+
+### pca_plot.py
+
+Script to perform a PCA analysis on any expression matrix.
+
+    python3 pca_plot.py ./data/sbi.expression.matrix.tpm.txt
     
 ### pca_powerlaw.py
+
+*This script and the required data are included to recreate results from the manuscript (Proost et al., under review)*
 
 Script to perform a PCA analysis on the *Sorghum bicolor* data (case study) and draw the node degree distribution. The
 required data is included here as well. Note that this script requires sklearn and seaborn.

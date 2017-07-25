@@ -1,8 +1,15 @@
 # LSTrAP
 
-LSTrAP, shot for Large Scale Transcriptome Analysis Pipeline, greatly facilitates the construction of co-expression networks from
-RNA Seq data. The various tools involved are seamlessly connected and  CPU-intensive steps are submitted to a computer cluster 
+LSTrAP, short for Large Scale Transcriptome Analysis Pipeline, greatly facilitates the construction of co-expression networks from
+RNA-Seq data. The various tools involved are seamlessly connected and  CPU-intensive steps are submitted to a computer cluster 
 automatically. 
+
+## Version 1.3 Changelog
+
+  * Support for [PBS](https://en.wikipedia.org/wiki/Portable_Batch_System) / [Torque](http://www.adaptivecomputing.com/products/open-source/torque/) scheduler (note proper [configuration](./docs/configuration.md) is required)
+  * [HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml) can be used as an alternative to [BowTie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) and [TopHat 2](https://ccb.jhu.edu/software/tophat/index.shtml)
+  * Added [helper](./docs/helper.md) script to do PCA on samples
+  * **Parameter names in data.ini changed**
 
 ## Workflow
 
@@ -13,13 +20,10 @@ LSTrAP wraps multiple existing tools into a single workflow. To use LSTrAP the f
 Steps in bold are submitted to a cluster. Optional steps can be enabled by adding the flag *&#8209;&#8209;enable&#8209;interpro* and/or 
 *&#8209;&#8209;enable&#8209;orthology*.
 
-## Preparation
-
-LSTrAP is designed to run on an [Oracle Grid Engine](https://www.oracle.com/sun/index.html) computer cluster system and requires 
-all external tools to be installed on the compute nodes. The "module load" system is supported. A comprehensive list of all tools 
-necessary can be found  [here](docs/preparation.md). Instructions to run LSTrAP on other systems are provided below.
-
 ## Installation
+Before installing make sure your system meets all requirements. A detailed list of supported systems and required 
+software can be found [here](docs/preparation.md).
+
 
 Use git to obtain a copy of the LSTrAP code
 
@@ -31,16 +35,27 @@ Next, move into the directory and copy **config.template.ini** and **data.templa
     cp config.template.ini config.ini
     cp data.template.ini data.ini
 
-Configure config.ini and data.ini using the guidelines below
+Configure config.ini and data.ini using these [guidelines](docs/configuration.md)
 
-## Configuration of LSTrAP
 
-After copying the templates, **config.ini** needs to be set up to run on your system. It requires the path to Trimmomatic's jar and the
-modules where Bowtie, Tophat ... are installed in (if the [modules](http://modules.sourceforge.net/) environment is used.
+## Running LSTrAP
 
-The location of the transcriptome data, the refrence genome and a few per-species options need to be defined in **data.ini**. 
+Once properly configured for your system and data, LSTrAP can be run using a single simple command (that should be 
+executed on the head node).
 
-Detailed instruction how to set up both configuration files can be found [here](docs/configuration.md)
+    ./run.py config.ini data.ini
+
+Run using [HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml)
+
+    ./run.py --use-hisat2 config.ini data.ini
+
+Run with InterProScan and/or OrthoFinder 
+
+    ./run.py --enable-orthology --enable-interproscan config.ini data.ini
+
+Furthermore, steps can be skipped (to avoid re-running steps unnecessarily). Use the command below for more info.
+
+    ./run.py -h
 
 ## Obtaining and preparing data
 
@@ -48,16 +63,6 @@ Scripts to download and prepare data from the [Sequence Read Archive](https://ww
 LSTrAP in the folder **helper**. Furthermore, it is recommended to remove splice variants from the GFF3 files, a script
 to do that is included there as well. Detailed instructions for each script provided to obtain and prepare data can be
 found [here](docs/helper.md)
-
-## Running LSTrAP
-
-Once properly configured for your system and data, LSTrAP can be run using a single simple command (that should be executed on the head node)
-
-    ./run.py config.ini data.ini
-
-Options to enable InterProScan and/or OrthoFinder or to skip certain steps of the pipeline are included, use the command below for more info
-
-    ./run.py -h
 
 ## Quality report
 
@@ -92,11 +97,6 @@ for LSTrAP can be generated.
 
     python3 fasta_to_gff.py /path/to/transcript.cds.fasta > output.gff
     
-## Adapting LSTrAP to other cluster managers
-    
-LSTrAP is designed and tested on a cluster running the Oracle Grid Engine (default), PBS/Torque is also supported.
-
-Though due to differences in parameters 
  
     
 ## Contact
