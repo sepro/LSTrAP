@@ -41,26 +41,19 @@ def check_hisat2(filename, cutoff=0, log=None):
     :param log: filehandle to write log to, set to None for no log
     :return: True if the sample passed, false otherwise
     """
-    re_mapped = re.compile('(.*)% overall alignment rate')
+    re_mapped = re.compile('\t(.*)% overall alignment rate')
 
     with open(filename, 'r') as f:
         lines = '\t'.join(f.readlines())
-        for l in lines:
-            l = l.strip()
-            print(l)
-            if "overall alignment" in l:
-                hits = re_mapped.search(l)
-                print(hits)
-                if hits:
-                    value = float(hits.group(1))
-                    print(value)
-                    if value >= cutoff:
-                        return True
-                    else:
-                        if log is not None:
-                            print('WARNING:', filename, 'didn\'t pass alignment check!', value, 'reads mapped. Cutoff,',
-                                  cutoff, file=log)
-
+        hits = re_mapped.search(lines)
+        if hits:
+            value = float(hits.group(1))
+            if value >= cutoff:
+                return True
+            else:
+                if log is not None:
+                    print('WARNING:', filename, 'didn\'t pass alignment check!', value, 'reads mapped. Cutoff,',
+                          cutoff, file=log)
 
     return False
 
