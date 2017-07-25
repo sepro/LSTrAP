@@ -18,6 +18,11 @@ Script to convert sra files into fastq. Sratools is required.
 
     python3 sra_to_fastq.py /sra/files/directory /fastq/output/directory
 
+## Running LSTrAP on transcriptome data
+
+To use LSTrAP on a *de novo* assembled transcriptome a little pre-processing is required. Instead of the genome a fasta 
+file containing **coding** sequences can be used (remove UTRs). Using the helper script fasta_to_gff.py a gff file suited
+for LSTrAP can be generated.
 
 ### parse_gff.py
 
