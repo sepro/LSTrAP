@@ -37,12 +37,13 @@ Script to remove splice variants from a GFF3 file, the longest one is retained.
 
 ## Quality control
 
-### htseq_count_stats.py and tophat_stats.py
+### htseq_count_stats.py, hisat2_stats.py and tophat_stats.py
 
 These scripts will extract the statistics used to assess the quality of samples. 
 
     python3 htseq_count_stats.py ./path/to/htseq/files > output.txt
     python3 tophat_stats.py ./path/to/tophat/output > output.txt
+    python3 hisat2_stats.py ./path/to/hisat2/output > output.txt
 
 ## Plots and Graphs
 
