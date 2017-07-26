@@ -16,22 +16,25 @@ def run_pipeline(args):
     """
     if check_sanity_config(args.config) and check_sanity_data(args.data):
         if args.transcriptomics:
-            tp = TranscriptomePipeline(args.config, args.data, enable_log=args.enable_log)
+            tp = TranscriptomePipeline(args.config,
+                                       args.data,
+                                       enable_log=args.enable_log,
+                                       use_hisat2=args.use_hisat2)
 
-            if args.bowtie_build:
+            if args.indexing:
                 tp.prepare_genome()
             else:
-                print("Skipping Bowtie-build", file=sys.stderr)
+                print("Skipping Indexing", file=sys.stderr)
 
             if args.trim_fastq:
                 tp.trim_fastq()
             else:
                 print("Skipping Trimmomatic", file=sys.stderr)
 
-            if args.tophat:
-                tp.run_tophat(keep_previous=args.keep_intermediate)
+            if args.alignment:
+                    tp.run_alignment(keep_previous=args.keep_intermediate)
             else:
-                print("Skipping Tophat", file=sys.stderr)
+                print("Skipping Alignment", file=sys.stderr)
 
             if args.htseq:
                 tp.run_htseq_count(keep_previous=args.keep_intermediate)
@@ -95,9 +98,11 @@ if __name__ == "__main__":
     parser.add_argument('--enable-interpro', dest='interpro', action='store_true', help='Runs InterProScan to detect protein domains and provide functional annotation')
     parser.add_argument('--enable-orthology', dest='orthology', action='store_true', help='Runs OrhtoFinder and MCL to detect orthogroups, gene families and orthologs')
 
-    parser.add_argument('--skip-bowtie-build', dest='bowtie_build', action='store_false', help='add --skip-bowtie-build to skip the step that indexes the genomes using bowtie-build')
+    parser.add_argument('--use-hisat2', dest='use_hisat2', action='store_true', help='Use HISAT2 to build the index and align reads instead of BowTie2 and TopHat2')
+
+    parser.add_argument('--skip-indexing', dest='indexing', action='store_false', help='add --skip-indexing to skip building an index (for read alignment) on the genome (BowTie2 or HISAT2)')
     parser.add_argument('--skip-trim-fastq', dest='trim_fastq', action='store_false', help='add --skip-trim-fastq to skip trimming fastq files using trimmomatic')
-    parser.add_argument('--skip-tophat', dest='tophat', action='store_false', help='add --skip-tophat to skip read mapping with tophat')
+    parser.add_argument('--skip-alignment', dest='alignment', action='store_false', help='add --skip-alignment to skip the read alignment step (TopHat 2 or HISAT2)')
     parser.add_argument('--skip-htseq', dest='htseq', action='store_false', help='add --skip-htseq to skip counting reads per gene with htseq-count')
     parser.add_argument('--skip-qc', dest='qc', action='store_false', help='add --skip-qc to skip quality control of tophat and htseq output')
     parser.add_argument('--skip-exp-matrix', dest='exp_matrix', action='store_false', help='add --skip-exp-matrix to skip converting htseq files to an expression matrix')
@@ -116,10 +121,12 @@ if __name__ == "__main__":
     parser.set_defaults(interpro=False)
     parser.set_defaults(orthology=False)
 
+    parser.set_defaults(use_hisat2=False)
+
     # Flags for individual tools for transcriptomics
-    parser.set_defaults(bowtie_build=True)
+    parser.set_defaults(indexing=True)
     parser.set_defaults(trim_fastq=True)
-    parser.set_defaults(tophat=True)
+    parser.set_defaults(alignment=True)
     parser.set_defaults(htseq=True)
     parser.set_defaults(qc=True)
     parser.set_defaults(exp_matrix=True)

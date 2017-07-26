@@ -16,6 +16,7 @@ import argparse
 
 def run_pca(expression):
     # Load Expression data
+
     df = pd.read_table(expression, header=0, index_col=0)
     run_ids = list(df.columns.values)
     dataMatrix = np.transpose(np.array(df))

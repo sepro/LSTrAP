@@ -12,6 +12,7 @@ def detect_cluster_system():
 
     :return: string "SBE", "PBS" or "other"
     """
+
     try:
         which_output = check_output(["which", "sge_qmaster"], stderr=DEVNULL).decode("utf-8")
 

@@ -18,6 +18,11 @@ Script to convert sra files into fastq. Sratools is required.
 
     python3 sra_to_fastq.py /sra/files/directory /fastq/output/directory
 
+## Running LSTrAP on transcriptome data
+
+To use LSTrAP on a *de novo* assembled transcriptome a little pre-processing is required. Instead of the genome a fasta 
+file containing **coding** sequences can be used (remove UTRs). Using the helper script fasta_to_gff.py a gff file suited
+for LSTrAP can be generated.
 
 ### parse_gff.py
 
@@ -82,9 +87,16 @@ on a normalized expression matrix.
 
 
 ![matrix example](images/matrix.png "Sample distance heatmap (with hierarchical clustering)")
-    
+
+### pca_plot.py
+
+Script to perform a PCA analysis on any expression matrix.
+
+    python3 pca_plot.py ./data/sbi.expression.matrix.tpm.txt
     
 ### pca_powerlaw.py
+
+*This script and the required data are included to recreate results from the manuscript (Proost et al., under review)*
 
 Script to perform a PCA analysis on the *Sorghum bicolor* data (case study) and draw the node degree distribution. The
 required data is included here as well. Note that this script requires sklearn and seaborn.

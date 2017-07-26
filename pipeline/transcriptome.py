@@ -6,7 +6,7 @@ import shutil
 from cluster import wait_for_job
 from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
 from .base import PipelineBase
-from .check.quality import check_tophat, check_htseq
+from .check.quality import check_tophat, check_hisat2, check_htseq
 
 
 class TranscriptomePipeline(PipelineBase):
@@ -17,19 +17,25 @@ class TranscriptomePipeline(PipelineBase):
         """
         Runs bowtie-build for each genome on the cluster. All settings are obtained from the settings fasta file
         """
-        filename, jobname = self.write_submission_script("bowtie_build_%d",
-                                                         self.bowtie_module,
-                                                         self.bowtie_build_cmd,
-                                                         "bowtie_build_%d.sh")
+        if self.use_hisat2:
+            filename, jobname = self.write_submission_script("build_index_%d",
+                                                             self.hisat2_module,
+                                                             self.hisat2_build_cmd,
+                                                             "build_index_%d.sh")
+        else:
+            filename, jobname = self.write_submission_script("build_index_%d",
+                                                             self.bowtie_module,
+                                                             self.bowtie_build_cmd,
+                                                             "build_index_%d.sh")
 
         for g in self.genomes:
             con_file = self.dp[g]['genome_fasta']
-            output = self.dp[g]['bowtie_output']
+            output = self.dp[g]['indexing_output']
 
             os.makedirs(os.path.dirname(output), exist_ok=True)
             shutil.copy(con_file, output + '.fa')
 
-            command = ["qsub"] + self.qsub_bowtie + ["-v", "in=" + con_file + ",out=" + output, filename]
+            command = ["qsub"] + self.qsub_indexing + ["-v", "in=" + con_file + ",out=" + output, filename]
 
             subprocess.call(command)
 
@@ -135,7 +141,7 @@ class TranscriptomePipeline(PipelineBase):
 
         print("Done\n\n")
 
-    def run_tophat(self, overwrite=False, keep_previous=False):
+    def __run_tophat(self, overwrite=False, keep_previous=False):
         """
         Maps the reads from the trimmed fastq files to the bowtie-indexed genome
 
@@ -155,8 +161,8 @@ class TranscriptomePipeline(PipelineBase):
         print('Mapping reads with tophat...')
 
         for g in self.genomes:
-            tophat_output = self.dp[g]['tophat_output']
-            bowtie_output = self.dp[g]['bowtie_output']
+            tophat_output = self.dp[g]['alignment_output']
+            bowtie_output = self.dp[g]['indexing_output']
             trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
             os.makedirs(tophat_output, exist_ok=True)
 
@@ -215,9 +221,107 @@ class TranscriptomePipeline(PipelineBase):
         # remove OUT_ files
         PipelineBase.clean_out_files(jobname)
 
+    def __run_hisat2(self, overwrite=False, keep_previous=False):
+        """
+        Maps the reads from the trimmed fastq files to the bowtie-indexed genome
+
+        :param overwrite: when true the pipeline will start tophat even if the output exists
+        :param keep_previous: when true trimmed fastq files will not be removed after tophat completes
+        """
+        filename_se, jobname = self.write_submission_script("hisat2_%d",
+                                                            self.hisat2_module,
+                                                            self.hisat2_se_cmd,
+                                                            "hisat2_se_%d.sh")
+
+        filename_pe, jobname = self.write_submission_script("hisat2_%d",
+                                                            self.hisat2_module,
+                                                            self.hisat2_pe_cmd,
+                                                            "hisat2_pe_%d.sh")
+
+        print('Mapping reads with HISAT2...')
+
+        for g in self.genomes:
+            alignment_output = self.dp[g]['alignment_output']
+            indexing_output = self.dp[g]['indexing_output']
+            trimmed_fastq_dir = self.dp[g]['trimmomatic_output']
+            os.makedirs(alignment_output, exist_ok=True)
+
+            pe_files = []
+            se_files = []
+
+            for file in os.listdir(trimmed_fastq_dir):
+                if file.endswith('.paired.fq.gz') or file.endswith('.paired.fastq.gz'):
+                    pe_files.append(file)
+                elif not (file.endswith('.unpaired.fq.gz') or file.endswith('.unpaired.fastq.gz')):
+                    se_files.append(file)
+
+            # sort required to make sure _1 files are before _2
+            pe_files.sort()
+            se_files.sort()
+
+            for pe_file in pe_files:
+                if '_1.trimmed.paired.' in pe_file:
+                    pair_file = pe_file.replace('_1.trimmed.paired.', '_2.trimmed.paired.')
+
+                    output_sam = pe_file.replace('_1.trimmed.paired.fq.gz', '').replace('_1.trimmed.paired.fastq.gz', '') + '.sam'
+                    output_stats = pe_file.replace('_1.trimmed.paired.fq.gz', '').replace('_1.trimmed.paired.fastq.gz', '') + '.stats'
+                    output_sam = os.path.join(alignment_output, output_sam)
+                    output_stats = os.path.join(alignment_output, output_stats)
+                    forward = os.path.join(trimmed_fastq_dir, pe_file)
+                    reverse = os.path.join(trimmed_fastq_dir, pair_file)
+                    if overwrite or not os.path.exists(output_sam):
+                        print('Submitting pair %s, %s' % (pe_file, pair_file))
+                        command = ["qsub"] + self.qsub_tophat + \
+                                  ["-v", "out=%s,genome=%s,forward=%s,reverse=%s,stats=%s" %
+                                   (output_sam, indexing_output, forward, reverse, output_stats), filename_pe]
+                        subprocess.call(command)
+                    else:
+                        print('Output exists, skipping', pe_file)
+
+            for se_file in se_files:
+                output_sam = se_file.replace('.trimmed.fq.gz', '').replace('.trimmed.fastq.gz', '') + '.sam'
+                output_sam = os.path.join(alignment_output, output_sam)
+                output_stats = se_file.replace('.trimmed.fq.gz', '').replace('.trimmed.fastq.gz', '') + '.stats'
+                output_stats = os.path.join(alignment_output, output_stats)
+
+                if overwrite or not os.path.exists(output_sam):
+                    print('Submitting single %s' % se_file)
+                    command = ["qsub"] + self.qsub_tophat + ["-v",
+                                                             "out=%s,genome=%s,fq=%s,stats=%s" %
+                                                             (output_sam, indexing_output,
+                                                              os.path.join(trimmed_fastq_dir, se_file), output_stats),
+                                                             filename_se]
+                    subprocess.call(command)
+                else:
+                    print('Output exists, skipping', se_file)
+
+        # wait for all jobs to complete
+        wait_for_job(jobname, sleep_time=1)
+
+        # remove the submission script
+        os.remove(filename_se)
+        os.remove(filename_pe)
+
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
+
+    def run_alignment(self, overwrite=False, keep_previous=False):
+        """
+
+        Determine which aligner to use and align reads to indexed genome
+
+        :param overwrite: will overwrite existing data when True, otherwise existing runs will be skipped
+        :param keep_previous: will keep trimmed reads upon completion when true,
+        otherwise the trimmed reads will be deleted
+        """
+        if self.use_hisat2:
+            self.__run_hisat2(overwrite=overwrite, keep_previous=keep_previous)
+        else:
+            self.__run_tophat(overwrite=overwrite, keep_previous=keep_previous)
+
         print("Done\n\n")
 
-    def run_htseq_count(self, keep_previous=False):
+    def __run_htseq_count_tophat(self, keep_previous=False):
         """
         Based on the gff file and sam file counts the number of reads that map to a given gene
 
@@ -229,7 +333,7 @@ class TranscriptomePipeline(PipelineBase):
                                                          "htseq_count_%d.sh")
 
         for g in self.genomes:
-            tophat_output = self.dp[g]['tophat_output']
+            tophat_output = self.dp[g]['alignment_output']
             htseq_output = self.dp[g]['htseq_output']
             os.makedirs(htseq_output, exist_ok=True)
 
@@ -248,7 +352,9 @@ class TranscriptomePipeline(PipelineBase):
                 htseq_out = os.path.join(htseq_output, d + '.htseq')
                 print(d, bam_file, htseq_out)
 
-                command = ["qsub"] + self.qsub_htseq_count + ["-v", "feature=%s,field=%s,bam=%s,gff=%s,out=%s" % (gff_feature, gff_id, bam_file, gff_file, htseq_out), filename]
+                command = ["qsub"] + self.qsub_htseq_count + ["-v", "itype=bam,feature=%s,field=%s,bam=%s,gff=%s,out=%s"
+                                                              % (gff_feature, gff_id, bam_file, gff_file, htseq_out),
+                                                              filename]
                 subprocess.call(command)
 
         # wait for all jobs to complete
@@ -258,7 +364,7 @@ class TranscriptomePipeline(PipelineBase):
         # NOTE: only the large bam file is removed (for now)
         if not keep_previous:
             for g in self.genomes:
-                tophat_output = self.dp[g]['tophat_output']
+                tophat_output = self.dp[g]['alignment_output']
                 dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
                 for d in dirs:
                     bam_file = os.path.join(tophat_output, d, 'accepted_hits.bam')
@@ -271,6 +377,65 @@ class TranscriptomePipeline(PipelineBase):
         # remove OUT_ files
         PipelineBase.clean_out_files(jobname)
 
+    def __run_htseq_count_hisat2(self, keep_previous=False):
+        filename, jobname = self.write_submission_script("htseq_count_%d",
+                                                         (self.samtools_module + '\t' + self.python_module),
+                                                         self.htseq_count_cmd,
+                                                         "htseq_count_%d.sh")
+        for g in self.genomes:
+            alignment_output = self.dp[g]['alignment_output']
+            htseq_output = self.dp[g]['htseq_output']
+            os.makedirs(htseq_output, exist_ok=True)
+
+            gff_file = self.dp[g]['gff_file']
+            gff_feature = self.dp[g]['gff_feature']
+            gff_id = self.dp[g]['gff_id']
+
+            sam_files = [o for o in os.listdir(alignment_output) if os.path.isfile(os.path.join(alignment_output, o)) and
+                         o.endswith('.sam')]
+
+            for sam_file in sam_files:
+                htseq_out = os.path.join(htseq_output, sam_file.replace('.sam', '.htseq'))
+                print(sam_file, htseq_out)
+
+                command = ["qsub"] + self.qsub_htseq_count + ["-v", "itype=sam,feature=%s,field=%s,bam=%s,gff=%s,out=%s"
+                                                              % (gff_feature, gff_id,
+                                                                 os.path.join(alignment_output, sam_file),
+                                                                 gff_file, htseq_out),
+                                                              filename]
+                subprocess.call(command)
+
+        # wait for all jobs to complete
+        wait_for_job(jobname, sleep_time=1)
+
+        if not keep_previous:
+            for g in self.genomes:
+                alignment_output = self.dp[g]['alignment_output']
+                sam_files = [os.path.isfile(os.path.join(alignment_output, o)) for o in os.listdir(alignment_output) if
+                             os.path.isfile(os.path.join(alignment_output, o)) and
+                             o.endswith('.sam')]
+                for sam_file in sam_files:
+                    if os.path.exists(sam_file):
+                        os.remove(sam_file)
+
+        # remove the submission script
+        os.remove(filename)
+
+        # remove OUT_ files
+        PipelineBase.clean_out_files(jobname)
+
+    def run_htseq_count(self, keep_previous=False):
+        """
+        Depending on which alinger was used, run htseq-counts to determine expression levels.
+
+        :param keep_previous: when true sam files output will not be removed after htseq-count completes
+        """
+
+        if self.use_hisat2:
+            self.__run_htseq_count_hisat2(keep_previous=keep_previous)
+        else:
+            self.__run_htseq_count_tophat(keep_previous=keep_previous)
+
         print("Done\n\n")
 
     def check_quality(self):
@@ -278,28 +443,40 @@ class TranscriptomePipeline(PipelineBase):
         Function that checks tophat and htseq quality and throws warnings if insufficient reads map. If the log file is
         enabled it writes more detailed statistics there.
         """
-        print("Checking quality of samples based on TopHat and HTSEQ-Count mapping statistics")
+        print("Checking quality of samples based on TopHat 2/HISAT2 and HTSEQ-Count mapping statistics")
         for g in self.genomes:
-            tophat_output = self.dp[g]['tophat_output']
+            alignment_output = self.dp[g]['alignment_output']
             htseq_output = self.dp[g]['htseq_output']
 
-            dirs = [o for o in os.listdir(tophat_output) if os.path.isdir(os.path.join(tophat_output, o))]
-            summary_files = []
-            for d in dirs:
-                summary_file = os.path.join(tophat_output, d, 'align_summary.txt')
-                if os.path.exists(summary_file):
-                    summary_files.append((d, summary_file))
+            if self.use_hisat2:
+                stats_files = [os.path.join(alignment_output, o) for o in os.listdir(alignment_output) if
+                               os.path.isfile(os.path.join(alignment_output, o)) and
+                               o.endswith('.stats')]
 
+                for stats_file in stats_files:
+                    cutoff = int(self.dp[g]['tophat_cutoff']) if 'tophat_cutoff' in self.dp[g] else 0
+                    passed = check_hisat2(stats_file, cutoff=cutoff, log=self.log)
+                    if not passed:
+                        print('WARNING: sample with insufficient quality (HISAT2) detected:', stats_file, file=sys.stderr)
+                        print('WARNING: check the log for additional information', file=sys.stderr)
+            else:
+                dirs = [o for o in os.listdir(alignment_output) if os.path.isdir(os.path.join(alignment_output, o))]
+                summary_files = []
+                for d in dirs:
+                    summary_file = os.path.join(alignment_output, d, 'align_summary.txt')
+                    if os.path.exists(summary_file):
+                        summary_files.append((d, summary_file))
+
+                for (d, s) in summary_files:
+                    cutoff = int(self.dp[g]['tophat_cutoff']) if 'tophat_cutoff' in self.dp[g] else 0
+                    passed = check_tophat(s, cutoff=cutoff, log=self.log)
+
+                    if not passed:
+                        print('WARNING: sample with insufficient quality (TopHat) detected:', d, file=sys.stderr)
+                        print('WARNING: check the log for additional information', file=sys.stderr)
+
+            # Check HTSeq-Counts
             htseq_files = [os.path.join(htseq_output, f) for f in os.listdir(htseq_output) if f.endswith('.htseq')]
-
-            for (d, s) in summary_files:
-                cutoff = int(self.dp[g]['tophat_cutoff']) if 'tophat_cutoff' in self.dp[g] else 0
-                passed = check_tophat(s, cutoff=cutoff, log=self.log)
-
-                if not passed:
-                    print('WARNING: sample with insufficient quality (TopHat) detected:', d, file=sys.stderr)
-                    print('WARNING: check the log for additional information', file=sys.stderr)
-
             for h in htseq_files:
                 cutoff = int(self.dp[g]['htseq_cutoff']) if 'htseq_cutoff' in self.dp[g] else 0
                 passed = check_htseq(h, cutoff=cutoff, log=self.log)
@@ -426,9 +603,8 @@ class TranscriptomePipeline(PipelineBase):
                                                          "cluster_pcc_%d.sh")
 
         for g in self.genomes:
-            # TODO naming convention here is confusing, improve this !
-            mcl_out = self.dp[g]['pcc_mcl_output']
-            mcl_clusters = self.dp[g]['mcl_cluster_output']
+            mcl_out = self.dp[g]['pcc_mcl_output']          # This is the PCC table in mcl format
+            mcl_clusters = self.dp[g]['mcl_cluster_output'] # Desired path for the clusters
 
             command = ["qsub"] + self.qsub_mcl + ["-v", "in=%s,out=%s" % (mcl_out, mcl_clusters), filename]
             subprocess.call(command)

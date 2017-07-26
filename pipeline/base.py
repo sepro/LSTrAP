@@ -7,11 +7,11 @@ from cluster.templates import build_template, build_batch_template
 
 
 class PipelineBase:
-    def __init__(self, config, data, enable_log=False):
+    def __init__(self, config, data, enable_log=False, use_hisat2=False):
         """
         Constructor run with path to ini file with settings
 
-        :param config: path to setttings ini file
+        :param config: path to settings ini file
         """
         self.cp = configparser.ConfigParser()
         self.cp.read(config)
@@ -24,6 +24,7 @@ class PipelineBase:
         self.blast_module = None if self.cp['TOOLS']['blast_module'] is 'None' else self.cp['TOOLS']['blast_module']
         self.bowtie_module = None if self.cp['TOOLS']['bowtie_module'] is 'None' else self.cp['TOOLS']['bowtie_module']
         self.tophat_module = '' if self.cp['TOOLS']['tophat_module'] is 'None' else self.cp['TOOLS']['tophat_module']
+        self.hisat2_module = '' if self.cp['TOOLS']['hisat2_module'] is 'None' else self.cp['TOOLS']['hisat2_module']
         self.samtools_module = None if self.cp['TOOLS']['samtools_module'] is 'None' else self.cp['TOOLS']['samtools_module']
         self.python_module = None if self.cp['TOOLS']['python_module'] is 'None' else self.cp['TOOLS']['python_module']
         self.python3_module = None if self.cp['TOOLS']['python3_module'] is 'None' else self.cp['TOOLS']['python3_module']
@@ -31,19 +32,26 @@ class PipelineBase:
         self.mcl_module = None if self.cp['TOOLS']['mcl_module'] is 'None' else self.cp['TOOLS']['mcl_module']
 
         self.bowtie_build_cmd = self.cp['TOOLS']['bowtie_cmd']
+        self.hisat2_build_cmd = self.cp['TOOLS']['hisat2_build_cmd']
+
         self.trimmomatic_se_cmd = self.cp['TOOLS']['trimmomatic_se_command']
         self.trimmomatic_pe_cmd = self.cp['TOOLS']['trimmomatic_pe_command']
+
         self.tophat_se_cmd = self.cp['TOOLS']['tophat_se_cmd']
         self.tophat_pe_cmd = self.cp['TOOLS']['tophat_pe_cmd']
+        self.hisat2_se_cmd = self.cp['TOOLS']['hisat2_se_cmd']
+        self.hisat2_pe_cmd = self.cp['TOOLS']['hisat2_pe_cmd']
+
         self.htseq_count_cmd = self.cp['TOOLS']['htseq_count_cmd']
-        self.interproscan_cmd = self.cp['TOOLS']['interproscan_cmd']
-        self.orthofinder_cmd = self.cp['TOOLS']['orthofinder_cmd']
 
         self.pcc_cmd = self.cp['TOOLS']['pcc_cmd']
         self.mcl_cmd = self.cp['TOOLS']['mcl_cmd']
         self.mcxdeblast_cmd = self.cp['TOOLS']['mcxdeblast_cmd']
 
-        self.qsub_bowtie = shlex.split(self.cp['TOOLS']['qsub_bowtie'].strip('\''))
+        self.interproscan_cmd = self.cp['TOOLS']['interproscan_cmd']
+        self.orthofinder_cmd = self.cp['TOOLS']['orthofinder_cmd']
+
+        self.qsub_indexing = shlex.split(self.cp['TOOLS']['qsub_indexing'].strip('\''))
         self.qsub_trimmomatic = shlex.split(self.cp['TOOLS']['qsub_trimmomatic'].strip('\''))
         self.qsub_tophat = shlex.split(self.cp['TOOLS']['qsub_tophat'].strip('\''))
         self.qsub_htseq_count = shlex.split(self.cp['TOOLS']['qsub_htseq_count'].strip('\''))
@@ -57,6 +65,7 @@ class PipelineBase:
         self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
 
         self.enable_log = enable_log
+        self.use_hisat2 = use_hisat2
 
         if self.enable_log:
             self.log = open('lstrap.log', 'w')
