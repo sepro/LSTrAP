@@ -1,18 +1,9 @@
 # Configuring LSTrAP
 ## config.ini
-In your config file module names need to be specified. To see which modules are available on your system type:
+Before running LSTrAP make sure **all paths in config.ini match your system's setup**, e.g. Trimmomatic adapters and jar will 
+need to be adapted.
 
-    module avail
-
-Add the module name for each of the tools to your config.ini, also update all paths (!) e.g. Trimmomatic.
-In case the module load system isn't used, but all software is installed on the cluster + nodes set the modules to **None** !
-
-In case you would like to tweak parameters passed to tools this would be the place to do so. Note however that the tools
-will run with the same settings for each file. Modifying parameters that would **change the output name or format will 
-cause the pipeline to break**. Arguments with a name like *${var}* should **not** be changed as this is how the pipeline 
-defines the input and output for each tool.
-
-**Paths** will differ on your system, make sure to set these up correctly
+### qsub parameters
 
 Additional parameters can be added to the qsub commands at the bottom, 
 this allows users to submit jobs to specific queues, with specific 
@@ -26,6 +17,22 @@ required).
 starting TopHat with **-p 3** the job will require 4 cores (3 worker 
 threads and a background thread are active when a job is started this 
 way).
+
+### Environment modules
+In case the module load system isn't used, but all software is installed on the cluster + nodes set the modules to **None** !
+
+In your config file module names need to be specified. To see which modules are available on your system type:
+
+    module avail
+
+Add the module name for each of the tools to your config.ini if your system is using environmental modules.
+
+### Tweaking parameters of individual tools (expert feature)
+
+In case you would like to tweak parameters passed to tools this would be the place to do so. Note however that the tools
+will run with the same settings for each file. Modifying parameters that would **change the output name or format will 
+cause the pipeline to break**. Arguments with a name like *${var}* should **not** be changed as this is how the pipeline 
+defines the input and output for each tool.
 
 Example config.ini:
 

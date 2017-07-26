@@ -9,7 +9,8 @@ automatically.
   * Support for [PBS](https://en.wikipedia.org/wiki/Portable_Batch_System) / [Torque](http://www.adaptivecomputing.com/products/open-source/torque/) scheduler (note proper [configuration](./docs/configuration.md) is required)
   * [HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml) can be used as an alternative to [BowTie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) and [TopHat 2](https://ccb.jhu.edu/software/tophat/index.shtml)
   * Added [helper](./docs/helper.md) script to do PCA on samples
-  * **Parameter names in data.ini changed**
+  * **Parameter names in data.ini changed, additional options added to config.ini**. Check the [configuration](./docs/configuration.md)
+   and update the files accordingly.
 
 ## Workflow
 

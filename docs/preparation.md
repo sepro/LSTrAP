@@ -1,6 +1,6 @@
 # Preparing your system
 
-LSTrAP is designed with High Performance Computing in mind and requires a computer cluster running 
+LSTrAP is designed with High Performance Computing in mind and **requires** a computer cluster running 
 [Oracle Grid Engine]((https://www.oracle.com/sun/index.html)) or [PBS](https://en.wikipedia.org/wiki/Portable_Batch_System) 
 / [Torque](http://www.adaptivecomputing.com/products/open-source/torque/). Furthermore, the essential 
 tools (see below) need to be installed prior to running LSTrAP. 
