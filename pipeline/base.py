@@ -62,7 +62,7 @@ class PipelineBase:
         self.qsub_mcxdeblast = shlex.split(self.cp['TOOLS']['qsub_mcxdeblast'].strip('\''))
 
         self.genomes = self.dp['GLOBAL']['genomes'].split(';')
-        self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.cp['DEFAULT']['email']
+        self.email = None if self.dp['GLOBAL']['email'] == 'None' else self.dp['GLOBAL']['email']
 
         self.enable_log = enable_log
         self.use_hisat2 = use_hisat2
