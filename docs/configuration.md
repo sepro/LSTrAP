@@ -14,14 +14,15 @@ set the number of nodes/cores on PBS/Torque and how to add a walltime (if
 required).
 
 **Match the number of cores** to the number of cores the job needs. When
-starting TopHat with **-p 3** the job will require 4 cores (3 worker 
+starting TopHat with **-p 3**, the job will require 4 cores (3 worker 
 threads and a background thread are active when a job is started this 
 way).
 
 ### Environment modules
-In case the module load system isn't used, but all software is installed on the cluster + nodes set the modules to **None** !
+In case environment modules are not used, all software needs to be installed on the cluster + nodes. You also need 
+to set all modules in the config.ini to **None** !
 
-In your config file module names need to be specified. To see which modules are available on your system type:
+In your config file, module names need to be specified. To see which modules are available on your system type:
 
     module avail
 
@@ -29,7 +30,7 @@ Add the module name for each of the tools to your config.ini if your system is u
 
 ### Tweaking parameters of individual tools (expert feature)
 
-In case you would like to tweak parameters passed to tools this would be the place to do so. Note however that the tools
+In case you would like to tweak parameters passed to tools, this would be the place to do so. Note however that the tools
 will run with the same settings for each file. Modifying parameters that would **change the output name or format will 
 cause the pipeline to break**. Arguments with a name like *${var}* should **not** be changed as this is how the pipeline 
 defines the input and output for each tool.
