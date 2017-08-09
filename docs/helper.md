@@ -105,4 +105,17 @@ required data is included here as well. Note that this script requires sklearn a
     python3 pca_powerlaw.py ./data/sbi.expression.matrix.tpm.txt ./data/sbi_annotation.txt ./data/sbi.power_law.R07.txt
     
 
-    
+## Utilities
+
+### merge_matrix.py
+
+In case samples for one (!) species were processed in two or more batches, this script can be used to merge the 
+expression matrices.
+
+*Note that to obtain co-expression networks using the merged matrix LSTrAP needs to be run, using the merged expression 
+matrix, skipping all steps before the construction of co-expression.*
+
+*Only merge raw matrices with raw, tpm with tpm and rpkm with rpkm!*
+
+
+    python3 merge_matrix.py matrix_one.txt matrix_two.txt matrix_merged.txt  
