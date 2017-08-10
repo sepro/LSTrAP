@@ -38,6 +38,12 @@ Next, move into the directory and copy **config.template.ini** and **data.templa
 
 Configure config.ini and data.ini using these [guidelines](docs/configuration.md)
 
+## Preparing your data
+
+Before running LSTrAP make sure you have all required data. RNA-Seq data needs to be de-multiplexed and de-barcoded, one
+file per samples and paired-end files need to be named properly (*e.g.* sample_one_1.fastq.gz and sample_one_2.fastq.gz).
+
+Instructions on how to do this are included [here](docs/data_preparation.md)
 
 ## Running LSTrAP
 
@@ -60,9 +66,10 @@ Furthermore, steps can be skipped (to avoid re-running steps unnecessarily). Use
 
 ## Further reading
 
+  * [Data preparation](docs/data_preparation.md)
   * [LSTrAP output](docs/example_output.md)
   * [Quality statistics](docs/quality.md): How to check the quality of samples and remove problematic samples
-  * [Helper Scripts](docs/helper.md): To acquire data from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra)
+  * [Helper scripts](docs/helper.md): To acquire data from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra)
   and process results.
 
     
