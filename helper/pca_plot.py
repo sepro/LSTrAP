@@ -21,7 +21,7 @@ def run_pca(expression):
     run_ids = list(df.columns.values)
     dataMatrix = np.transpose(np.array(df))
 
-    run_ids = [s.split('_')[0] for s in run_ids]
+    run_ids = [s.replace('.htseq', '') for s in run_ids]
 
     # Run PCA
     sklearn_pca = sklearnPCA(n_components=2)
