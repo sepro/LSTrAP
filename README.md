@@ -58,7 +58,7 @@ Run using [HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml)
 
 Run with InterProScan and/or OrthoFinder 
 
-    ./run.py --enable-orthology --enable-interproscan config.ini data.ini
+    ./run.py --enable-orthology --enable-interpro config.ini data.ini
 
 Furthermore, steps can be skipped (to avoid re-running steps unnecessarily). Use the command below for more info.
 
