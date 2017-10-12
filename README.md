@@ -4,6 +4,11 @@ LSTrAP, short for Large Scale Transcriptome Analysis Pipeline, greatly facilitat
 RNA-Seq data. The various tools involved are seamlessly connected and  CPU-intensive steps are submitted to a computer cluster 
 automatically. 
 
+For more details see the LSTrAP paper below:
+
+Sebastian Proost, Agnieszka Krawczyk and Marek Mutwil **(2017)** *LSTrAP: efficiently combining RNA sequencing data into co-expression networks* **BMC Bioinformatics** 18:444 
+[https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1861-z](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1861-z)
+
 ## Version 1.3 Changelog
 
   * Support for [PBS](https://en.wikipedia.org/wiki/Portable_Batch_System) / [Torque](http://www.adaptivecomputing.com/products/open-source/torque/) scheduler (note proper [configuration](./docs/configuration.md) is required)
@@ -71,7 +76,6 @@ Furthermore, steps can be skipped (to avoid re-running steps unnecessarily). Use
   * [Quality statistics](docs/quality.md): How to check the quality of samples and remove problematic samples
   * [Helper scripts](docs/helper.md): To acquire data from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra)
   and process results.
-
     
 ## Contact
 
