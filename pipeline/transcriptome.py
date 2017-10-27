@@ -500,7 +500,10 @@ class TranscriptomePipeline(PipelineBase):
                 full_path = os.path.join(htseq_output, file)
                 with open(full_path, "r") as f:
                     for row in f:
-                        gene_id, count = row.strip().split('\t')
+                        try:
+                            gene_id, count = row.strip().split('\t')
+                        except Exception as e:
+                            print("Error parsing file %s. Error in line %s" % (htseq_files, row), file=sys.stderr)
 
                         if gene_id not in counts.keys():
                             counts[gene_id] = {}
