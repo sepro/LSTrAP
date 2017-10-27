@@ -2,6 +2,7 @@ import subprocess
 import os
 import sys
 import shutil
+import re
 
 from cluster import wait_for_job
 from utils.matrix import read_matrix, write_matrix, normalize_matrix_counts, normalize_matrix_length
@@ -500,15 +501,12 @@ class TranscriptomePipeline(PipelineBase):
                 full_path = os.path.join(htseq_output, file)
                 with open(full_path, "r") as f:
                     for row in f:
-                        try:
-                            gene_id, count = row.strip().split('\t')
-                        except Exception as e:
-                            print("Error parsing file %s. Error in line %s" % (file, row), file=sys.stderr)
-                        finally:
-                            if gene_id not in counts.keys():
-                                counts[gene_id] = {}
+                        gene_id, count = re.split('\t+', row.strip())
 
-                            counts[gene_id][file] = count
+                        if gene_id not in counts.keys():
+                            counts[gene_id] = {}
+
+                        counts[gene_id][file] = count
 
             output_file = self.dp[g]['exp_matrix_output']
             os.makedirs(os.path.dirname(output_file), exist_ok=True)
