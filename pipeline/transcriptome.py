@@ -503,7 +503,7 @@ class TranscriptomePipeline(PipelineBase):
                         try:
                             gene_id, count = row.strip().split('\t')
                         except Exception as e:
-                            print("Error parsing file %s. Error in line %s" % (htseq_files, row), file=sys.stderr)
+                            print("Error parsing file %s. Error in line %s" % (file, row), file=sys.stderr)
                         finally:
                             if gene_id not in counts.keys():
                                 counts[gene_id] = {}
