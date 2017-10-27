@@ -504,11 +504,11 @@ class TranscriptomePipeline(PipelineBase):
                             gene_id, count = row.strip().split('\t')
                         except Exception as e:
                             print("Error parsing file %s. Error in line %s" % (htseq_files, row), file=sys.stderr)
+                        finally:
+                            if gene_id not in counts.keys():
+                                counts[gene_id] = {}
 
-                        if gene_id not in counts.keys():
-                            counts[gene_id] = {}
-
-                        counts[gene_id][file] = count
+                            counts[gene_id][file] = count
 
             output_file = self.dp[g]['exp_matrix_output']
             os.makedirs(os.path.dirname(output_file), exist_ok=True)
