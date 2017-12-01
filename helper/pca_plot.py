@@ -27,7 +27,7 @@ def run_pca(expression):
     sklearn_pca = sklearnPCA(n_components=2)
     sklearn_transf = sklearn_pca.fit_transform(preprocessing.maxabs_scale(dataMatrix, axis=0))
 
-    with sns.axes_style("whitegrid", {"grid.linestyle": None}):
+    with sns.axes_style("whitegrid"):
         for run, pca_data in zip(run_ids, sklearn_transf):
             plt.plot(pca_data[0], pca_data[1], 'o',
                      markersize=7,
