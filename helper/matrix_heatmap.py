@@ -41,5 +41,6 @@ if __name__ == "__main__":
     plot_data(args.expression_matrix,
               show_labels=args.show_labels,
               file_out=args.png,
-              dpi_output=args.dpi)
+              dpi_output=args.dpi,
+              distance=args.distance)
 
