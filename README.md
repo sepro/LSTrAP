@@ -33,7 +33,7 @@ software can be found [here](docs/preparation.md).
 
 Use git to obtain a copy of the LSTrAP code
 
-    git clone https://github.molgen.mpg.de/proost/LSTrAP
+    git clone https://github.com/sepro/LSTrAP
 
 Next, move into the directory and copy **config.template.ini** and **data.template.ini**
 
